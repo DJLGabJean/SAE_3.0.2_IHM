@@ -1,0 +1,27 @@
+.salle_rubrique div:nth-child(1n) {
+    min-height : 30px;
+    margin-top : 5px;
+    text-align : left;
+    display : grid;
+    grid-template-columns : 1fr 1fr 8fr;
+    grid-gap : 10px;
+}
+
+.salle_rubrique div:nth-child(1) { 
+    grid-template-columns : 1fr 9fr;
+}
+
+.salle_sousrubrique {
+    min-height : 30px;
+    margin-top : 5px;
+    text-align : left;
+    display : grid;
+    grid-template-columns : 1fr 1fr;
+    border-bottom : 2px solid #808080;
+}
+
+.salle_commentaire {
+    text-align : left;
+    font-size : 0.9em;
+    white-space : pre;
+}

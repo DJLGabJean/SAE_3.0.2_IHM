@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Edition d’un équipement d’une salle</title>
+    <link type="text/css" rel="stylesheet" href="./css/salle_equipement_edit.css">
+</head>
+<body>
+<div class="divtitre" >
+    Choisir un équipement dans la liste
+</div>
+    <div class="equipement_rubrique">
+<div>
+    <select id="select_equipement" size="6"></select>
+<div>
+    <label id="lbl_erreur_select_equipement" class="labelerreur"></label>
+</div>
+</div>
+<div>
+    <label for="edt_equipement_qte">quantité</label>
+    <span><input id="edt_equipement_qte" size="5" type="number"></span>
+<div>
+    <label id="lbl_erreur_qte" class="labelerreur"></label>
+</div>
+<div>
+    <input id="btn_equipement_valider" type="button" > 
+    <input id="btn_equipement_annuler" type="button" > 
+</div>
+</div>
+</div>
+</body>
+<script type="module" src="../controleur/salle_equipement_edit.js"></script>
+</html>
