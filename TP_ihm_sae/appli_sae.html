@@ -11,7 +11,7 @@
       <h1>Gestion des abonnements d’un club d’actualités</h1>
     </header>
     <main>
-      <div id="div_liste_abonnement" class="liste_abonnement"> <!--Div 1-->
+      <div id="div_liste_abonnement" class="liste_abonnement"> <!--Principal-->
         <div id="div_abonnement_liste_titre" class="divtitre">Liste des salles</div>
         <table id="table_infoAbonnement">
           <thead>
@@ -35,25 +35,27 @@
           <input id="btn_salleSupprimer" type="button" class='btnalerte' value="Supprimer">
         </div>
       </div>
-      <div id="div_détail_abonnement"> <!--Div 2-->
-        <div id="div_salle_titre" class="divtitre"> Détail d'un abonnement</div>
+      <div id="div_page_abonnement"> <!--Ajout Abonnement-->
+        <div id="div_salle_titre" class="divtitre"></div>
         <div id="div_salle_detail">
           <div class="abonnement_rubrique">
             <div>
               <span class="labeltitre">IDENTIFICATION</span>
               <label id="lbl_erreur_idendification" class="labelerreur">sss</label>
             </div>
-            <div>
-              <label for="edt_num_adh">numéro</label>
-              <span><input id="edt_num_adh" placeholder="numéro" size="5" type="text"></span>
+            <div class="div_edt_identification">
+              <div>
+                <label for="edt_num_adh">numéro</label>
+                <span><input id="edt_num_adh" placeholder="numéro" size="10" type="text"></span>
+              </div>
+              <div>
+                <label for="edt_num_date">le</label>
+                <span><input id="edt_num_date" placeholder="la date" size="15" type="text"></span>
+              </div>
             </div>
-            <div>
-              <label for="edt_num_date">le</label>
-              <span><input id="edt_num_date" placeholder="la date" size="30" type="text"></span>
-            </div>
-            <div>
+            <div class="div_textarea_commentaire">
               <label for="textarea_commentaire_adh">commentaire</label>
-              <span><textarea id="textarea_commentaire_adh" name="commentaire" rows="5" cols="33"></textarea></span>
+              <span><textarea id="textarea_commentaire_adh" name="commentaire" rows="5" cols="70"></textarea></span>
             </div>
           </div>
           <div class="abonnement_rubrique">
@@ -80,7 +82,7 @@
             </div>
           </div>
           <div class="div_basDeFenetre">
-            <div id="div_totalAdhésion" class="totalAdhésion"> <!--Div 3-->
+            <div id="div_totalAdhésion" class="totalAdhésion">
               <div class="divtitre">
                  Total
                 <div id="div_nombre_total">10000000000</div>
@@ -103,7 +105,7 @@
                 <input id="btn_equipement_supprimer" type="button" class="btnalerte" value="Supprimer">
               </div>
             </div>
-            <div id="div_selectionThèmes" class="selectionThème"> <!--Div 4-->
+            <div id="div_selectionThèmes" class="selectionThème">
               <div class="divtitre">
                 Choisir un thème dans la liste
               </div>

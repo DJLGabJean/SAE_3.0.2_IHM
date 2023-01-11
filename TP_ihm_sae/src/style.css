@@ -73,12 +73,24 @@ select option:hover {
     background-color : #00b0ff;
 }
 
+.div_edt_identification {
+    margin-left: 1.5%;
+}
+
+.div_edt_identification div {
+    width: 13rem;
+}
+
+.div_textarea_commentaire {
+    margin-left: 6.5%;
+}
+
 .labeltitre {
     color : #ffffff;
     background-color : #5b5b5b;
     font-weight : bold;
     padding-top : 0.4em;
-    width : 100%;
+    width : 175%;
 }
 
 .labelerreur {
@@ -86,7 +98,7 @@ select option:hover {
     font-size : 0.9em;
     color : #ff0000;
     font-style : italic;
-    margin-left : 10px;
+    margin-left : 9%;
 }
 
 .divtitre {
