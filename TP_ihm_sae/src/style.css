@@ -14,6 +14,33 @@ header h1 {
     margin-bottom: 1rem;
 }
 
+.liste_abonnement {
+    margin-bottom: 3rem;
+}
+
+.div_basDeFenetre {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: solid 2px gray;
+}
+
+.totalAdhésion {
+    width: 49%;
+}
+
+.selectionThème {
+    width: 49%;
+}
+
+.checkBoxDiv {
+    display: flex;
+}
+
+.interieurBoite {
+    display: flex;
+    justify-content: space-between;
+}
 
 label {
     margin-top : 0.5em;
@@ -117,12 +144,7 @@ input[type=button].btnchoix:hover, input[type=button].btnchoixselection {
     color : #ffffff;
 }
 
-.equipement_rubrique {
-    display : grid;
-    grid-template-columns : 1fr 1fr;
-}
-
-#equipement_btn_valider {
+#btn_théme_valider {
     margin : 10px;
     width : 50px ;
     height : 50px;
@@ -130,7 +152,7 @@ input[type=button].btnchoix:hover, input[type=button].btnchoixselection {
     no-repeat center center;
 }
 
-#equipement_btn_annuler {
+#btn_théme_annuler {
     margin : 10px;
     width : 50px;
     height : 50px;
@@ -138,7 +160,7 @@ input[type=button].btnchoix:hover, input[type=button].btnchoixselection {
     no-repeat center center;
 }
 
-.salle_rubrique div:nth-child(1n) {
+.abonnement_rubrique div:nth-child(1n) {
     min-height : 30px;
     margin-top : 5px;
     text-align : left;
@@ -147,7 +169,7 @@ input[type=button].btnchoix:hover, input[type=button].btnchoixselection {
     grid-gap : 10px;
 }
 
-.salle_rubrique div:nth-child(1) { 
+.abonnement_rubrique div:nth-child(1) { 
     grid-template-columns : 1fr 9fr;
 }
 
