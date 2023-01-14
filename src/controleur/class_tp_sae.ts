@@ -55,7 +55,7 @@ class VueTpSae {
         this.form.btnThemeSupprimer.hidden = true
         this.form.btnAbonnementValider.hidden = true
         this.form.btnAbonnementAnnuler.hidden = true //Pour rendre invisible les boutons non nécessaires
-        this.form.edtIdentifiactionAdh.disabled = true
+        this.form.edtIdentificationAdh.disabled = true
         this.form.edtNumDate.disabled = true
         this.form.edtNumAdh.disabled = true
         this.form.textareaCommentaireAdh.disabled = true //Pour désactiver les boutons
@@ -79,7 +79,7 @@ class VueTpSae {
         this.form.btnThemeSupprimer.hidden = false
         this.form.btnAbonnementValider.hidden = false
         this.form.btnAbonnementAnnuler.hidden = false
-        this.form.edtIdentifiactionAdh.disabled = false
+        this.form.edtIdentificationAdh.disabled = false
         this.form.edtNumDate.disabled = false
         this.form.edtNumAdh.disabled = false
         this.form.textareaCommentaireAdh.disabled = false
