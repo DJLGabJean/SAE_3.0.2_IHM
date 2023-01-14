@@ -15,7 +15,7 @@ vueTpSaeClass.init({
     btnAbonnementRetour: document.querySelector("[id=btn_abonnement_retour]"),
     btnAbonnementValider: document.querySelector("[id=btn_abonnement_valider]"),
     btnAbonnementAnnuler: document.querySelector("[id=btn_abonnement_annuler]"),
-    edtIdentifiactionAdh: document.querySelector("[id=edt_identifiaction_adh"),
+    edtIdentificationAdh: document.querySelector("[id=edt_identification_adh"),
     edtNumDate: document.querySelector("[id=edt_num_date]"),
     edtNumAdh: document.querySelector("[id=edt_num_adh]"),
     textareaCommentaireAdh: document.querySelector("[id=textarea_commentaire_adh]"),

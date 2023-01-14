@@ -41,7 +41,31 @@ class VueTpSae {
     }
 
     get form() : TpSAEForm { return this._form }
-}
 
-let vueTpSaeClass = new VueTpSae
-export {vueTpSaeClass}
+    ajouterAbonnement(): void {
+        this.form.divPageAbonnement.hidden = false;
+        this.form.btnAbonnementSupprimer.disabled = true;
+        this.form.btnAbonnementDetail.disabled = true;
+        this.form.btnAbonnementModifier.disabled = true;
+        this.form.btnAbonnementAnnuler.disabled = false;
+        this.form.btnAbonnementValider.disabled = false;
+        this.form.btnAbonnementAnnuler.disabled = false;
+        this.form.btnThemeAjouter.disabled = false;
+        this.form.btnThemeAnnuler.disabled = false;
+    }
+    
+    messageErreur(): void {
+       let erreurMsg = "Erreur : élément manquant";
+       erreurMsg as this.form.lblErreurAdh;
+       if (this.form.edtIdentificationAdh === "") {
+        erreurMsg += this.form.lblErreurIdendification = "Le numéro d'identification n'a pas été renseigné.\n"
+       }
+       if (this.form.edtNumDate === "") {
+        let erreurAdh =
+        erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n" as this.form.lblErreurAdh
+       }
+       if (this.form.edtNumAdh === "") {
+        erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné.\n"
+       }
+    }
+}
