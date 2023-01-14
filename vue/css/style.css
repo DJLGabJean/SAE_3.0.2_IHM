@@ -111,7 +111,7 @@ select option:hover {
 }
 
 .divaction {
-    margin : 10px;
+    margin : 5px;
     float : right;
 }
 
@@ -158,19 +158,19 @@ input[type=button].btnchoix:hover, input[type=button].btnchoixselection {
     color : #ffffff;
 }
 
-#btn_théme_valider {
+#btn_theme_valider {
     margin : 10px;
     width : 50px ;
     height : 50px;
-    background : url("../public/valider.jpg")
+    background : url("../valider.jpg")
     no-repeat center center;
 }
 
-#btn_théme_annuler {
+#btn_theme_annuler {
     margin : 10px;
     width : 50px;
     height : 50px;
-    background : url("../public/annuler.jpg")
+    background : url("../annuler.jpg")
     no-repeat center center;
 }
 
@@ -185,6 +185,16 @@ input[type=button].btnchoix:hover, input[type=button].btnchoixselection {
 
 .abonnement_rubrique div:nth-child(1) { 
     grid-template-columns : 1fr 9fr;
+}
+
+#div_informationAdherent {
+    grid-template-columns : 1fr;
+}
+
+.div_interieur_boite_adherent {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
 }
 
 .salle_sousrubrique {

@@ -4,11 +4,11 @@ export default defineConfig({
   build:{
     rollupOptions:{
         input: {
-            app:"TP_ihm_sae/appli_sae.html"
+            app:"vue/appli_sae.html"
         }
     }
   },
   server: {
-    open:"TP_ihm_sae/appli_sae.html"
+    open:"vue/appli_sae.html"
   }
 })
