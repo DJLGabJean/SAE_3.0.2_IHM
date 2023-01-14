@@ -84,6 +84,45 @@ class VueTpSae {
         this.form.edtNumAdh.disabled = false
         this.form.textareaCommentaireAdh.disabled = false
     }
+
+    ajouterAbonnement(): void {
+        this.form.divPageAbonnement.hidden = false;
+        this.form.divSelectionThemes.hidden = true;
+        this.form.btnAbonnementSupprimer.disabled = true;
+        this.form.btnAbonnementDetail.disabled = true;
+        this.form.btnAbonnementModifier.disabled = true;
+        this.form.btnAbonnementDetail.disabled = true;
+        this.form.btnAbonnementAnnuler.disabled = false;
+        this.form.btnAbonnementValider.disabled = false;
+        this.form.btnThemeAjouter.disabled = false;
+        this.form.btnThemeModifier.disabled = false;
+        this.form.btnThemeSupprimer.disabled = false;
+    }
+    
+    messageErreur(): void {
+       let erreurMsg = "Erreur : élément manquant";
+       if (this.form.edtIdentificationAdh.value === "") {
+        erreurMsg += "Le numéro d'identification n'a pas été renseigné.\n"
+       }
+       if (this.form.edtNumDate.value === "") {
+        erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n"
+       }
+       if (this.form.edtNumAdh.value === "") {
+        erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné.\n";
+       }
+    }
+
+    afficherTheme(): void {
+        if (this.form.btnThemeAjouter.click || this.form.btnThemeModifier.click) {
+            this.form.divSelectionThemes.hidden = false;
+        }
+    }
+
+    annulerAjoutAbonnement(): void {
+        if (this.form.btnAbonnementAnnuler.click || this.form.btnAbonnementRetour.click) {
+            this.form.divPageAbonnement.hidden = true;
+        }
+    }
 }
 
 let vueTpSaeClass = new VueTpSae
