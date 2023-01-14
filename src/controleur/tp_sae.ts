@@ -18,6 +18,7 @@ vueTpSaeClass.init({
     edtIdentificationAdh: document.querySelector("[id=edt_identification_adh"),
     edtNumDate: document.querySelector("[id=edt_num_date]"),
     edtNumAdh: document.querySelector("[id=edt_num_adh]"),
+    edtTexteInvisible: document.querySelector("[id=edt_texte_invisible]"),
     textareaCommentaireAdh: document.querySelector("[id=textarea_commentaire_adh]"),
     chkMiniAlbum: document.querySelector("[id=chk_miniAlbum]"),
     divListeAbonnement: document.querySelector("[id=div_liste_abonnement]"),
@@ -34,3 +35,7 @@ vueTpSaeClass.init({
     selectThemes: document.querySelector("[id=select_themes]"),
     chkVersionPapier: document.querySelector("[id=chk_versionPapier]"),
 })
+
+vueTpSaeClass.form.btnAbonnementDetail.addEventListener("click", function() {vueTpSaeClass.afficherDetail()})
+vueTpSaeClass.form.btnAbonnementRetour.addEventListener("click", function() {vueTpSaeClass.retourAfficherAbonnement()})
+vueTpSaeClass.form.btnAbonnementModifier.addEventListener("click", function() {vueTpSaeClass.afficherDetailTest()})
