@@ -41,6 +41,7 @@ class VueTpSae {
         this.form.divPageAbonnement.hidden = true
         this.form.edtTexteInvisible.value = "0"
         this.form.edtTexteInvisible.hidden = true
+        this.form.divNombreTotal.innerHTML = "0.00 €"
     }
 
     get form() : TpSAEForm { return this._form }
@@ -59,11 +60,45 @@ class VueTpSae {
         this.form.edtNumDate.disabled = true
         this.form.edtNumAdh.disabled = true
         this.form.textareaCommentaireAdh.disabled = true //Pour désactiver les boutons
+        this.form.divAbonnementTitre.innerHTML = "Détail d'un abonnement" //Pour afficher le bon Titre
+    }
+
+    ajouterAbonnement(): void {
+        this.form.edtTexteInvisible.value = "2";
+        this.form.divListeAbonnement.hidden = true;
+        this.form.divPageAbonnement.hidden = false;
+        this.form.divSelectionThemes.hidden = true;
+        this.form.btnAbonnementRetour.hidden = true;
+    }
+
+    afficherTheme(): void {
+        this.form.divSelectionThemes.hidden = false;
+        this.form.btnThemeAjouter.disabled = true;
+        this.form.btnThemeModifier.disabled = true;
+        this.form.btnThemeSupprimer.disabled = true;
+    }
+
+    messageErreur(): void {
+        let erreurMsg = "Erreur : élément manquant";
+        if (this.form.edtIdentificationAdh.value === "") {
+         erreurMsg += "Le numéro d'identification n'a pas été renseigné.<br>"
+        }
+        if (this.form.edtNumDate.value === "") {
+         erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.<br>"
+        }
+        if (this.form.edtNumAdh.value === "") {
+         erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné.<br>";
+        }
     }
 
     retourAfficherAbonnement(): void {
         if (this.form.edtTexteInvisible.value === "1") { //Si l'utilisateur à cliquer sur détail
+            this.form.edtTexteInvisible.value = "0"
             return this.retourAfficherDetail()
+        }
+        else if (this.form.edtTexteInvisible.value === "2") { //Si l'utilisateur à clique sur ajout
+            this.form.edtTexteInvisible.value = "0"
+            return this.annulerAjoutAbonnement()
         }
         else {
 
@@ -83,45 +118,17 @@ class VueTpSae {
         this.form.edtNumDate.disabled = false
         this.form.edtNumAdh.disabled = false
         this.form.textareaCommentaireAdh.disabled = false
-    }
-
-    ajouterAbonnement(): void {
-        this.form.divPageAbonnement.hidden = false;
-        this.form.divSelectionThemes.hidden = true;
-        this.form.btnAbonnementSupprimer.disabled = true;
-        this.form.btnAbonnementDetail.disabled = true;
-        this.form.btnAbonnementModifier.disabled = true;
-        this.form.btnAbonnementDetail.disabled = true;
-        this.form.btnAbonnementAnnuler.disabled = false;
-        this.form.btnAbonnementValider.disabled = false;
-        this.form.btnThemeAjouter.disabled = false;
-        this.form.btnThemeModifier.disabled = false;
-        this.form.btnThemeSupprimer.disabled = false;
-    }
-    
-    messageErreur(): void {
-       let erreurMsg = "Erreur : élément manquant";
-       if (this.form.edtIdentificationAdh.value === "") {
-        erreurMsg += "Le numéro d'identification n'a pas été renseigné.\n"
-       }
-       if (this.form.edtNumDate.value === "") {
-        erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n"
-       }
-       if (this.form.edtNumAdh.value === "") {
-        erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné.\n";
-       }
-    }
-
-    afficherTheme(): void {
-        if (this.form.btnThemeAjouter.click || this.form.btnThemeModifier.click) {
-            this.form.divSelectionThemes.hidden = false;
-        }
+        this.form.divAbonnementTitre.innerHTML = ""
     }
 
     annulerAjoutAbonnement(): void {
-        if (this.form.btnAbonnementAnnuler.click || this.form.btnAbonnementRetour.click) {
-            this.form.divPageAbonnement.hidden = true;
-        }
+        this.form.divPageAbonnement.hidden = true;
+        this.form.divListeAbonnement.hidden = false;
+        this.form.btnAbonnementRetour.hidden = false;
+        this.form.divListeAbonnement.hidden = false;
+        this.form.btnThemeAjouter.disabled = false;
+        this.form.btnThemeModifier.disabled = false;
+        this.form.btnThemeSupprimer.disabled = false;
     }
 }
 
