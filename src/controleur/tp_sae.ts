@@ -38,4 +38,3 @@ vueTpSaeClass.init({
 
 vueTpSaeClass.form.btnAbonnementDetail.addEventListener("click", function() {vueTpSaeClass.afficherDetail()})
 vueTpSaeClass.form.btnAbonnementRetour.addEventListener("click", function() {vueTpSaeClass.retourAfficherAbonnement()})
-vueTpSaeClass.form.btnAbonnementModifier.addEventListener("click", function() {vueTpSaeClass.afficherDetailTest()})
