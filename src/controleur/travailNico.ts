@@ -44,6 +44,7 @@ class VueTpSae {
 
     ajouterAbonnement(): void {
         this.form.divPageAbonnement.hidden = false;
+        this.form.divSelectionThemes.hidden = true;
         this.form.btnAbonnementSupprimer.disabled = true;
         this.form.btnAbonnementDetail.disabled = true;
         this.form.btnAbonnementModifier.disabled = true;
@@ -51,21 +52,27 @@ class VueTpSae {
         this.form.btnAbonnementValider.disabled = false;
         this.form.btnAbonnementAnnuler.disabled = false;
         this.form.btnThemeAjouter.disabled = false;
-        this.form.btnThemeAnnuler.disabled = false;
+        this.form.btnThemeModifier.disabled = false;
+        this.form.btnThemeSupprimer.disabled = false;
+        this.afficherTheme();
     }
     
     messageErreur(): void {
        let erreurMsg = "Erreur : élément manquant";
-       erreurMsg as this.form.lblErreurAdh;
-       if (this.form.edtIdentificationAdh === "") {
-        erreurMsg += this.form.lblErreurIdendification = "Le numéro d'identification n'a pas été renseigné.\n"
+       if (this.form.edtIdentificationAdh.value === "") {
+        erreurMsg += this.form.lblErreurIdendification.innerHTML = "Le numéro d'identification n'a pas été renseigné.\n"
        }
-       if (this.form.edtNumDate === "") {
-        let erreurAdh =
-        erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n" as this.form.lblErreurAdh
+       if (this.form.edtNumDate.value === "") {
+        erreurMsg += this.form.edtNumDate.innerHTML = "La date d'ajout de l'abonnement n'a pas été renseignée.\n"
        }
-       if (this.form.edtNumAdh === "") {
-        erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné.\n"
+       if (this.form.edtNumAdh.value === "") {
+        erreurMsg += this.form.edtNumAdh.innerHTML = "Le numéro d'adhésion de l'abonné n'est pas renseigné.\n";
        }
+    }
+
+    afficherTheme(): void {
+        if (this.form.btnThemeAjouter.click || this.form.btnThemeModifier.click) {
+            this.form.divSelectionThemes.hidden = false;
+        }
     }
 }
