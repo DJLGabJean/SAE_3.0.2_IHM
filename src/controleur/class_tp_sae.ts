@@ -1,3 +1,5 @@
+import {LesAbonnements} from "../modele/data_abonnement"
+
 type TpSAEForm = {
     tableInfoAbonnement : HTMLTableElement //Partie qui doit afficher la bdd
     , tableTotalAbonnement: HTMLTableElement
@@ -36,8 +38,15 @@ type TpSAEForm = {
 
 class VueTpSae {
     private _form: TpSAEForm
+    private _grille: GrilleTabulaire
+    private _date: TdataSet
     init(form : TpSAEForm) : void {
         this._form = form
+        this._grille = new GrilleTabulaire
+        this._date = []
+        const lesAbonnements = new LesAbonnements
+        this._data = lesAbonnements.listAll()
+        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this._data, 'numSalle', true)
         this.form.divPageAbonnement.hidden = true
         this.form.edtTexteInvisible.value = "0"
         this.form.edtTexteInvisible.hidden = true
@@ -45,6 +54,8 @@ class VueTpSae {
     }
 
     get form() : TpSAEForm { return this._form }
+    get data() :TdataSet { return this._data }
+    get grille() :GrilleTabulaire { return this._grille }
 
     afficherDetail(): void {
         this.form.edtTexteInvisible.value = "1"
