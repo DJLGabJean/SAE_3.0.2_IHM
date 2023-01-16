@@ -3,7 +3,7 @@ class Connexion {
 		this.init();
     }
 	init() : void {
-		APIpageWeb.bdOpen('devbdd.iutmetz.univ-lorraine.fr','3306','toto3u_bdclub','toto3u','', 'utf8');
+		APIpageWeb.bdOpen('devbdd.iutmetz.univ-lorraine.fr','3306','nae1u_bdclub','toto3u_appli','31904250', 'utf8');
 	}
   }
   // eslint-disable-next-line no-var
