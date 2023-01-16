@@ -154,9 +154,9 @@ class VueTpSae {
          erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné. \n";
         }
         else {
-            erreurMsg += "La saisie d'ashésion est incorrecte. \n"
+            erreurMsg += "La saisie d'adhésion est incorrecte. \n"
         }
-        //ajouter théme
+        //ajouter thème
         alert(erreurMsg)
     }
 
