@@ -80,6 +80,7 @@ class VueTpSae {
         this.form.divPageAbonnement.hidden = false;
         this.form.divSelectionThemes.hidden = true;
         this.form.btnAbonnementRetour.hidden = true;
+        this.form.divAbonnementTitre.innerHTML = "Ajout d'un abonnement";
     }
 
     annulerAjoutAbonnement(): void {
