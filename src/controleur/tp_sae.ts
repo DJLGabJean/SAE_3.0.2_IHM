@@ -42,3 +42,4 @@ vueTpSaeClass.form.btnAbonnementAjouter.addEventListener("click", function() {vu
 vueTpSaeClass.form.btnThemeAjouter.addEventListener("click", function() {vueTpSaeClass.afficherTheme()})
 vueTpSaeClass.form.btnThemeModifier.addEventListener("click", function() {vueTpSaeClass.afficherTheme()}) //TODO Peut-être à changer 
 vueTpSaeClass.form.btnAbonnementAnnuler.addEventListener("click", function() {vueTpSaeClass.annulerAjoutAbonnement()})
+vueTpSaeClass.form.btnThemeAnnuler.addEventListener("click", function() {vueTpSaeClass.annulerAjoutTheme()})

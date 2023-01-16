@@ -71,11 +71,30 @@ class VueTpSae {
         this.form.btnAbonnementRetour.hidden = true;
     }
 
+    annulerAjoutAbonnement(): void {
+        this.form.divPageAbonnement.hidden = true;
+        this.form.divListeAbonnement.hidden = false;
+        this.form.btnAbonnementRetour.hidden = false;
+        this.form.divListeAbonnement.hidden = false;
+        this.form.btnThemeAjouter.disabled = false;
+        this.form.btnThemeModifier.disabled = false;
+        this.form.btnThemeSupprimer.disabled = false;
+    }
+
     afficherTheme(): void {
         this.form.divSelectionThemes.hidden = false;
         this.form.btnThemeAjouter.disabled = true;
         this.form.btnThemeModifier.disabled = true;
         this.form.btnThemeSupprimer.disabled = true;
+    }
+
+    annulerAjoutTheme(): void {
+        if (this.form.btnThemeAnnuler.click) {
+            this.form.divSelectionThemes.hidden = true;
+            this.form.btnThemeAjouter.disabled = false;
+            this.form.btnThemeModifier.disabled = false;
+            this.form.btnThemeSupprimer.disabled = false;
+        }
     }
 
     messageErreur(): void {
@@ -88,6 +107,10 @@ class VueTpSae {
         }
         if (this.form.edtNumAdh.value === "") {
          erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné.<br>";
+        }
+        if (this.form.btnAbonnementValider.click) {
+            if (this.form.edtIdentificationAdh.value === "")
+            alert("Une ou plusieurs zones de saisie comporte des éléments incorrects/manquants.")
         }
     }
 
@@ -119,16 +142,6 @@ class VueTpSae {
         this.form.edtNumAdh.disabled = false
         this.form.textareaCommentaireAdh.disabled = false
         this.form.divAbonnementTitre.innerHTML = ""
-    }
-
-    annulerAjoutAbonnement(): void {
-        this.form.divPageAbonnement.hidden = true;
-        this.form.divListeAbonnement.hidden = false;
-        this.form.btnAbonnementRetour.hidden = false;
-        this.form.divListeAbonnement.hidden = false;
-        this.form.btnThemeAjouter.disabled = false;
-        this.form.btnThemeModifier.disabled = false;
-        this.form.btnThemeSupprimer.disabled = false;
     }
 }
 
