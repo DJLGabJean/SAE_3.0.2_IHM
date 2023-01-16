@@ -38,15 +38,15 @@ type TpSAEForm = {
 
 class VueTpSae {
     private _form: TpSAEForm
-    private _grille: GrilleTabulaire
-    private _date: TdataSet
+    //private _grille: GrilleTabulaire
+    //private _data: TdataSet
     init(form : TpSAEForm) : void {
         this._form = form
-        this._grille = new GrilleTabulaire
-        this._date = []
-        const lesAbonnements = new LesAbonnements
-        this._data = lesAbonnements.listAll()
-        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this._data, 'numSalle', true)
+        //this._grille = new GrilleTabulaire
+        //this._data = []
+        //const lesAbonnements = new LesAbonnements
+        //this._data = lesAbonnements.listAll()
+        //this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this._data, 'numSalle', true)
         this.form.divPageAbonnement.hidden = true
         this.form.edtTexteInvisible.value = "0"
         this.form.edtTexteInvisible.hidden = true
@@ -54,8 +54,8 @@ class VueTpSae {
     }
 
     get form() : TpSAEForm { return this._form }
-    get data() :TdataSet { return this._data }
-    get grille() :GrilleTabulaire { return this._grille }
+    //get data() :TdataSet { return this._data }
+    //get grille() :GrilleTabulaire { return this._grille }
 
     afficherDetail(): void {
         this.form.edtTexteInvisible.value = "1"
@@ -109,21 +109,55 @@ class VueTpSae {
         }
     }
 
-    messageErreur(): void {
-        let erreurMsg = "Erreur : élément manquant";
-        if (this.form.edtIdentificationAdh.value === "") {
-         erreurMsg += "Le numéro d'identification n'a pas été renseigné.<br>"
+    verifierAjoutAbonnement(): void {
+        if (this.verifieurAjout() === false) {
+            this.messageErreur()       
+        }
+        else {
+            alert("good work !")
+            //fonction pour ajouter
+        }
+    }
+
+    verifieurAjout(): boolean {
+        const nombreIdentification = parseInt(this.form.edtIdentificationAdh.value)
+        const nombreAdherent = parseInt(this.form.edtNumAdh.value)
+        //const dateArray = this.form.edtNumDate.value.split("/")
+        if (this.form.edtIdentificationAdh.value === "" || isNaN(nombreIdentification) ) {
+            return false
+        }
+        if (this.form.edtNumAdh.value === "" || isNaN(nombreAdherent) ) {
+            return false
         }
         if (this.form.edtNumDate.value === "") {
-         erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.<br>"
+            return false
+        }
+        return true
+    }
+    
+
+    messageErreur(): void {
+        let erreurMsg = "Erreur : élément manquant \n";
+        if (this.form.edtIdentificationAdh.value === "") {
+         erreurMsg += "Le numéro d'identification n'a pas été renseigné. \n"
+        }
+        else {
+            erreurMsg += "La saisie d'identification est incorrecte. \n"
+        }
+        if (this.form.edtNumDate.value === "") {
+         erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n"
+        }
+        else {
+            erreurMsg += "La saisie de la date est incorrecte. \n"
         }
         if (this.form.edtNumAdh.value === "") {
-         erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné.<br>";
+         erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné. \n";
         }
-        if (this.form.btnAbonnementValider.click) {
-            if (this.form.edtIdentificationAdh.value === "")
-            alert("Une ou plusieurs zones de saisie comporte des éléments incorrects/manquants.")
+        else {
+            erreurMsg += "La saisie d'ashésion est incorrecte. \n"
         }
+        //ajouter théme
+        alert(erreurMsg)
     }
 
     retourAfficherAbonnement(): void {
