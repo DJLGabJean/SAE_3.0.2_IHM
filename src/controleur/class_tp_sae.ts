@@ -1,9 +1,10 @@
 import {LesAbonnements} from "../modele/data_abonnement"
 import { UnAbonnement } from "../modele/data_abonnement"
-import { LesThemes } from "../modele/data_theme"
+import { LesThemes, UnTheme } from "../modele/data_theme"
 import { UnAdherent } from "../modele/data_adherent"
 import { LesAdherents } from "../modele/data_adherent"
 import {TAdherents} from "../modele/data_adherent"
+import { TThemes } from "../modele/data_theme"
 
 type TpSAEForm = {
     tableInfoAbonnement : HTMLTableElement //Partie qui doit afficher la bdd
@@ -46,11 +47,14 @@ class VueTpSae {
     private _grille: GrilleTabulaire
     private _data: TdataSet
     private _adherent: TAdherents
+    private _theme: TThemes
+    private _params: Tparams
     init(form : TpSAEForm) : void {
         this._form = form
         this._grille = new GrilleTabulaire
         this._data = []
         this._adherent = {}
+        this._theme = {}
         const lesAbonnements = new LesAbonnements
         this._data = lesAbonnements.listAll()
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
@@ -63,6 +67,7 @@ class VueTpSae {
     get form() : TpSAEForm { return this._form }
     get data() :TdataSet { return this._data }
     get adherent() :TAdherents { return this._adherent }
+    get theme() :TThemes { return this._theme }
     get grille() :GrilleTabulaire { return this._grille }
 
     supprimerClick():void {
@@ -128,6 +133,15 @@ class VueTpSae {
         this.form.btnThemeAjouter.disabled = true;
         this.form.btnThemeModifier.disabled = true;
         this.form.btnThemeSupprimer.disabled = true;
+    }
+
+    afficherSelecvtionTheme(): void {
+        const lesThemes = new LesThemes;
+        this._theme = lesThemes.all();
+        const themeslist : string[] = this._params.elts;
+        for (let i in this._theme) {
+        const item : UnTheme = this._theme[i];
+        const id = item.themeNum;
     }
 
     annulerAjoutTheme(): void {

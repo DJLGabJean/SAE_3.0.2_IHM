@@ -1,5 +1,6 @@
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
+import { LesThemes } from "../modele/data_theme";
 import { LesAdherents } from "../modele/data_adherent";
 class VueTpSae {
     init(form) {
@@ -7,6 +8,7 @@ class VueTpSae {
         this._grille = new GrilleTabulaire;
         this._data = [];
         this._adherent = {};
+        this._theme = {};
         const lesAbonnements = new LesAbonnements;
         this._data = lesAbonnements.listAll();
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
@@ -18,6 +20,7 @@ class VueTpSae {
     get form() { return this._form; }
     get data() { return this._data; }
     get adherent() { return this._adherent; }
+    get theme() { return this._theme; }
     get grille() { return this._grille; }
     supprimerClick() {
         if (this._grille.getIdSelect() !== "") {
@@ -77,8 +80,19 @@ class VueTpSae {
         this.form.btnThemeModifier.disabled = true;
         this.form.btnThemeSupprimer.disabled = true;
     }
-    annulerAjoutTheme() {
-        if (this.form.btnThemeAnnuler.click) {
+    afficherSelecvtionTheme() {
+        const lesThemes = new LesThemes;
+        this._theme = lesThemes.all();
+        const themeslist = this._params.elts;
+        for (let i in this._theme) {
+            const item = this._theme[i];
+            const id = item.themeNum;
+        }
+        annulerAjoutTheme();
+        void {
+            : .form.btnThemeAnnuler.click
+        };
+        {
             this.form.divSelectionThemes.hidden = true;
             this.form.btnThemeAjouter.disabled = false;
             this.form.btnThemeModifier.disabled = false;
