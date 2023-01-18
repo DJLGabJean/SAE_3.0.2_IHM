@@ -1,40 +1,13 @@
 <!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
     <title>Appli Gestion d'Abonnement</title>
-  </head>
-  <body>
-    <header>
-      <h1>Gestion des abonnements d’un club d’actualités</h1>
-    </header>
-    <main>
-      <div id="div_liste_abonnement" class="liste_abonnement"> <!--Principal-->
-        <div class="divtitre">Liste des abonnements</div>
-        <table id="table_infoAbonnement">
-          <thead>
-            <tr>
-              <th>Numéro</th>
-              <th>Le</th>
-              <th>Adherent</th>
-              <th>CSP</th>
-              <th>Adhésion</th>
-              <th>Montant</th>
-            </tr>
-          </thead>
-          <tbody>
-  
-          </tbody>
-        </table>
-        <div class="divaction">
-          <input id="btn_abonnementDetail" type="button" class='btninfo' value="Détail">
-          <input id="btn_abonnementAjouter" type="button" value="Ajouter">
-          <input id="btn_abonnementModifier" type="button" value="Modifier">
-          <input id="btn_abonnementSupprimer" type="button" class='btnalerte' value="Supprimer">
-        </div>
-      </div>
+</head>
+<body>
       <div id="div_page_abonnement"> <!--Partie Invisible-->
         <div id="div_abonnement_titre" class="divtitre"></div> <!--Le titre change en fonction du bouton-->
         <div>
@@ -87,7 +60,7 @@
                  Total :
                 <div id="div_nombre_total"></div>
               </div>
-              <table id="table_totalAbonnement">
+              <table id="table_totalAbonnement_test2">
                 <thead>
                     <tr>
                         <th>libellé</th>
@@ -96,7 +69,7 @@
                         <th>Montant</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="table_totalAbonnement_test">
                 </tbody>
               </table>
               <div class="divaction">
@@ -136,8 +109,5 @@
           <input id="btn_abonnement_annuler" class="btnalerte" value="Annuler" type="button">
         </div>
       </div>
-      <input id="edt_texte_invisible" type="text">
-    </main>
-  </body>
-  <script type="module" src="../controleur/tp_sae.js"></script>
+</body>
 </html>

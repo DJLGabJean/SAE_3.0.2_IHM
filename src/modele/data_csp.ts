@@ -17,7 +17,7 @@ class UnCsp {
 	set cspLib(csp_lib) 	 { this._cspLib = csp_lib; } 
 	
 	
-	toArray():TtabAsso {
+	toArray():TtabAsso { //transformer objet en tableau
 		const tableau : TtabAsso = {'cspNum':this._cspNum, 'cspLib':this._cspLib};
 		return tableau;
 	}
