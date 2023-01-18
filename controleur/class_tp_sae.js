@@ -18,10 +18,10 @@ class VueTpSae {
     get grille() { return this._grille; }
     supprimerClick() {
         if (this._grille.getIdSelect() !== "") {
-            APIpageWeb.confirmation("Suppression salle", "Confirmez-vous la suppression de cette abonnement ? ", vueTpSaeClass, "supprimerSalle()");
+            APIpageWeb.confirmation("Suppression salle", "Confirmez-vous la suppression de cette abonnement ? ", vueTpSaeClass, "supprimerAbonnement()");
         }
     }
-    supprimerSalle() {
+    supprimerAbonnement() {
         // instance pour la gestion des données de la table comprenant la liste des équipements par salle
         const lesAbonnements = new LesAbonnements;
         lesAbonnements.delete(this.grille.getIdSelect()); // suppression dans la base de la salle

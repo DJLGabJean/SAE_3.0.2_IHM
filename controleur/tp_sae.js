@@ -37,6 +37,8 @@ vueTpSaeClass.init({
 vueTpSaeClass.form.btnAbonnementDetail.addEventListener("click", function () { vueTpSaeClass.afficherDetail(); });
 vueTpSaeClass.form.btnAbonnementRetour.addEventListener("click", function () { vueTpSaeClass.retourAfficherAbonnement(); });
 vueTpSaeClass.form.btnAbonnementAjouter.addEventListener("click", function () { vueTpSaeClass.ajouterAbonnement(); });
+vueTpSaeClass.form.btnAbonnementValider.addEventListener("click", function () { vueTpSaeClass.ajouterClick(); });
+vueTpSaeClass.form.btnAbonnementSupprimer.addEventListener("click", function () { vueTpSaeClass.supprimerClick(); });
 vueTpSaeClass.form.btnAbonnementValider.addEventListener("click", function () { vueTpSaeClass.verifierAjoutAbonnement(); });
 vueTpSaeClass.form.btnThemeAjouter.addEventListener("click", function () { vueTpSaeClass.afficherTheme(); });
 vueTpSaeClass.form.btnThemeModifier.addEventListener("click", function () { vueTpSaeClass.afficherTheme(); }); //TODO Peut-être à changer 
