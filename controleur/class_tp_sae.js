@@ -1,5 +1,6 @@
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
+import { LesAdherents } from "../modele/data_adherent";
 class VueTpSae {
     init(form) {
         this._form = form;
@@ -15,6 +16,7 @@ class VueTpSae {
     }
     get form() { return this._form; }
     get data() { return this._data; }
+    get adherent() { return this._adherent; }
     get grille() { return this._grille; }
     supprimerClick() {
         if (this._grille.getIdSelect() !== "") {
@@ -29,7 +31,10 @@ class VueTpSae {
     }
     afficherDetail() {
         if (this._grille.getIdSelect() !== "") {
-            //this.form.tableInfoAbonnement
+            const lesAdherents = new LesAdherents;
+            this._adherent = lesAdherents.all();
+            this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, lesAdherents.toArray(this._adherent), 'theme_num', true);
+            //
             this.form.edtTexteInvisible.value = "1";
             this.form.divPageAbonnement.hidden = false;
             this.form.divSelectionThemes.hidden = true;

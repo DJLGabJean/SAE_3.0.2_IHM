@@ -1,5 +1,9 @@
 import {LesAbonnements} from "../modele/data_abonnement"
 import { UnAbonnement } from "../modele/data_abonnement"
+import { LesThemes } from "../modele/data_theme"
+import { UnAdherent } from "../modele/data_adherent"
+import { LesAdherents } from "../modele/data_adherent"
+import {TAdherents} from "../modele/data_adherent"
 
 type TpSAEForm = {
     tableInfoAbonnement : HTMLTableElement //Partie qui doit afficher la bdd
@@ -41,6 +45,7 @@ class VueTpSae {
     private _form: TpSAEForm
     private _grille: GrilleTabulaire
     private _data: TdataSet
+    private _adherent: TAdherents
     init(form : TpSAEForm) : void {
         this._form = form
         this._grille = new GrilleTabulaire
@@ -56,6 +61,7 @@ class VueTpSae {
 
     get form() : TpSAEForm { return this._form }
     get data() :TdataSet { return this._data }
+    get adherent() :TAdherents { return this._adherent }
     get grille() :GrilleTabulaire { return this._grille }
 
     supprimerClick():void {
@@ -73,7 +79,10 @@ class VueTpSae {
 
     afficherDetail(): void {
         if (this._grille.getIdSelect() !== "") {
-            //this.form.tableInfoAbonnement
+            const lesAdherents = new LesAdherents
+            this._adherent = lesAdherents.all()
+            this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, lesAdherents.toArray(this._adherent), 'theme_num', true)
+            //
             this.form.edtTexteInvisible.value = "1"
             this.form.divPageAbonnement.hidden = false
             this.form.divSelectionThemes.hidden = true
