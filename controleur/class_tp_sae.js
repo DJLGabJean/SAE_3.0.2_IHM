@@ -1,6 +1,5 @@
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
-import { LesThemes } from "../modele/data_theme";
 import { LesAdherents } from "../modele/data_adherent";
 class VueTpSae {
     init(form) {
@@ -79,20 +78,19 @@ class VueTpSae {
         this.form.btnThemeAjouter.disabled = true;
         this.form.btnThemeModifier.disabled = true;
         this.form.btnThemeSupprimer.disabled = true;
+        //this.afficherSelectionTheme()
     }
-    afficherSelecvtionTheme() {
+    /*afficherSelectionTheme(): void {
         const lesThemes = new LesThemes;
         this._theme = lesThemes.all();
-        const themeslist = this._params.elts;
+        const themeslist : string[] = this._params.elts;
         for (let i in this._theme) {
-            const item = this._theme[i];
+            const item : UnTheme = this._theme[i];
             const id = item.themeNum;
         }
-        annulerAjoutTheme();
-        void {
-            : .form.btnThemeAnnuler.click
-        };
-        {
+    }*/
+    annulerAjoutTheme() {
+        if (this.form.btnThemeAnnuler.click) {
             this.form.divSelectionThemes.hidden = true;
             this.form.btnThemeAjouter.disabled = false;
             this.form.btnThemeModifier.disabled = false;
