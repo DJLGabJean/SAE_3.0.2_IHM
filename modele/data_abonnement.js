@@ -1,111 +1,90 @@
 import { connexion } from "../modele/connexion";
-var UnAbonnement = /** @class */ (function () {
-    function UnAbonnement(abon_num, abon_date, abon_comment, adh_num) {
-        if (abon_num === void 0) { abon_num = ""; }
-        if (abon_date === void 0) { abon_date = ""; }
-        if (abon_comment === void 0) { abon_comment = ""; }
-        if (adh_num === void 0) { adh_num = ""; }
+class UnAbonnement {
+    constructor(abon_num = "", abon_date = "", abon_comment = "", adh_num = "") {
         this._abonNum = abon_num;
         this._abonDate = abon_date;
         this._abonComment = abon_comment;
         this._adhNum = adh_num;
     }
-    Object.defineProperty(UnAbonnement.prototype, "abonNum", {
-        get: function () { return this._abonNum; },
-        set: function (abon_num) { this._abonNum = abon_num; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(UnAbonnement.prototype, "abonDate", {
-        get: function () { return this._abonDate; },
-        set: function (abon_date) { this._abonDate = abon_date; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(UnAbonnement.prototype, "abonComment", {
-        get: function () { return this._abonComment; },
-        set: function (abon_comment) { this._abonComment = abon_comment; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(UnAbonnement.prototype, "adhNum", {
-        get: function () { return this._adhNum; },
-        set: function (adh_num) { this._adhNum = adh_num; },
-        enumerable: false,
-        configurable: true
-    });
-    UnAbonnement.prototype.toArray = function () {
-        var tableau = { 'abonNum': this._abonNum, 'abonDate': this._abonDate, 'abonComment': this._abonComment, 'adhNum': this._adhNum };
+    get abonNum() { return this._abonNum; }
+    get abonDate() { return this._abonDate; }
+    get abonComment() { return this._abonComment; }
+    get adhNum() { return this._adhNum; }
+    set abonNum(abon_num) { this._abonNum = abon_num; }
+    set abonDate(abon_date) { this._abonDate = abon_date; }
+    set abonComment(abon_comment) { this._abonComment = abon_comment; }
+    set adhNum(adh_num) { this._adhNum = adh_num; }
+    toArray() {
+        const tableau = { 'abonNum': this._abonNum, 'abonDate': this._abonDate, 'abonComment': this._abonComment, 'adhNum': this._adhNum };
         return tableau;
-    };
-    return UnAbonnement;
-}());
+    }
+}
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-var LesAbonnements = /** @class */ (function () {
-    function LesAbonnements() {
+class LesAbonnements {
+    constructor() {
         // rien
     }
-    LesAbonnements.prototype.load = function (result) {
+    load(result) {
         // à partir d’un TdataSet, conversion en tableau d’objets UnAbonnement
-        var abonnements = {};
-        for (var i = 0; i < result.length; i++) {
-            var item = result[i];
-            var abonnement = new UnAbonnement(item['abon_num'], item['abon_date'], item['abon_comment'], item['adh_num']);
+        let abonnements = {};
+        for (let i = 0; i < result.length; i++) {
+            const item = result[i];
+            const abonnement = new UnAbonnement(item['abon_num'], item['abon_date'], item['abon_comment'], item['adh_num']);
             abonnements[abonnement.abonNum] = abonnement; // clé d’un élément du tableau : abonNum
         }
         return abonnements;
-    };
-    LesAbonnements.prototype.prepare = function (where) {
-        var sql;
+    }
+    prepare(where) {
+        let sql;
         sql = "SELECT	abon_num, abon_date, abon_comment, adh_num ";
         sql += " FROM	abonnement";
         if (where !== "") {
             sql += " WHERE " + where;
         }
         return sql;
-    };
-    LesAbonnements.prototype.all = function () {
+    }
+    all() {
         return this.load(APIpageWeb.SQLloadData(this.prepare(""), []));
-    };
-    LesAbonnements.prototype.byAbonNum = function (abon_num) {
-        var abonnement = new UnAbonnement;
-        var abonnements = this.load(APIpageWeb.SQLloadData(this.prepare("abon_num = ?"), [abon_num]));
-        var lesCles = Object.keys(abonnements);
+    }
+    byAbonNum(abon_num) {
+        let abonnement = new UnAbonnement;
+        const abonnements = this.load(APIpageWeb.SQLloadData(this.prepare("abon_num = ?"), [abon_num]));
+        const lesCles = Object.keys(abonnements);
         // affecte les clés du tableau associatif « abonnements » dans le tableau de chaines « lesCles »
         if (lesCles.length > 0) {
             abonnement = abonnements[lesCles[0]]; // récupérer le 1er élément du tableau associatif « abonnements »
         }
         return abonnement;
-    };
-    LesAbonnements.prototype.toArray = function (abonnements) {
+    }
+    toArray(abonnements) {
         //	d’un tableau de tableaux associatifs pour un affichage dans un tableau HTML
-        var T = [];
-        for (var id in abonnements) {
+        let T = [];
+        for (let id in abonnements) {
             T.push(abonnements[id].toArray());
         }
         return T;
-    };
-    LesAbonnements.prototype["delete"] = function (abon_num) {
-        var sql;
+    }
+    delete(abon_num) {
+        let sql;
         sql = "DELETE	FROM	abonnement	WHERE	abon_num = ?";
         return APIpageWeb.SQLexec(sql, [abon_num]); // requête de manipulation : utiliser SQLexec
-    };
-    LesAbonnements.prototype.insert = function (abonnement) {
-        var sql; // requête de manipulation : utiliser SQLexec
+    }
+    insert(abonnement) {
+        let sql; // requête de manipulation : utiliser SQLexec
         sql = "INSERT	INTO	abonnement (abon_num, abon_date, abon_comment, adh_num) VALUES (?, ?, ?, ?)";
         return APIpageWeb.SQLexec(sql, [abonnement.abonNum, abonnement.abonDate, abonnement.abonComment, abonnement.adhNum]);
-    };
-    LesAbonnements.prototype.update = function (abonnement) {
-        var sql;
+    }
+    update(abonnement) {
+        let sql;
         sql = "UPDATE abonnement SET abon_date = ?, abon_comment = ?, adh_num = ? ";
         sql += " WHERE	abon_num	= ?"; // requête de manipulation : utiliser SQLexec
         return APIpageWeb.SQLexec(sql, [abonnement.abonDate, abonnement.abonComment, abonnement.adhNum, abonnement.abonNum]);
-    };
-    LesAbonnements.prototype.getNouveauNumero = function () {
+    }
+    getNouveauNumero() {
         return APIpageWeb.SQLloadData("SELECT MAX(abon_num)+1 as num FROM abonnement", [])[0]['num']; // première ligne, colonne "num"
-    };
-    LesAbonnements.prototype.listPrepare = function (where) {
-        var sql;
+    }
+    listPrepare(where) {
+        let sql;
         sql = "SELECT abonnement.abon_num as abon_num, DATE_FORMAT(abon_date, '%d/%m/%Y') as 'date_abonnement'";
         sql += ", CONCAT(adherent.adh_num,' - ',adh_nom,' ', adh_prenom) as 'adherent'";
         sql += ", CONCAT(csp.csp_num,' - ',LEFT(csp_lib,30)) as 'csp'";
@@ -128,12 +107,11 @@ var LesAbonnements = /** @class */ (function () {
         sql += " GROUP BY abon_num";
         sql += " ORDER BY abonnement.abon_date DESC ";
         return sql;
-    };
-    LesAbonnements.prototype.listAll = function () {
+    }
+    listAll() {
         return APIpageWeb.SQLloadData(this.listPrepare(""), []);
-    };
-    return LesAbonnements;
-}());
+    }
+}
 export { connexion };
 export { UnAbonnement };
 export { LesAbonnements };

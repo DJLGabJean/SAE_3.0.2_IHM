@@ -1,47 +1,33 @@
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
-var VueTpSae = /** @class */ (function () {
-    function VueTpSae() {
-    }
-    VueTpSae.prototype.init = function (form) {
+class VueTpSae {
+    init(form) {
         this._form = form;
         this._grille = new GrilleTabulaire;
         this._data = [];
-        var lesAbonnements = new LesAbonnements;
+        const lesAbonnements = new LesAbonnements;
         this._data = lesAbonnements.listAll();
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
         this.form.divPageAbonnement.hidden = true;
         this.form.edtTexteInvisible.value = "0";
         this.form.edtTexteInvisible.hidden = true;
         this.form.divNombreTotal.innerHTML = "0.00 €";
-    };
-    Object.defineProperty(VueTpSae.prototype, "form", {
-        get: function () { return this._form; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(VueTpSae.prototype, "data", {
-        get: function () { return this._data; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(VueTpSae.prototype, "grille", {
-        get: function () { return this._grille; },
-        enumerable: false,
-        configurable: true
-    });
-    VueTpSae.prototype.supprimerClick = function () {
+    }
+    get form() { return this._form; }
+    get data() { return this._data; }
+    get grille() { return this._grille; }
+    supprimerClick() {
         if (this._grille.getIdSelect() !== "") {
-            APIpageWeb.confirmation("Suppression salle", "Confirmez-vous la suppression de cette abonnement ? ", vueTpSaeClass, "supprimerSalle()");
+            APIpageWeb.confirmation("Suppression salle", "Confirmez-vous la suppression de cette abonnement ? ", vueTpSaeClass, "supprimerAbonnement()");
         }
-    };
-    VueTpSae.prototype.supprimerSalle = function () {
+    }
+    supprimerAbonnement() {
         // instance pour la gestion des données de la table comprenant la liste des équipements par salle
-        var lesAbonnements = new LesAbonnements;
-        lesAbonnements["delete"](this.grille.getIdSelect()); // suppression dans la base de la salle
+        const lesAbonnements = new LesAbonnements;
+        lesAbonnements.delete(this.grille.getIdSelect()); // suppression dans la base de la salle
         this._grille.delSelectLine();
-    };
-    VueTpSae.prototype.afficherDetail = function () {
+    }
+    afficherDetail() {
         if (this._grille.getIdSelect() !== "") {
             //this.form.tableInfoAbonnement
             this.form.edtTexteInvisible.value = "1";
@@ -54,38 +40,90 @@ var VueTpSae = /** @class */ (function () {
             this.form.btnAbonnementValider.hidden = true;
             this.form.btnAbonnementAnnuler.hidden = true; //Pour rendre invisible les boutons non nécessaires
             this.form.edtIdentificationAdh.disabled = true;
-            this.form.date_numDate.disabled = true;
+            this.form.dateNumDate.disabled = true;
             this.form.edtNumAdh.disabled = true;
             this.form.textareaCommentaireAdh.disabled = true; //Pour désactiver les boutons
             this.form.divAbonnementTitre.innerHTML = "Détail d'un abonnement"; //Pour afficher le bon Titre
         }
-    };
-    VueTpSae.prototype.ajouterAbonnement = function () {
+    }
+    ajouterAbonnement() {
         this.form.edtTexteInvisible.value = "2";
         this.form.divListeAbonnement.hidden = true;
         this.form.divPageAbonnement.hidden = false;
         this.form.divSelectionThemes.hidden = true;
         this.form.btnAbonnementRetour.hidden = true;
-    };
-    VueTpSae.prototype.afficherTheme = function () {
+        this.form.divAbonnementTitre.innerHTML = "Ajout d'un abonnement";
+    }
+    annulerAjoutAbonnement() {
+        this.form.divPageAbonnement.hidden = true;
+        this.form.divListeAbonnement.hidden = false;
+        this.form.btnAbonnementRetour.hidden = false;
+        this.form.divListeAbonnement.hidden = false;
+        this.form.btnThemeAjouter.disabled = false;
+        this.form.btnThemeModifier.disabled = false;
+        this.form.btnThemeSupprimer.disabled = false;
+    }
+    afficherTheme() {
         this.form.divSelectionThemes.hidden = false;
         this.form.btnThemeAjouter.disabled = true;
         this.form.btnThemeModifier.disabled = true;
         this.form.btnThemeSupprimer.disabled = true;
-    };
-    VueTpSae.prototype.messageErreur = function () {
-        var erreurMsg = "Erreur : élément manquant";
-        if (this.form.edtIdentificationAdh.value === "") {
-            erreurMsg += "Le numéro d'identification n'a pas été renseigné.<br>";
+    }
+    annulerAjoutTheme() {
+        if (this.form.btnThemeAnnuler.click) {
+            this.form.divSelectionThemes.hidden = true;
+            this.form.btnThemeAjouter.disabled = false;
+            this.form.btnThemeModifier.disabled = false;
+            this.form.btnThemeSupprimer.disabled = false;
         }
-        if (this.form.date_numDate.value === "") {
-            erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.<br>";
+    }
+    verifierAjoutAbonnement() {
+        if (this.verifieurAjout() === false) {
+            this.messageErreur();
+        }
+        else {
+            alert("good work !");
+            //fonction pour ajouter
+        }
+    }
+    verifieurAjout() {
+        const nombreIdentification = parseInt(this.form.edtIdentificationAdh.value);
+        const nombreAdherent = parseInt(this.form.edtNumAdh.value);
+        if (this.form.edtIdentificationAdh.value === "" || isNaN(nombreIdentification)) {
+            return false;
+        }
+        if (this.form.edtNumAdh.value === "" || isNaN(nombreAdherent)) {
+            return false;
+        }
+        if (this.form.dateNumDate.value === "") {
+            return false;
+        }
+        return true;
+    }
+    messageErreur() {
+        let erreurMsg = "Erreur : élément manquant \n";
+        if (this.form.edtIdentificationAdh.value === "") {
+            erreurMsg += "Le numéro d'identification n'a pas été renseigné. \n";
+        }
+        else {
+            erreurMsg += "La saisie d'identification est incorrecte. \n";
+        }
+        if (this.form.dateNumDate.value === "") {
+            erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n";
+        }
+        else {
+            erreurMsg += "La saisie de la date est incorrecte. \n";
         }
         if (this.form.edtNumAdh.value === "") {
-            erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné.<br>";
+            erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné. \n";
         }
-    };
-    VueTpSae.prototype.retourAfficherAbonnement = function () {
+        else {
+            erreurMsg += "La saisie d'adhésion est incorrecte. \n";
+        }
+        //ajouter thème
+        alert(erreurMsg);
+    }
+    retourAfficherAbonnement() {
         if (this.form.edtTexteInvisible.value === "1") { //Si l'utilisateur à cliquer sur détail
             this.form.edtTexteInvisible.value = "0";
             return this.retourAfficherDetail();
@@ -96,8 +134,8 @@ var VueTpSae = /** @class */ (function () {
         }
         else {
         }
-    };
-    VueTpSae.prototype.retourAfficherDetail = function () {
+    }
+    retourAfficherDetail() {
         this.form.divPageAbonnement.hidden = true;
         this.form.divSelectionThemes.hidden = false;
         this.form.divListeAbonnement.hidden = false;
@@ -107,25 +145,16 @@ var VueTpSae = /** @class */ (function () {
         this.form.btnAbonnementValider.hidden = false;
         this.form.btnAbonnementAnnuler.hidden = false;
         this.form.edtIdentificationAdh.disabled = false;
-        this.form.date_numDate.disabled = false;
+        this.form.dateNumDate.disabled = false;
         this.form.edtNumAdh.disabled = false;
         this.form.textareaCommentaireAdh.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
-    };
-    VueTpSae.prototype.annulerAjoutAbonnement = function () {
-        this.form.divPageAbonnement.hidden = true;
-        this.form.divListeAbonnement.hidden = false;
-        this.form.btnAbonnementRetour.hidden = false;
-        this.form.divListeAbonnement.hidden = false;
-        this.form.btnThemeAjouter.disabled = false;
-        this.form.btnThemeModifier.disabled = false;
-        this.form.btnThemeSupprimer.disabled = false;
-    };
-    VueTpSae.prototype.ajouterClick = function () {
-        var abonnement = new UnAbonnement;
-        var desAbonnements = new LesAbonnements;
+    }
+    ajouterClick() {
+        let abonnement = new UnAbonnement;
+        let desAbonnements = new LesAbonnements;
         abonnement.abonNum = this.form.edtIdentificationAdh.value;
-        abonnement.abonDate = this.form.date_numDate.value;
+        abonnement.abonDate = this.form.dateNumDate.value;
         abonnement.abonComment = this.form.textareaCommentaireAdh.value;
         abonnement.adhNum = this.form.edtNumAdh.value;
         desAbonnements.insert(abonnement);
@@ -137,11 +166,9 @@ var VueTpSae = /** @class */ (function () {
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
-        this._data = desAbonnements.listAll();
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
-    };
-    return VueTpSae;
-}());
-var vueTpSaeClass = new VueTpSae;
+    }
+}
+let vueTpSaeClass = new VueTpSae;
 export { vueTpSaeClass };
 //# sourceMappingURL=class_tp_sae.js.map

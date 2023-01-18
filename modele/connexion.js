@@ -1,13 +1,12 @@
-var Connexion = /** @class */ (function () {
-    function Connexion() {
+class Connexion {
+    constructor() {
         this.init();
     }
-    Connexion.prototype.init = function () {
+    init() {
         APIpageWeb.bdOpen('devbdd.iutmetz.univ-lorraine.fr', '3306', 'nae1u_IHM', 'nae1u_appli', '', 'utf8');
-    };
-    return Connexion;
-}());
+    }
+}
 // eslint-disable-next-line no-var
-var connexion = new Connexion;
+let connexion = new Connexion;
 export { connexion };
 //# sourceMappingURL=connexion.js.map
