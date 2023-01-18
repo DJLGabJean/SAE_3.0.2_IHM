@@ -6,6 +6,7 @@ class VueTpSae {
         this._form = form;
         this._grille = new GrilleTabulaire;
         this._data = [];
+        this._adherent = {};
         const lesAbonnements = new LesAbonnements;
         this._data = lesAbonnements.listAll();
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
@@ -29,11 +30,13 @@ class VueTpSae {
         lesAbonnements.delete(this.grille.getIdSelect()); // suppression dans la base de la salle
         this._grille.delSelectLine();
     }
+    affiGrille() {
+        const lesAdherents = new LesAdherents;
+        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, lesAdherents.toArray(this._adherent), 'theme_num', false);
+    }
     afficherDetail() {
         if (this._grille.getIdSelect() !== "") {
-            const lesAdherents = new LesAdherents;
-            this._adherent = lesAdherents.all();
-            this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, lesAdherents.toArray(this._adherent), 'theme_num', true);
+            this.affiGrille();
             //
             this.form.edtTexteInvisible.value = "1";
             this.form.divPageAbonnement.hidden = false;
