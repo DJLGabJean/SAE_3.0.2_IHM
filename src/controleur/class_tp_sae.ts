@@ -1,4 +1,5 @@
 import {LesAbonnements} from "../modele/data_abonnement"
+import { UnAbonnement } from "../modele/data_abonnement"
 
 type TpSAEForm = {
     tableInfoAbonnement : HTMLTableElement //Partie qui doit afficher la bdd
@@ -15,8 +16,8 @@ type TpSAEForm = {
     , btnAbonnementRetour: HTMLInputElement //Bouton en bas à droite
     , btnAbonnementValider: HTMLInputElement //Bouton en bas à droite
     , btnAbonnementAnnuler: HTMLInputElement //Bouton en bas à droite
+    , dateNumDate : HTMLInputElement
     , edtIdentificationAdh : HTMLInputElement
-    , edtNumDate : HTMLInputElement
     , edtNumAdh : HTMLInputElement
     , edtTexteInvisible: HTMLInputElement //Utiliser pour mémoriser quel bouton à été appuyer dans la page principale
     , textareaCommentaireAdh: HTMLTextAreaElement
@@ -38,15 +39,15 @@ type TpSAEForm = {
 
 class VueTpSae {
     private _form: TpSAEForm
-    //private _grille: GrilleTabulaire
-    //private _data: TdataSet
+    private _grille: GrilleTabulaire
+    private _data: TdataSet
     init(form : TpSAEForm) : void {
         this._form = form
-        //this._grille = new GrilleTabulaire
-        //this._data = []
-        //const lesAbonnements = new LesAbonnements
-        //this._data = lesAbonnements.listAll()
-        //this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this._data, 'numSalle', true)
+        this._grille = new GrilleTabulaire
+        this._data = []
+        const lesAbonnements = new LesAbonnements
+        this._data = lesAbonnements.listAll()
+        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
         this.form.divPageAbonnement.hidden = true
         this.form.edtTexteInvisible.value = "0"
         this.form.edtTexteInvisible.hidden = true
@@ -54,24 +55,40 @@ class VueTpSae {
     }
 
     get form() : TpSAEForm { return this._form }
-    //get data() :TdataSet { return this._data }
-    //get grille() :GrilleTabulaire { return this._grille }
+    get data() :TdataSet { return this._data }
+    get grille() :GrilleTabulaire { return this._grille }
+
+    supprimerClick():void {
+        if ( this._grille.getIdSelect() !== "") {
+        APIpageWeb.confirmation("Suppression salle","Confirmez-vous la suppression de cette abonnement ? ", vueTpSaeClass, "supprimerAbonnement()")
+        }
+    }
+
+    supprimerAbonnement():void {
+        // instance pour la gestion des données de la table comprenant la liste des équipements par salle
+        const lesAbonnements = new LesAbonnements;
+        lesAbonnements.delete(this.grille.getIdSelect()); // suppression dans la base de la salle
+        this._grille.delSelectLine();
+    }
 
     afficherDetail(): void {
-        this.form.edtTexteInvisible.value = "1"
-        this.form.divPageAbonnement.hidden = false
-        this.form.divSelectionThemes.hidden = true
-        this.form.divListeAbonnement.hidden = true
-        this.form.btnThemeAjouter.hidden = true
-        this.form.btnThemeModifier.hidden = true
-        this.form.btnThemeSupprimer.hidden = true
-        this.form.btnAbonnementValider.hidden = true
-        this.form.btnAbonnementAnnuler.hidden = true //Pour rendre invisible les boutons non nécessaires
-        this.form.edtIdentificationAdh.disabled = true
-        this.form.edtNumDate.disabled = true
-        this.form.edtNumAdh.disabled = true
-        this.form.textareaCommentaireAdh.disabled = true //Pour désactiver les boutons
-        this.form.divAbonnementTitre.innerHTML = "Détail d'un abonnement" //Pour afficher le bon Titre
+        if (this._grille.getIdSelect() !== "") {
+            //this.form.tableInfoAbonnement
+            this.form.edtTexteInvisible.value = "1"
+            this.form.divPageAbonnement.hidden = false
+            this.form.divSelectionThemes.hidden = true
+            this.form.divListeAbonnement.hidden = true
+            this.form.btnThemeAjouter.hidden = true
+            this.form.btnThemeModifier.hidden = true
+            this.form.btnThemeSupprimer.hidden = true
+            this.form.btnAbonnementValider.hidden = true
+            this.form.btnAbonnementAnnuler.hidden = true //Pour rendre invisible les boutons non nécessaires
+            this.form.edtIdentificationAdh.disabled = true
+            this.form.dateNumDate.disabled = true
+            this.form.edtNumAdh.disabled = true
+            this.form.textareaCommentaireAdh.disabled = true //Pour désactiver les boutons
+            this.form.divAbonnementTitre.innerHTML = "Détail d'un abonnement" //Pour afficher le bon Titre
+        }
     }
 
     ajouterAbonnement(): void {
@@ -122,14 +139,13 @@ class VueTpSae {
     verifieurAjout(): boolean {
         const nombreIdentification = parseInt(this.form.edtIdentificationAdh.value)
         const nombreAdherent = parseInt(this.form.edtNumAdh.value)
-        //const dateArray = this.form.edtNumDate.value.split("/")
         if (this.form.edtIdentificationAdh.value === "" || isNaN(nombreIdentification) ) {
             return false
         }
         if (this.form.edtNumAdh.value === "" || isNaN(nombreAdherent) ) {
             return false
         }
-        if (this.form.edtNumDate.value === "") {
+        if (this.form.dateNumDate.value === "") {
             return false
         }
         return true
@@ -144,7 +160,7 @@ class VueTpSae {
         else {
             erreurMsg += "La saisie d'identification est incorrecte. \n"
         }
-        if (this.form.edtNumDate.value === "") {
+        if (this.form.dateNumDate.value === "") {
          erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n"
         }
         else {
@@ -184,10 +200,29 @@ class VueTpSae {
         this.form.btnAbonnementValider.hidden = false
         this.form.btnAbonnementAnnuler.hidden = false
         this.form.edtIdentificationAdh.disabled = false
-        this.form.edtNumDate.disabled = false
+        this.form.dateNumDate.disabled = false
         this.form.edtNumAdh.disabled = false
         this.form.textareaCommentaireAdh.disabled = false
         this.form.divAbonnementTitre.innerHTML = ""
+    }
+
+    ajouterClick(): void {
+        let abonnement = new UnAbonnement
+        let desAbonnements = new LesAbonnements
+        abonnement.abonNum = this.form.edtIdentificationAdh.value
+        abonnement.abonDate = this.form.dateNumDate.value
+        abonnement.abonComment = this.form.textareaCommentaireAdh.value
+        abonnement.adhNum = this.form.edtNumAdh.value
+        desAbonnements.insert(abonnement)
+        //
+        this.form.divPageAbonnement.hidden = true;
+        this.form.divListeAbonnement.hidden = false;
+        this.form.btnAbonnementRetour.hidden = false;
+        this.form.divListeAbonnement.hidden = false;
+        this.form.btnThemeAjouter.disabled = false;
+        this.form.btnThemeModifier.disabled = false;
+        this.form.btnThemeSupprimer.disabled = false;
+        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
     }
 }
 
