@@ -1,12 +1,18 @@
 import {LesAbonnements} from "../modele/data_abonnement"
 import { UnAbonnement } from "../modele/data_abonnement"
-import { LesThemes, UnTheme } from "../modele/data_theme"
-import { UnAdherent } from "../modele/data_adherent"
-import { LesAdherents } from "../modele/data_adherent"
-import {TAdherents} from "../modele/data_adherent"
+import { TAbonnements } from "../modele/data_abonnement"
+import { UnTheme } from "../modele/data_theme"
+import { LesThemes } from "../modele/data_theme"
 import { TThemes } from "../modele/data_theme"
 import { LesThemesByAbonnement } from "../modele/data_theme"
 import { UnThemeByAbonnement } from "../modele/data_theme"
+import { TThemesByAbonnement } from "../modele/data_theme"
+import { UnAdherent } from "../modele/data_adherent"
+import { LesAdherents } from "../modele/data_adherent"
+import {TAdherents} from "../modele/data_adherent"
+import { UnCsp } from "../modele/data_csp"
+import { LesCsps } from "../modele/data_csp"
+import { TCsps } from "../modele/data_csp"
 
 type TpSAEForm = {
     tableInfoAbonnement : HTMLTableElement //Partie qui doit afficher la bdd
@@ -86,11 +92,12 @@ class VueTpSae {
     }
 
     affiGrille():void {
+        let dataTheme: TdataSet
         const lesThemesParAbo = new LesThemesByAbonnement
         const idAbonNum = lesThemesParAbo.byAbonNum(this.grille.getIdSelect())
         let tab_adherent = lesThemesParAbo.toArray(idAbonNum)
-        this._data = tab_adherent
-        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._data , 'abon_num', true);
+        dataTheme = tab_adherent
+        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme , 'abon_num', true);
         //
     }
 

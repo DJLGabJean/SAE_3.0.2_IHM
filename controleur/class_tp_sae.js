@@ -33,11 +33,12 @@ class VueTpSae {
         this._grille.delSelectLine();
     }
     affiGrille() {
+        let dataTheme;
         const lesThemesParAbo = new LesThemesByAbonnement;
         const idAbonNum = lesThemesParAbo.byAbonNum(this.grille.getIdSelect());
         let tab_adherent = lesThemesParAbo.toArray(idAbonNum);
-        this._data = tab_adherent;
-        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._data, 'abon_num', true);
+        dataTheme = tab_adherent;
+        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme, 'abon_num', true);
         //
     }
     afficherDetail() {
