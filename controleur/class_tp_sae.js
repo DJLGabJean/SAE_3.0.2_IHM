@@ -1,6 +1,7 @@
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
 import { LesAdherents } from "../modele/data_adherent";
+import { LesThemesByAbonnement } from "../modele/data_theme";
 class VueTpSae {
     init(form) {
         this._form = form;
@@ -33,12 +34,16 @@ class VueTpSae {
         this._grille.delSelectLine();
     }
     affiGrille() {
+        const lesThemesParAbo = new LesThemesByAbonnement;
+        const idAbonNum = lesThemesParAbo.byAbonNum(this.grille.getIdSelect());
+        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._data, 'abon_num', true);
+        //
         const lesAdherents = new LesAdherents;
         const id_adh = lesAdherents.byAdhNum(this.grille.getIdSelect());
         let tab_asso = [id_adh.toArray()];
         this._data = tab_asso;
         const array = lesAdherents.toArray(this.adherent);
-        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._data, 'theme_num', false);
+        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._data, 'theme_num', true);
     }
     afficherDetail() {
         if (this._grille.getIdSelect() !== "") {
