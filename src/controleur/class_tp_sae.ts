@@ -85,7 +85,9 @@ class VueTpSae {
 
     affiGrille():void {
         const lesAdherents = new LesAdherents
-        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, lesAdherents.toArray(this._adherent) , 'theme_num', false);
+        this._adherent = lesAdherents.all()
+        const array = lesAdherents.toArray(this.adherent)
+        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, array , 'theme_num', false);
     }
 
     afficherDetail(): void {
