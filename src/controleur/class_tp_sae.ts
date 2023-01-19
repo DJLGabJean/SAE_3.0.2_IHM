@@ -53,16 +53,13 @@ type TpSAEForm = {
 class VueTpSae {
     private _form: TpSAEForm
     private _grille: GrilleTabulaire
+    private _grilleTotalAbonnement: GrilleTabulaire
     private _data: TdataSet
-    private _adherent: TAdherents
-    private _theme: TThemes
-    private _params: Tparams
     init(form : TpSAEForm) : void {
         this._form = form
         this._grille = new GrilleTabulaire
+        this._grilleTotalAbonnement = new GrilleTabulaire
         this._data = []
-        this._adherent = {}
-        this._theme = {}
         const lesAbonnements = new LesAbonnements
         this._data = lesAbonnements.listAll()
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
@@ -74,9 +71,8 @@ class VueTpSae {
 
     get form() : TpSAEForm { return this._form }
     get data() :TdataSet { return this._data }
-    get adherent() :TAdherents { return this._adherent }
-    get theme() :TThemes { return this._theme }
     get grille() :GrilleTabulaire { return this._grille }
+    get grilleAbonnement() :GrilleTabulaire { return this._grilleTotalAbonnement }
 
     supprimerClick():void {
         if ( this._grille.getIdSelect() !== "") {
@@ -97,7 +93,7 @@ class VueTpSae {
         const idAbonNum = lesThemesParAbo.byAbonNum(this.grille.getIdSelect())
         let tab_adherent = lesThemesParAbo.toArray(idAbonNum)
         dataTheme = tab_adherent
-        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme , 'abon_num', true);
+        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme , 'abon_num', true);
         //
     }
 

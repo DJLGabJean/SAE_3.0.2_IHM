@@ -5,9 +5,8 @@ class VueTpSae {
     init(form) {
         this._form = form;
         this._grille = new GrilleTabulaire;
+        this._grilleTotalAbonnement = new GrilleTabulaire;
         this._data = [];
-        this._adherent = {};
-        this._theme = {};
         const lesAbonnements = new LesAbonnements;
         this._data = lesAbonnements.listAll();
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
@@ -18,9 +17,8 @@ class VueTpSae {
     }
     get form() { return this._form; }
     get data() { return this._data; }
-    get adherent() { return this._adherent; }
-    get theme() { return this._theme; }
     get grille() { return this._grille; }
+    get grilleAbonnement() { return this._grilleTotalAbonnement; }
     supprimerClick() {
         if (this._grille.getIdSelect() !== "") {
             APIpageWeb.confirmation("Suppression salle", "Confirmez-vous la suppression de cette abonnement ? ", vueTpSaeClass, "supprimerAbonnement()");
@@ -38,7 +36,7 @@ class VueTpSae {
         const idAbonNum = lesThemesParAbo.byAbonNum(this.grille.getIdSelect());
         let tab_adherent = lesThemesParAbo.toArray(idAbonNum);
         dataTheme = tab_adherent;
-        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme, 'abon_num', true);
+        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme, 'abon_num', true);
         //
     }
     afficherDetail() {
