@@ -6,6 +6,7 @@ import { LesAdherents } from "../modele/data_adherent"
 import {TAdherents} from "../modele/data_adherent"
 import { TThemes } from "../modele/data_theme"
 import { LesThemesByAbonnement } from "../modele/data_theme"
+import { UnThemeByAbonnement } from "../modele/data_theme"
 
 type TpSAEForm = {
     tableInfoAbonnement : HTMLTableElement //Partie qui doit afficher la bdd
@@ -87,14 +88,10 @@ class VueTpSae {
     affiGrille():void {
         const lesThemesParAbo = new LesThemesByAbonnement
         const idAbonNum = lesThemesParAbo.byAbonNum(this.grille.getIdSelect())
+        let tab_adherent = lesThemesParAbo.toArray(idAbonNum)
+        this._data = tab_adherent
         this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._data , 'abon_num', true);
         //
-        const lesAdherents = new LesAdherents
-        const id_adh = lesAdherents.byAdhNum(this.grille.getIdSelect())
-        let tab_asso = [id_adh.toArray()]
-        this._data = tab_asso
-        const array = lesAdherents.toArray(this.adherent)
-        this._grille = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._data , 'theme_num', true);
     }
 
     afficherDetail(): void {
