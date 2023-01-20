@@ -107,7 +107,7 @@ class VueTpSae {
         //
         let divInfoAbonnement = ""
         const lesAdherents = new LesAdherents
-        const unAdherents = lesAdherents.byAdhNum(abonAffich.abonNum)
+        const unAdherents = lesAdherents.byAdhNum(abonAffich.adhNum)
         divInfoAbonnement += "Adherent <br>"
         divInfoAbonnement += unAdherents.adhCiv + " " + unAdherents.adhNom + " " +  unAdherents.adhPrenom + "<br>"
         divInfoAbonnement += unAdherents.adhMel + "<br>"
