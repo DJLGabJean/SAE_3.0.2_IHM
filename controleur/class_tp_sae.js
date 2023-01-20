@@ -121,6 +121,7 @@ class VueTpSae {
             this.form.divPageAbonnement.hidden = false;
             this.form.divSelectionThemes.hidden = true;
             this.form.divListeAbonnement.hidden = true;
+            this.form.btnAbonnementRetour.hidden = true;
             this.form.edtIdentificationAdh.disabled = true;
             this.form.dateNumDate.disabled = true;
             this.form.edtNumAdh.disabled = true;
@@ -261,6 +262,7 @@ class VueTpSae {
         this.form.divPageAbonnement.hidden = true;
         this.form.divSelectionThemes.hidden = false;
         this.form.divListeAbonnement.hidden = false;
+        this.form.btnAbonnementRetour.hidden = false;
         this.form.edtIdentificationAdh.disabled = false;
         this.form.dateNumDate.disabled = false;
         this.form.edtNumAdh.disabled = false;
