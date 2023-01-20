@@ -107,12 +107,27 @@ class VueTpSae {
         //
         let divInfoAbonnement = ""
         const lesAdherents = new LesAdherents
-        const unAdherents = lesAdherents.byAdhNum(idGrille)
+        const unAdherents = lesAdherents.byAdhNum(abonAffich.abonNum)
         divInfoAbonnement += "Adherent <br>"
         divInfoAbonnement += unAdherents.adhCiv + " " + unAdherents.adhNom + " " +  unAdherents.adhPrenom + "<br>"
         divInfoAbonnement += unAdherents.adhMel + "<br>"
-        divInfoAbonnement += unAdherents.adhAdr + "<br>"
-        divInfoAbonnement += unAdherents.adhCp + " " + unAdherents.adhVille
+        if (unAdherents.adhAdr === "null") { //si l'adresse est null
+            divInfoAbonnement += "" + "<br>"
+        }
+        else {
+            divInfoAbonnement += unAdherents.adhAdr + "<br>"
+        }
+        if (unAdherents.adhCp === "null" || unAdherents.adhVille === "null") {
+            if (unAdherents.adhCp === "null") {
+                divInfoAbonnement += "" + " "
+            }
+            if (unAdherents.adhVille === "null") {
+                divInfoAbonnement += ""
+            }
+        }
+        else {
+            divInfoAbonnement += unAdherents.adhCp + " " + unAdherents.adhVille
+        }
         this.form.divInformationAdherent.innerHTML = divInfoAbonnement
         //
         const lesCsp = new LesCsps
