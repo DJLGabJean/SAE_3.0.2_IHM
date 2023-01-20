@@ -32,18 +32,18 @@ class VueTpSae {
         lesAbonnements.delete(this.grille.getIdSelect()); // suppression dans la base de la salle
         this._grille.delSelectLine();
     }
-    affiGrille() {
+    affiGrille(idGrille) {
         let dataTheme;
         const lesThemesParAbo = new LesThemesByAbonnement;
-        const idAbonNum = lesThemesParAbo.byAbonNum(this.grille.getIdSelect());
+        const idAbonNum = lesThemesParAbo.byAbonNum(idGrille);
         let tab_adherent = lesThemesParAbo.toArray(idAbonNum);
         dataTheme = tab_adherent;
-        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme, 'abon_num', true);
+        //this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme , 'abon_num', true);
         //
     }
-    recupererInfoAbonn() {
+    recupererInfoAbonn(idGrille) {
         const lesAbonnements = new LesAbonnements();
-        const abonAffich = lesAbonnements.byAbonNum(this.grille.getIdSelect());
+        const abonAffich = lesAbonnements.byAbonNum(idGrille);
         this.form.edtIdentificationAdh.value = abonAffich.abonNum;
         this.form.edtNumAdh.value = abonAffich.adhNum;
         this.form.dateNumDate.value = abonAffich.abonDate;
@@ -51,12 +51,12 @@ class VueTpSae {
         //
         let divInfoAbonnement = "";
         const lesAdherents = new LesAdherents;
-        const unAdherents = lesAdherents.byAdhNum(this.grille.getIdSelect());
+        const unAdherents = lesAdherents.byAdhNum(idGrille);
         divInfoAbonnement += "Adherent <br>";
-        divInfoAbonnement += unAdherents.adhCiv + unAdherents.adhNom + unAdherents.adhPrenom + "<br>";
+        divInfoAbonnement += unAdherents.adhCiv + " " + unAdherents.adhNom + " " + unAdherents.adhPrenom + "<br>";
         divInfoAbonnement += unAdherents.adhMel + "<br>";
         divInfoAbonnement += unAdherents.adhAdr + "<br>";
-        divInfoAbonnement += unAdherents.adhCp + unAdherents.adhVille;
+        divInfoAbonnement += unAdherents.adhCp + " " + unAdherents.adhVille;
         this.form.divInformationAdherent.innerHTML = divInfoAbonnement;
         //
         const lesCsp = new LesCsps;
@@ -68,8 +68,9 @@ class VueTpSae {
     }
     afficherDetail() {
         if (this._grille.getIdSelect() !== "") {
-            this.recupererInfoAbonn();
-            this.affiGrille();
+            let grilleId = this.grille.getIdSelect();
+            this.recupererInfoAbonn(grilleId);
+            this.affiGrille(grilleId);
             //
             this.form.edtTexteInvisible.value = "1";
             this.form.divPageAbonnement.hidden = false;
