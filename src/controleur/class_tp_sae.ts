@@ -111,17 +111,17 @@ class VueTpSae {
         divInfoAbonnement += "Adherent <br>"
         divInfoAbonnement += unAdherents.adhCiv + " " + unAdherents.adhNom + " " +  unAdherents.adhPrenom + "<br>"
         divInfoAbonnement += unAdherents.adhMel + "<br>"
-        if (unAdherents.adhAdr === "null") { //si l'adresse est null
+        if (unAdherents.adhAdr === null) { //si l'adresse est null
             divInfoAbonnement += "" + "<br>"
         }
         else {
             divInfoAbonnement += unAdherents.adhAdr + "<br>"
         }
-        if (unAdherents.adhCp === "null" || unAdherents.adhVille === "null") {
-            if (unAdherents.adhCp === "null") {
+        if (unAdherents.adhCp === null || unAdherents.adhVille === null) {
+            if (unAdherents.adhCp === null) {
                 divInfoAbonnement += "" + " "
             }
-            if (unAdherents.adhVille === "null") {
+            if (unAdherents.adhVille === null) {
                 divInfoAbonnement += ""
             }
         }
@@ -260,16 +260,18 @@ class VueTpSae {
     retourAfficherAbonnement(): void {
         if (this.form.edtTexteInvisible.value === "1") { //Si l'utilisateur à cliquer sur détail
             this.form.edtTexteInvisible.value = "0"
+            this.viderChamps()
             return this.retourAfficherDetail()
         }
         else if (this.form.edtTexteInvisible.value === "2") { //Si l'utilisateur à clique sur ajout
             this.form.edtTexteInvisible.value = "0"
+            this.viderChamps()
             return this.annulerAjoutAbonnement()
         }
-        else {
-
+        else if (this.form.edtTexteInvisible.value === "3") { //si l'utilisateur à cliquer sur modifier
+            this.form.edtTexteInvisible.value = "0"
+            this.viderChamps()
         }
-        this.viderChamps()
     }
 
     retourAfficherDetail(): void {
