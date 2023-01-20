@@ -37,12 +37,12 @@ vueTpSaeClass.init({
 })
 
 vueTpSaeClass.form.btnAbonnementDetail.addEventListener("click", function() {vueTpSaeClass.afficherDetail()})
-vueTpSaeClass.form.btnAbonnementRetour.addEventListener("click", function() {vueTpSaeClass.retourAfficherAbonnement()})
+vueTpSaeClass.form.btnAbonnementModifier.addEventListener("click", function() {vueTpSaeClass.afficherModifier()})
 vueTpSaeClass.form.btnAbonnementAjouter.addEventListener("click", function() {vueTpSaeClass.ajouterAbonnement()})
-vueTpSaeClass.form.btnAbonnementValider.addEventListener("click", function() {vueTpSaeClass.ajouterClick()})
 vueTpSaeClass.form.btnAbonnementSupprimer.addEventListener("click", function() {vueTpSaeClass.supprimerClick()})
+vueTpSaeClass.form.btnAbonnementRetour.addEventListener("click", function() {vueTpSaeClass.retourOuAnnulerAbonnement()})
+vueTpSaeClass.form.btnAbonnementAnnuler.addEventListener("click", function() {vueTpSaeClass.retourOuAnnulerAbonnement()})
 vueTpSaeClass.form.btnAbonnementValider.addEventListener("click", function() {vueTpSaeClass.verifierAjoutAbonnement()})
 vueTpSaeClass.form.btnThemeAjouter.addEventListener("click", function() {vueTpSaeClass.afficherTheme()})
 vueTpSaeClass.form.btnThemeModifier.addEventListener("click", function() {vueTpSaeClass.afficherTheme()}) //TODO Peut-être à changer 
-vueTpSaeClass.form.btnAbonnementAnnuler.addEventListener("click", function() {vueTpSaeClass.annulerAjoutAbonnement()})
 vueTpSaeClass.form.btnThemeAnnuler.addEventListener("click", function() {vueTpSaeClass.annulerAjoutTheme()})

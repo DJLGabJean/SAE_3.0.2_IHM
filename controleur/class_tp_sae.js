@@ -111,7 +111,32 @@ class VueTpSae {
         this.form.btnAbonnementRetour.hidden = true;
         this.form.divAbonnementTitre.innerHTML = "Ajout d'un abonnement";
     }
-    annulerAjoutAbonnement() {
+    afficherModifier() {
+        if (this._grille.getIdSelect() !== "") {
+            let grilleId = this.grille.getIdSelect();
+            this.recupererInfoAbonn(grilleId);
+            this.affiGrille(grilleId);
+            //
+            this.form.edtTexteInvisible.value = "3";
+            this.form.divPageAbonnement.hidden = false;
+            this.form.divSelectionThemes.hidden = true;
+            this.form.divListeAbonnement.hidden = true;
+            this.form.edtIdentificationAdh.disabled = true;
+            this.form.dateNumDate.disabled = true;
+            this.form.edtNumAdh.disabled = true;
+            this.form.textareaCommentaireAdh.disabled = true; //Check si les boutons désactiver sont nécessaires
+            this.form.divAbonnementTitre.innerHTML = "Modification d'un abonnement"; //Pour afficher le bon Titre
+        }
+    }
+    ajouterClick() {
+        let abonnement = new UnAbonnement;
+        let desAbonnements = new LesAbonnements;
+        abonnement.abonNum = this.form.edtIdentificationAdh.value;
+        abonnement.abonDate = this.form.dateNumDate.value;
+        abonnement.abonComment = this.form.textareaCommentaireAdh.value;
+        abonnement.adhNum = this.form.edtNumAdh.value;
+        desAbonnements.insert(abonnement);
+        //
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
@@ -119,6 +144,7 @@ class VueTpSae {
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
+        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
     }
     afficherTheme() {
         this.form.divSelectionThemes.hidden = false;
@@ -149,8 +175,7 @@ class VueTpSae {
             this.messageErreur();
         }
         else {
-            alert("good work !");
-            //fonction pour ajouter
+            this.ajouterClick();
         }
     }
     verifieurAjout() {
@@ -190,7 +215,7 @@ class VueTpSae {
         //ajouter thème
         alert(erreurMsg);
     }
-    retourAfficherAbonnement() {
+    retourOuAnnulerAbonnement() {
         if (this.form.edtTexteInvisible.value === "1") { //Si l'utilisateur à cliquer sur détail
             this.form.edtTexteInvisible.value = "0";
             this.viderChamps();
@@ -204,6 +229,7 @@ class VueTpSae {
         else if (this.form.edtTexteInvisible.value === "3") { //si l'utilisateur à cliquer sur modifier
             this.form.edtTexteInvisible.value = "0";
             this.viderChamps();
+            return this.annulerModifierAbonnement();
         }
     }
     retourAfficherDetail() {
@@ -221,23 +247,7 @@ class VueTpSae {
         this.form.textareaCommentaireAdh.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
     }
-    viderChamps() {
-        this.form.edtIdentificationAdh.value = "";
-        this.form.edtNumAdh.value = "";
-        this.form.dateNumDate.value = "";
-        this.form.textareaCommentaireAdh.value = "";
-        this.form.divInformationAbonnement.innerHTML = "";
-        this.form.divInformationAdherent.innerHTML = "";
-    }
-    ajouterClick() {
-        let abonnement = new UnAbonnement;
-        let desAbonnements = new LesAbonnements;
-        abonnement.abonNum = this.form.edtIdentificationAdh.value;
-        abonnement.abonDate = this.form.dateNumDate.value;
-        abonnement.abonComment = this.form.textareaCommentaireAdh.value;
-        abonnement.adhNum = this.form.edtNumAdh.value;
-        desAbonnements.insert(abonnement);
-        //
+    annulerAjoutAbonnement() {
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
@@ -245,7 +255,25 @@ class VueTpSae {
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
-        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
+        this.form.divAbonnementTitre.innerHTML = "";
+    }
+    annulerModifierAbonnement() {
+        this.form.divPageAbonnement.hidden = true;
+        this.form.divSelectionThemes.hidden = false;
+        this.form.divListeAbonnement.hidden = false;
+        this.form.edtIdentificationAdh.disabled = false;
+        this.form.dateNumDate.disabled = false;
+        this.form.edtNumAdh.disabled = false;
+        this.form.textareaCommentaireAdh.disabled = false;
+        this.form.divAbonnementTitre.innerHTML = "";
+    }
+    viderChamps() {
+        this.form.edtIdentificationAdh.value = "";
+        this.form.edtNumAdh.value = "";
+        this.form.dateNumDate.value = "";
+        this.form.textareaCommentaireAdh.value = "";
+        this.form.divInformationAbonnement.innerHTML = "";
+        this.form.divInformationAdherent.innerHTML = "";
     }
 }
 let vueTpSaeClass = new VueTpSae;
