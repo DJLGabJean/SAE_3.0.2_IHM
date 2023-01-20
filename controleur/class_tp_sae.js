@@ -1,6 +1,8 @@
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
 import { LesThemesByAbonnement } from "../modele/data_theme";
+import { LesAdherents } from "../modele/data_adherent";
+import { LesCsps } from "../modele/data_csp";
 class VueTpSae {
     init(form) {
         this._form = form;
@@ -39,8 +41,34 @@ class VueTpSae {
         this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme, 'abon_num', true);
         //
     }
+    recupererInfoAbonn() {
+        const lesAbonnements = new LesAbonnements();
+        const abonAffich = lesAbonnements.byAbonNum(this.grille.getIdSelect());
+        this.form.edtIdentificationAdh.value = abonAffich.abonNum;
+        this.form.edtNumAdh.value = abonAffich.adhNum;
+        this.form.dateNumDate.value = abonAffich.abonDate;
+        this.form.textareaCommentaireAdh.value = abonAffich.abonComment;
+        //
+        let divInfoAbonnement = "";
+        const lesAdherents = new LesAdherents;
+        const unAdherents = lesAdherents.byAdhNum(this.grille.getIdSelect());
+        divInfoAbonnement += "Adherent <br>";
+        divInfoAbonnement += unAdherents.adhCiv + unAdherents.adhNom + unAdherents.adhPrenom + "<br>";
+        divInfoAbonnement += unAdherents.adhMel + "<br>";
+        divInfoAbonnement += unAdherents.adhAdr + "<br>";
+        divInfoAbonnement += unAdherents.adhCp + unAdherents.adhVille;
+        this.form.divInformationAdherent.innerHTML = divInfoAbonnement;
+        //
+        const lesCsp = new LesCsps;
+        const idCsp = lesCsp.byCspNum(unAdherents.cspNum);
+        let divInfoCSP = "";
+        divInfoCSP += "Catégories SocioProfessionelle <br>";
+        divInfoCSP += idCsp.cspLib;
+        this.form.divInformationAbonnement.innerHTML = divInfoCSP;
+    }
     afficherDetail() {
         if (this._grille.getIdSelect() !== "") {
+            this.recupererInfoAbonn();
             this.affiGrille();
             //
             this.form.edtTexteInvisible.value = "1";
@@ -157,6 +185,7 @@ class VueTpSae {
         }
         else {
         }
+        this.viderChamps();
     }
     retourAfficherDetail() {
         this.form.divPageAbonnement.hidden = true;
@@ -172,6 +201,14 @@ class VueTpSae {
         this.form.edtNumAdh.disabled = false;
         this.form.textareaCommentaireAdh.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
+    }
+    viderChamps() {
+        this.form.edtIdentificationAdh.value = "";
+        this.form.edtNumAdh.value = "";
+        this.form.dateNumDate.value = "";
+        this.form.textareaCommentaireAdh.value = "";
+        this.form.divInformationAbonnement.innerHTML = "";
+        this.form.divInformationAdherent.innerHTML = "";
     }
     ajouterClick() {
         let abonnement = new UnAbonnement;
