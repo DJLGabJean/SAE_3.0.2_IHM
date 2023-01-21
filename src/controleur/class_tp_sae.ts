@@ -140,7 +140,7 @@ class VueTpSae {
         const lesThemes = new LesThemesByAbonnement()
         const lesThemesPourAbonnement = lesThemes.byAbonNum(idGrille)
         let totalAbonnement = lesThemes.getTotal(lesThemesPourAbonnement)
-        this.form.divNombreTotal.innerHTML = String(totalAbonnement)
+        this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €"
     }
 
     afficherDetail(): void {
