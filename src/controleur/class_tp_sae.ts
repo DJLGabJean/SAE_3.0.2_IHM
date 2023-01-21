@@ -91,10 +91,8 @@ class VueTpSae {
         let dataTheme: TdataSet
         const lesThemesParAbo = new LesThemesByAbonnement
         const idAbonNum = lesThemesParAbo.byAbonNum(idGrille)
-        let tab_adherent = lesThemesParAbo.toArray(idAbonNum)
-        dataTheme = tab_adherent
-        //this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme , 'abon_num', true);
-        //
+        dataTheme = lesThemesParAbo.toArray(idAbonNum)
+        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme , 'themeNum', true);
     }
 
     recupererInfoAbonn(idGrille: string): void {
@@ -256,7 +254,7 @@ class VueTpSae {
     verifieurAjout(): boolean {
         const nombreIdentification = parseInt(this.form.edtIdentificationAdh.value)
         const nombreAdherent = parseInt(this.form.edtNumAdh.value)
-        if (this.form.edtIdentificationAdh.value === "" || isNaN(nombreIdentification) ) {
+        if (this.form.edtIdentificationAdh.value === "" || isNaN(nombreIdentification) || this.verifieurDuplicationNumAbon() === true) {
             return false
         }
         if (this.form.edtNumAdh.value === "" || isNaN(nombreAdherent) ) {
@@ -267,12 +265,27 @@ class VueTpSae {
         }
         return true
     }
-    
+
+    verifieurDuplicationNumAbon(): boolean {
+        let dataVerifieur: TdataSet
+        let tousAbonnement = new LesAbonnements
+        dataVerifieur = []
+        dataVerifieur = tousAbonnement.listAll()
+        for (let i = 0; i < dataVerifieur.length; i++) {
+            if (this.form.edtIdentificationAdh.value === dataVerifieur[i].abon_num) {
+                return true
+            }
+        }
+        return false
+    }
 
     messageErreur(): void {
         let erreurMsg = "Erreur : élément manquant \n";
         if (this.form.edtIdentificationAdh.value === "") {
-         erreurMsg += "Le numéro d'identification n'a pas été renseigné. \n"
+         erreurMsg += "Le numéro d'abonnement n'a pas été renseigné. \n"
+        }
+        else if (this.verifieurDuplicationNumAbon() === true) {
+            erreurMsg += "Le numéro d'abonnement existe déja. \n"
         }
         else {
             erreurMsg += "La saisie d'identification est incorrecte. \n"
@@ -357,6 +370,7 @@ class VueTpSae {
         this.form.textareaCommentaireAdh.value = ""
         this.form.divInformationAbonnement.innerHTML = ""
         this.form.divInformationAdherent.innerHTML = ""
+        this.form.tableTotalAbonnement.innerHTML = "<thead><tr><th>libellé</th><th>Tarif de base</th><th>Version Papier</th><th>Montant</th></tr></thead><tbody></tbody>"
     }
 }
 
