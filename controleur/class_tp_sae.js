@@ -161,15 +161,15 @@ class VueTpSae {
         this.form.btnThemeSupprimer.disabled = true;
         //this.afficherSelectionTheme()
     }
-    /*afficherSelectionTheme(): void {
-        const lesThemes = new LesThemes;
-        this._theme = lesThemes.all();
-        const themeslist : string[] = this._params.elts;
-        for (let i in this._theme) {
-            const item : UnTheme = this._theme[i];
-            const id = item.themeNum;
-        }
-    }*/
+    //afficherSelectionTheme(): void {
+    //    const lesThemes = new LesThemes;
+    //    this._theme = lesThemes.all();
+    //    const themeslist : string[] = this._params.elts;
+    //    for (let i in this._theme) {
+    //        const item : UnTheme = this._theme[i];
+    //        const id = item.themeNum;
+    //   }
+    //}
     annulerAjoutTheme() {
         if (this.form.btnThemeAnnuler.click) {
             this.form.divSelectionThemes.hidden = true;
