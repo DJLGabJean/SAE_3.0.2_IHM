@@ -220,9 +220,6 @@ class VueTpSae {
         else if (this.verifieurDuplicationNumAbon() === true) {
             erreurMsg += "Le numéro d'abonnement existe déja. \n";
         }
-        else {
-            erreurMsg += "La saisie d'identification est incorrecte. \n";
-        }
         if (this.form.dateNumDate.value === "") {
             erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n";
         }
