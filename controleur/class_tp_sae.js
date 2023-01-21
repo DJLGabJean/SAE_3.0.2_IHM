@@ -115,6 +115,10 @@ class VueTpSae {
         this.form.divSelectionThemes.hidden = true;
         this.form.btnAbonnementRetour.hidden = true;
         this.form.divAbonnementTitre.innerHTML = "Ajout d'un abonnement";
+        //
+        const lesAbonnements = new LesAbonnements();
+        let numéroAbonnement = lesAbonnements.getNouveauNumero();
+        this.form.edtIdentificationAdh.value = numéroAbonnement;
     }
     afficherModifier() {
         if (this._grille.getIdSelect() !== "") {
