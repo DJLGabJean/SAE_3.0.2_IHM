@@ -136,6 +136,11 @@ class VueTpSae {
         divInfoCSP += "Catégories SocioProfessionelle <br>"
         divInfoCSP += idCsp.cspLib
         this.form.divInformationAbonnement.innerHTML = divInfoCSP
+        //
+        const lesThemes = new LesThemesByAbonnement()
+        const lesThemesPourAbonnement = lesThemes.byAbonNum(idGrille)
+        let totalAbonnement = lesThemes.getTotal(lesThemesPourAbonnement)
+        this.form.divNombreTotal.innerHTML = String(totalAbonnement)
     }
 
     afficherDetail(): void {
