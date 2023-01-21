@@ -212,7 +212,7 @@ class VueTpSae {
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
-        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
+        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', false)
     }
 
     afficherTheme(): void {
@@ -370,7 +370,8 @@ class VueTpSae {
         this.form.textareaCommentaireAdh.value = ""
         this.form.divInformationAbonnement.innerHTML = ""
         this.form.divInformationAdherent.innerHTML = ""
-        this.form.tableTotalAbonnement.innerHTML = "<thead><tr><th>libellé</th><th>Tarif de base</th><th>Version Papier</th><th>Montant</th></tr></thead><tbody></tbody>"
+        this.form.tableTotalAbonnement.innerHTML = ""
+        this.form.divNombreTotal.innerHTML = ""
     }
 }
 
