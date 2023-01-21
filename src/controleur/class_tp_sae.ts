@@ -92,7 +92,7 @@ class VueTpSae {
         const lesThemesParAbo = new LesThemesByAbonnement
         const idAbonNum = lesThemesParAbo.byAbonNum(idGrille)
         dataTheme = lesThemesParAbo.toArray(idAbonNum)
-        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme , 'themeNum', true);
+        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme , 'themeNum', false);
     }
 
     recupererInfoAbonn(idGrille: string): void {
@@ -212,7 +212,7 @@ class VueTpSae {
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
-        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', false)
+        //this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
     }
 
     afficherTheme(): void {
