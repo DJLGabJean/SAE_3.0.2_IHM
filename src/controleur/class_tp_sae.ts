@@ -399,7 +399,8 @@ class VueTpSae {
             }
             const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool)
             console.log(leTheme, "Letheme")
-            let TTthemesPourAbo: TThemesByAbonnement = {leTheme}
+            let TTthemesPourAbo: TThemesByAbonnement = {}
+            TTthemesPourAbo[leTheme.unTheme.themeNum] = leTheme
             console.log(TTthemesPourAbo)
             const lesThemesByAbon = new LesThemesByAbonnement
             lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, TTthemesPourAbo)
@@ -483,6 +484,8 @@ class VueTpSae {
     }
 
     retourOuAnnulerAbonnement(): void {
+        const tableAbonnement = new LesAbonnements
+        tableAbonnement.delete(this.form.edtIdentificationAdh.value)
         this.form.btnThemeAjouter.disabled = false
         this.form.btnThemeModifier.disabled = false
         this.form.btnThemeSupprimer.disabled = false
@@ -520,8 +523,6 @@ class VueTpSae {
     }
 
     annulerAjoutAbonnement(): void {
-        const tableAbonnement = new LesAbonnements
-        tableAbonnement.delete(this.form.edtIdentificationAdh.value)
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
