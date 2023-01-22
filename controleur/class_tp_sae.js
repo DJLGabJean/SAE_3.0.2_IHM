@@ -194,7 +194,8 @@ class VueTpSae {
         const lesThemes = new LesThemes;
         let dataUnTheme = new UnTheme;
         dataUnTheme = lesThemes.byThemeNum(grilleId);
-        let dataArray = dataUnTheme.toArray();
+        let dataArray;
+        dataArray = dataUnTheme.toArray();
         this.form.selectThemes.options.add(new Option(dataArray.themeLib, dataArray.themeNum));
     }
     suppressionTheme() {
