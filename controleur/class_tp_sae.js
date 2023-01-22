@@ -112,6 +112,7 @@ class VueTpSae {
         this.form.divPageAbonnement.hidden = false;
         this.form.divSelectionThemes.hidden = true;
         this.form.btnAbonnementRetour.hidden = true;
+        this.form.tableTotalAbonnement.hidden = true;
         this.form.divAbonnementTitre.innerHTML = "Ajout d'un abonnement";
         //
         const lesAbonnements = new LesAbonnements();
@@ -192,7 +193,7 @@ class VueTpSae {
         if (this.form.edtIdentificationAdh.value === "" || isNaN(nombreIdentification) || this.verifieurDuplicationNumAbon() === true) {
             return false;
         }
-        if (this.form.edtNumAdh.value === "" || isNaN(nombreAdherent)) {
+        if (this.form.edtNumAdh.value === "" || isNaN(nombreAdherent) || this.verifieurExistenceNumAdh() === false) {
             return false;
         }
         if (this.form.dateNumDate.value === "") {
@@ -212,6 +213,18 @@ class VueTpSae {
         }
         return false;
     }
+    verifieurExistenceNumAdh() {
+        let dataAdherent;
+        let tousAdherent = new LesAdherents;
+        let stockagObjet = tousAdherent.all();
+        dataAdherent = tousAdherent.toArray(stockagObjet);
+        for (let i = 0; i < dataAdherent.length; i++) {
+            if (this.form.edtNumAdh.value === dataAdherent[i].adh_num) {
+                return true;
+            }
+        }
+        return false;
+    }
     messageErreur() {
         let erreurMsg = "Erreur : élément manquant \n";
         if (this.form.edtIdentificationAdh.value === "") {
@@ -223,14 +236,11 @@ class VueTpSae {
         if (this.form.dateNumDate.value === "") {
             erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n";
         }
-        else {
-            erreurMsg += "La saisie de la date est incorrecte. \n";
-        }
         if (this.form.edtNumAdh.value === "") {
             erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné. \n";
         }
-        else {
-            erreurMsg += "La saisie d'adhésion est incorrecte. \n";
+        else if (this.verifieurExistenceNumAdh() === false) {
+            erreurMsg += "L numéro d'adhésion n'existe pas. \n";
         }
         //ajouter thème
         alert(erreurMsg);
@@ -276,6 +286,7 @@ class VueTpSae {
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
+        this.form.tableTotalAbonnement.hidden = false;
     }
     annulerModifierAbonnement() {
         this.form.divPageAbonnement.hidden = true;
@@ -295,8 +306,7 @@ class VueTpSae {
         this.form.textareaCommentaireAdh.value = "";
         this.form.divInformationAbonnement.innerHTML = "";
         this.form.divInformationAdherent.innerHTML = "";
-        this.form.tableTotalAbonnement.innerHTML = "";
-        this.form.divNombreTotal.innerHTML = "";
+        this.form.divNombreTotal.innerHTML = "0.00 €";
     }
 }
 let vueTpSaeClass = new VueTpSae;
