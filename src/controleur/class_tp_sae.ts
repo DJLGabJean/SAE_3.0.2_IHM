@@ -140,10 +140,10 @@ class VueTpSae {
         divInfoCSP += idCsp.cspLib
         this.form.divInformationAbonnement.innerHTML = divInfoCSP
         //
-        //const lesThemes = new LesThemesByAbonnement()
-        //const lesThemesPourAbonnement = lesThemes.byAbonNum(idGrille)
-        //let totalAbonnement = lesThemes.getTotal(lesThemesPourAbonnement)
-        this.form.divNombreTotal.innerHTML = String(this._dataThemeGrille) + ",00 €"
+        const lesThemes = new LesThemesByAbonnement()
+        this._dataTheme = lesThemes.byAbonNum(idGrille)
+        let totalAbonnement = lesThemes.getTotal(this._dataTheme)
+        this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €"
     }
 
     afficherDetail(): void {
@@ -272,10 +272,10 @@ class VueTpSae {
         delete this._dataThemeGrille[Number(this.grilleAbonnement.getIdSelect())];
         this.grilleAbonnement.delSelectLine();
         //
-        //const lesThemes = new LesThemesByAbonnement()
-        //const lesThemesPourAbonnement = lesThemes.byAbonNum(this.form.edtIdentificationAdh.value)
-        //let totalAbonnement = lesThemes.getTotal(lesThemesPourAbonnement)
-        this.form.divNombreTotal.innerHTML = String(this._dataThemeGrille) + ",00 €"
+        const lesThemes = new LesThemesByAbonnement()
+        this._dataTheme = lesThemes.byAbonNum(this.form.edtIdentificationAdh.value)
+        let totalAbonnement = lesThemes.getTotal(this._dataTheme)
+        this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €"
     }
 
     annulerAjoutTheme(): void {
