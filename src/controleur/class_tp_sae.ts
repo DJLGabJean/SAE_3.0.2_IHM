@@ -3,6 +3,7 @@
 //TODO ET n'oublie pas d'enlever ces commentaires car on sera dans la merde :)
 //TODO ne laisse pas les utilisateurs toucher au numéro d'abonement
 //TODO et trouve un moyen de refresh le tableau d'affichage
+//TODO Partie de Nico à faire s'il veut bien
 import {LesAbonnements} from "../modele/data_abonnement"
 import { UnAbonnement } from "../modele/data_abonnement"
 import { TAbonnements } from "../modele/data_abonnement"
