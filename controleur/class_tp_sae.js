@@ -310,10 +310,6 @@ class VueTpSae {
     }
     validerAjoutTheme() {
         if (this.form.selectThemes.selectedIndex >= 0) {
-            let themLib = this.form.selectThemes.selectedIndex;
-            let themLib2 = this.form.selectThemes.value;
-            console.log(themLib, "testLib");
-            console.log(themLib2, "testLib 2");
             for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
                 if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeNum) {
                     this._cléTheme = this._dataTousThemesGrille[i].themeNum;
@@ -323,11 +319,16 @@ class VueTpSae {
             const lesThemes = new LesThemes;
             let unTheme = lesThemes.byThemeNum(this.cléTheme);
             console.log(unTheme, "unTheme");
-            const leTheme = new UnThemeByAbonnement(unTheme, this.form.chkVersionPapier.value);
+            let versioPapierBool = "";
+            if (this.form.chkVersionPapier.checked === true) {
+                versioPapierBool = "1";
+            }
+            const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool);
             console.log(leTheme, "Letheme");
+            let TTthemesPourAbo = { leTheme };
+            console.log(TTthemesPourAbo);
             const lesThemesByAbon = new LesThemesByAbonnement;
-            //lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, leTheme)
-            //TODO Check plus tard pour mettre les parametres
+            lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, TTthemesPourAbo);
         }
     }
     verifierAjoutAbonnement() {
@@ -421,9 +422,6 @@ class VueTpSae {
         }
     }
     retourAfficherDetail() {
-        const tableAbonnement = new LesAbonnements;
-        tableAbonnement.delete(this.form.edtIdentificationAdh.value);
-        //
         this.form.divPageAbonnement.hidden = true;
         this.form.divSelectionThemes.hidden = false;
         this.form.divListeAbonnement.hidden = false;
@@ -437,12 +435,10 @@ class VueTpSae {
         this.form.edtNumAdh.disabled = false;
         this.form.textareaCommentaireAdh.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
-        //
-        this.form.edtIdentificationAdh.disabled = false;
-        this.form.edtNumAdh.disabled = false;
-        this.form.dateNumDate.disabled = false;
     }
     annulerAjoutAbonnement() {
+        const tableAbonnement = new LesAbonnements;
+        tableAbonnement.delete(this.form.edtIdentificationAdh.value);
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
@@ -452,6 +448,10 @@ class VueTpSae {
         this.form.btnThemeSupprimer.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
         this.form.tableTotalAbonnement.hidden = false;
+        //
+        this.form.edtIdentificationAdh.disabled = false;
+        this.form.edtNumAdh.disabled = false;
+        this.form.dateNumDate.disabled = false;
     }
     annulerModifierAbonnement() {
         this.form.divPageAbonnement.hidden = true;
