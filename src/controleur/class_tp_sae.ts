@@ -56,6 +56,7 @@ class VueTpSae {
     private _grilleTotalAbonnement: GrilleTabulaire
     private _data: TdataSet
     private _dataTheme: TThemesByAbonnement
+    private _dataStockageAjoutTheme: TThemesByAbonnement //Permet de stocker les themes dans cet objet
     private _dataAdherent: TdataSet
     private _dataTousThemes: TThemes
     private _dataTousThemesGrille: TdataSet
@@ -68,6 +69,7 @@ class VueTpSae {
         this._grilleTotalAbonnement = new GrilleTabulaire
         this._data = []
         this._dataTheme = {}
+        this._dataStockageAjoutTheme = {}
         this._dataThemeGrille = []
         const lesThemes = new LesThemes()
         this._dataTousThemes = lesThemes.all()
@@ -88,6 +90,7 @@ class VueTpSae {
     get form() : TpSAEForm { return this._form }
     get data() :TdataSet { return this._data }
     get dataTheme() :TThemesByAbonnement { return this._dataTheme }
+    get dataStockageAjoutTheme() :TThemesByAbonnement { return this._dataStockageAjoutTheme }
     get dataThemeGrille() :TdataSet { return this._dataThemeGrille }
     get dataAdherent() :TdataSet { return this._dataAdherent }
     get dataTousThemes() :TThemes { return this._dataTousThemes }
@@ -115,6 +118,15 @@ class VueTpSae {
         const idAbonNum = lesThemesParAbo.byAbonNum(idGrille)
         this._dataThemeGrille = lesThemesParAbo.toArray(idAbonNum)
         this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._dataThemeGrille, 'themeNum', false);
+    }
+
+    affiGrilleAjout():void {
+        this.form.tableTotalAbonnement.hidden = false
+        const lesThemesParAbo = new LesThemesByAbonnement
+        this._dataThemeGrille = lesThemesParAbo.toArray(this._dataStockageAjoutTheme)
+        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._dataThemeGrille, 'themeNum', false);
+        let totalAbonnement = lesThemesParAbo.getTotal(this._dataTheme)
+        this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €"
     }
 
     recupererInfoAbonn(idGrille: string): void {
@@ -264,14 +276,6 @@ class VueTpSae {
     }
 
     ajouterDepuisTheme(): void {
-        let abonnement = new UnAbonnement
-        let desAbonnements = new LesAbonnements
-        abonnement.abonNum = this.form.edtIdentificationAdh.value
-        abonnement.abonDate = this.form.dateNumDate.value
-        abonnement.abonComment = this.form.textareaCommentaireAdh.value
-        abonnement.adhNum = this.form.edtNumAdh.value
-        desAbonnements.insert(abonnement)
-        //
         this.form.edtIdentificationAdh.disabled = true
         this.form.edtNumAdh.disabled = true
         this.form.dateNumDate.disabled = true
@@ -290,7 +294,11 @@ class VueTpSae {
         abonnement.abonDate = this.form.dateNumDate.value
         abonnement.abonComment = this.form.textareaCommentaireAdh.value
         abonnement.adhNum = this.form.edtNumAdh.value
-        desAbonnements.update(abonnement)
+        desAbonnements.insert(abonnement)
+        // TODO faire les trucs pour themes
+        const lesThemesByAbon = new LesThemesByAbonnement
+        lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, this._dataStockageAjoutTheme)
+        this._dataStockageAjoutTheme= {}
         //
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
@@ -300,10 +308,7 @@ class VueTpSae {
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
         //this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
-    }
-
-    afficherTheme(): void {
-        this.verifierAjoutAbonnementDepuisTheme()
+        //
     }
 
     modifierTheme(): void {
@@ -382,56 +387,36 @@ class VueTpSae {
         }
     }
 
-    validerAjoutTheme(): void { //TODO 
+    validerAjoutTheme(): void { //TODO Stocke tous dans un TThemesByAbonnement global
         if (this.form.selectThemes.selectedIndex >= 0) {
             for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
                 if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeNum) {
                     this._cléTheme = this._dataTousThemesGrille[i].themeNum
                 }
             }
-            console.log(this.cléTheme)
             const lesThemes = new LesThemes
             let unTheme = lesThemes.byThemeNum(this.cléTheme)
-            console.log(unTheme, "unTheme")
             let versioPapierBool = ""
             if (this.form.chkVersionPapier.checked === true) {
                 versioPapierBool = "1"
             }
             const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool)
-            console.log(leTheme, "Letheme")
+            let lengthStockage = [this._dataStockageAjoutTheme].length
+            console.log(lengthStockage)
             let TTthemesPourAbo: TThemesByAbonnement = {}
-            TTthemesPourAbo[0] = leTheme
+            this._dataStockageAjoutTheme[lengthStockage] = leTheme
             console.log(TTthemesPourAbo)
-            const lesThemesByAbon = new LesThemesByAbonnement
-            lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, TTthemesPourAbo)
+            this.affiGrilleAjout()
             this.annulerAjoutTheme()
         }
     }
 
     verifierAjoutAbonnement(): void {
-        if (this.verifieurAjoutValiderAjout() === false) {
-            this.messageErreurValiderAjout()       
-        }
-        else {
-            this.ajouterClick()
-        }
-    }
-
-    verifierAjoutAbonnementDepuisTheme(): void {
         if (this.verifieurAjout() === false) {
             this.messageErreur()       
         }
         else {
-            this.ajouterDepuisTheme()
-        }
-    }
-
-    verifieurAjoutValiderAjout(): boolean { //TODO 
-        if (this.verifieurAjout() === false) {
-            return false
-        }
-        else {
-            return true
+            this.ajouterClick()
         }
     }
 
@@ -470,27 +455,6 @@ class VueTpSae {
             }
         }
         return false
-    }
-
-    messageErreurValiderAjout(): void { //TODO 
-        let erreurMsg = "Erreur : élément manquant \n";
-        if (this.form.edtIdentificationAdh.value === "") {
-         erreurMsg += "Le numéro d'abonnement n'a pas été renseigné. \n"
-        }
-        else if (this.verifieurDuplicationNumAbon() === true) {
-            erreurMsg += "Le numéro d'abonnement existe déja. \n"
-        }
-        if (this.form.dateNumDate.value === "") {
-         erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n"
-        }
-        if (this.form.edtNumAdh.value === "") {
-         erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné. \n";
-        }
-        else if (this.verifieurExistenceNumAdh() === false){
-            erreurMsg += "Le numéro d'adhésion n'existe pas. \n"
-        }
-        //ajouter thème
-        alert(erreurMsg)
     }
 
     messageErreur(): void {
