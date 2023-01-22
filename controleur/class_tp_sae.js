@@ -1,3 +1,4 @@
+//TODO sale schlag: trigger pour verifier si le mec à pris un thémes, ajoute le truc pour modifier et supprimer les abonnements
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
 import { UnTheme } from "../modele/data_theme";
@@ -210,10 +211,6 @@ class VueTpSae {
         }
     }
     ajouterDepuisTheme() {
-        this.form.edtIdentificationAdh.disabled = true;
-        this.form.edtNumAdh.disabled = true;
-        this.form.dateNumDate.disabled = true;
-        //
         this.form.divSelectionThemes.hidden = false;
         this.form.btnThemeAjouter.disabled = true;
         this.form.btnThemeModifier.disabled = true;
@@ -400,8 +397,6 @@ class VueTpSae {
         alert(erreurMsg);
     }
     retourOuAnnulerAbonnement() {
-        const tableAbonnement = new LesAbonnements;
-        tableAbonnement.delete(this.form.edtIdentificationAdh.value);
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
@@ -446,10 +441,6 @@ class VueTpSae {
         this.form.btnThemeSupprimer.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
         this.form.tableTotalAbonnement.hidden = false;
-        //
-        this.form.edtIdentificationAdh.disabled = false;
-        this.form.edtNumAdh.disabled = false;
-        this.form.dateNumDate.disabled = false;
     }
     annulerModifierAbonnement() {
         this.form.divPageAbonnement.hidden = true;
