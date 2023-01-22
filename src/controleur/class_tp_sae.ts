@@ -1,4 +1,8 @@
 //TODO sale schlag: trigger pour verifier si le mec à pris un thémes, ajoute le truc pour modifier et supprimer les abonnements
+//TODO et uncheck la checkbox sale connard
+//TODO ET n'oublie pas d'enlever ces commentaires car on sera dans la merde :)
+//TODO ne laisse pas les utilisateurs toucher au numéro d'abonement
+//TODO et trouve un moyen de refresh le tableau d'affichage
 import {LesAbonnements} from "../modele/data_abonnement"
 import { UnAbonnement } from "../modele/data_abonnement"
 import { TAbonnements } from "../modele/data_abonnement"
