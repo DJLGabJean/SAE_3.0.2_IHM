@@ -55,11 +55,15 @@ class VueTpSae {
     private _grille: GrilleTabulaire
     private _grilleTotalAbonnement: GrilleTabulaire
     private _data: TdataSet
+    private _dataTheme: TThemesByAbonnement
+    private _dataThemeGrille: TdataSet
     init(form : TpSAEForm) : void {
         this._form = form
         this._grille = new GrilleTabulaire
         this._grilleTotalAbonnement = new GrilleTabulaire
         this._data = []
+        this._dataTheme = {}
+        this._dataThemeGrille = []
         const lesAbonnements = new LesAbonnements
         this._data = lesAbonnements.listAll()
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
@@ -71,6 +75,8 @@ class VueTpSae {
 
     get form() : TpSAEForm { return this._form }
     get data() :TdataSet { return this._data }
+    get dataTheme() :TThemesByAbonnement { return this._dataTheme }
+    get dataThemeGrille() :TdataSet { return this._dataThemeGrille }
     get grille() :GrilleTabulaire { return this._grille }
     get grilleAbonnement() :GrilleTabulaire { return this._grilleTotalAbonnement }
 
@@ -88,11 +94,10 @@ class VueTpSae {
     }
 
     affiGrille(idGrille: string):void {
-        let dataTheme: TdataSet
         const lesThemesParAbo = new LesThemesByAbonnement
         const idAbonNum = lesThemesParAbo.byAbonNum(idGrille)
-        dataTheme = lesThemesParAbo.toArray(idAbonNum)
-        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme , 'themeNum', false);
+        this._dataThemeGrille = lesThemesParAbo.toArray(idAbonNum)
+        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._dataThemeGrille, 'themeNum', false);
     }
 
     recupererInfoAbonn(idGrille: string): void {
@@ -135,10 +140,10 @@ class VueTpSae {
         divInfoCSP += idCsp.cspLib
         this.form.divInformationAbonnement.innerHTML = divInfoCSP
         //
-        const lesThemes = new LesThemesByAbonnement()
-        const lesThemesPourAbonnement = lesThemes.byAbonNum(idGrille)
-        let totalAbonnement = lesThemes.getTotal(lesThemesPourAbonnement)
-        this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €"
+        //const lesThemes = new LesThemesByAbonnement()
+        //const lesThemesPourAbonnement = lesThemes.byAbonNum(idGrille)
+        //let totalAbonnement = lesThemes.getTotal(lesThemesPourAbonnement)
+        this.form.divNombreTotal.innerHTML = String(this._dataThemeGrille) + ",00 €"
     }
 
     afficherDetail(): void {
@@ -263,14 +268,14 @@ class VueTpSae {
     }
 
     suppressionTheme(): void {
-        let data: TThemesByAbonnement = {}
-        delete data[this.grilleAbonnement.getIdSelect()];
+        //let data: TThemesByAbonnement = {}
+        delete this._dataThemeGrille[Number(this.grilleAbonnement.getIdSelect())];
         this.grilleAbonnement.delSelectLine();
         //
-        const lesThemes = new LesThemesByAbonnement()
-        const lesThemesPourAbonnement = lesThemes.byAbonNum(this.form.edtIdentificationAdh.value)
-        let totalAbonnement = lesThemes.getTotal(lesThemesPourAbonnement)
-        this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €"
+        //const lesThemes = new LesThemesByAbonnement()
+        //const lesThemesPourAbonnement = lesThemes.byAbonNum(this.form.edtIdentificationAdh.value)
+        //let totalAbonnement = lesThemes.getTotal(lesThemesPourAbonnement)
+        this.form.divNombreTotal.innerHTML = String(this._dataThemeGrille) + ",00 €"
     }
 
     annulerAjoutTheme(): void {
