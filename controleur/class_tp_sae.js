@@ -142,6 +142,49 @@ class VueTpSae {
             this.form.divAbonnementTitre.innerHTML = "Modification d'un abonnement"; //Pour afficher le bon Titre
         }
     }
+    refreshNuméroAdhérent() {
+        if (this.verifieurExistenceNumAdh() === true) {
+            let dataAdherent;
+            let tousAdherent = new LesAdherents;
+            let stockagObjet = tousAdherent.all();
+            dataAdherent = tousAdherent.toArray(stockagObjet);
+            let indiceAdhérent = 0;
+            for (let i = 0; i < dataAdherent.length; i++) {
+                if (this.form.edtNumAdh.value === dataAdherent[i].adh_num) {
+                    indiceAdhérent = i;
+                }
+            }
+            let divInfoAbonnement = "";
+            divInfoAbonnement += "Adherent <br>";
+            divInfoAbonnement += dataAdherent[indiceAdhérent].adhCiv + " " + dataAdherent[indiceAdhérent].adhNom + " " + dataAdherent[indiceAdhérent].adhPrenom + "<br>";
+            divInfoAbonnement += dataAdherent[indiceAdhérent].adhMel + "<br>";
+            if (dataAdherent[indiceAdhérent].adhAdr === null) { //si l'adresse est null
+                divInfoAbonnement += "" + "<br>";
+            }
+            else {
+                divInfoAbonnement += dataAdherent[indiceAdhérent].adhAdr + "<br>";
+            }
+            if (dataAdherent[indiceAdhérent].adhCp === null || dataAdherent[indiceAdhérent].adhVille === null) {
+                if (dataAdherent[indiceAdhérent].adhCp === null) {
+                    divInfoAbonnement += "" + " ";
+                }
+                if (dataAdherent[indiceAdhérent].adhVille === null) {
+                    divInfoAbonnement += "";
+                }
+            }
+            else {
+                divInfoAbonnement += dataAdherent[indiceAdhérent].adhCp + " " + dataAdherent[indiceAdhérent].adhVille;
+            }
+            this.form.divInformationAdherent.innerHTML = divInfoAbonnement;
+            //
+            const lesCsp = new LesCsps;
+            const idCsp = lesCsp.byCspNum(dataAdherent[indiceAdhérent].cspNum);
+            let divInfoCSP = "";
+            divInfoCSP += "Catégories SocioProfessionelle <br>";
+            divInfoCSP += idCsp.cspLib;
+            this.form.divInformationAbonnement.innerHTML = divInfoCSP;
+        }
+    }
     ajouterClick() {
         let abonnement = new UnAbonnement;
         let desAbonnements = new LesAbonnements;
@@ -203,12 +246,24 @@ class VueTpSae {
     }
     suppressionTheme() {
         //let data: TThemesByAbonnement = {}
-        delete this._dataThemeGrille[Number(this.grilleAbonnement.getIdSelect())];
+        delete this._dataTheme[Number(this.grilleAbonnement.getIdSelect())];
         this.grilleAbonnement.delSelectLine();
         //
-        const lesThemes = new LesThemesByAbonnement();
-        this._dataTheme = lesThemes.byAbonNum(this.form.edtIdentificationAdh.value);
-        let totalAbonnement = lesThemes.getTotal(this._dataTheme);
+        //const lesThemes = new LesThemesByAbonnement()
+        //this._dataTheme = lesThemes.byAbonNum(this.form.edtIdentificationAdh.value)
+        //let totalAbonnement = lesThemes.getTotal(this._dataTheme)
+        //console.log(this.dataTheme)
+        //console.log(this.dataThemeGrille)
+        //this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €"
+        let totalAbonnement = "";
+        let nombreString = 0;
+        for (let i = 0; i < this._dataThemeGrille.length; i++) {
+            nombreString += parseInt(this._dataThemeGrille[i].montant);
+        }
+        totalAbonnement = String(nombreString);
+        console.log(this._dataTheme);
+        console.log(this._dataThemeGrille);
+        console.log(totalAbonnement);
         this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €";
     }
     annulerAjoutTheme() {
