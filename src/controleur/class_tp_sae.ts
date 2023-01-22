@@ -56,6 +56,8 @@ class VueTpSae {
     private _grilleTotalAbonnement: GrilleTabulaire
     private _data: TdataSet
     private _dataTheme: TThemesByAbonnement
+    private _dataAdherent: TdataSet
+    private _stockageTousLesAdherents: TAdherents
     private _dataThemeGrille: TdataSet
     init(form : TpSAEForm) : void {
         this._form = form
@@ -67,6 +69,10 @@ class VueTpSae {
         const lesAbonnements = new LesAbonnements
         this._data = lesAbonnements.listAll()
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
+        this._dataAdherent = []
+        const tousAdherent = new LesAdherents
+        this._stockageTousLesAdherents = tousAdherent.all()
+        this._dataAdherent = tousAdherent.toArray(this._stockageTousLesAdherents)
         this.form.divPageAbonnement.hidden = true
         this.form.edtTexteInvisible.value = "0"
         this.form.edtTexteInvisible.hidden = true
@@ -77,6 +83,8 @@ class VueTpSae {
     get data() :TdataSet { return this._data }
     get dataTheme() :TThemesByAbonnement { return this._dataTheme }
     get dataThemeGrille() :TdataSet { return this._dataThemeGrille }
+    get dataAdherent() :TdataSet { return this._dataAdherent }
+    get stockageTousLesAdherents() :TAdherents { return this._stockageTousLesAdherents }
     get grille() :GrilleTabulaire { return this._grille }
     get grilleAbonnement() :GrilleTabulaire { return this._grilleTotalAbonnement }
 
@@ -204,41 +212,37 @@ class VueTpSae {
 
     refreshNuméroAdhérent(): void {
         if (this.verifieurExistenceNumAdh() === true) {
-            let dataAdherent: TdataSet
-            let tousAdherent = new LesAdherents
-            let stockagObjet = tousAdherent.all()
-            dataAdherent = tousAdherent.toArray(stockagObjet)
             let indiceAdhérent = 0
-            for (let i = 0; i < dataAdherent.length; i++) {
-                if (this.form.edtNumAdh.value === dataAdherent[i].adh_num) {
+            for (let i = 0; i < this._dataAdherent.length; i++) {
+                if (this.form.edtNumAdh.value === this._dataAdherent[i].adh_num) {
                     indiceAdhérent = i
                 }
             }
             let divInfoAbonnement = ""
             divInfoAbonnement += "Adherent <br>"
-            divInfoAbonnement += dataAdherent[indiceAdhérent].adhCiv + " " + dataAdherent[indiceAdhérent].adhNom + " " +  dataAdherent[indiceAdhérent].adhPrenom + "<br>"
-            divInfoAbonnement += dataAdherent[indiceAdhérent].adhMel + "<br>"
-            if (dataAdherent[indiceAdhérent].adhAdr === null) { //si l'adresse est null
+            divInfoAbonnement += this._dataAdherent[indiceAdhérent].adhCiv + " " + this._dataAdherent[indiceAdhérent].adhNom + " " +  this._dataAdherent[indiceAdhérent].adhPrenom + "<br>"
+            divInfoAbonnement += this._dataAdherent[indiceAdhérent].adhMel + "<br>"
+            if (this._dataAdherent[indiceAdhérent].adhAdr === null) { //si l'adresse est null
                 divInfoAbonnement += "" + "<br>"
             }
             else {
-                divInfoAbonnement += dataAdherent[indiceAdhérent].adhAdr + "<br>"
+                divInfoAbonnement += this._dataAdherent[indiceAdhérent].adhAdr + "<br>"
             }
-            if (dataAdherent[indiceAdhérent].adhCp === null || dataAdherent[indiceAdhérent].adhVille === null) {
-                if (dataAdherent[indiceAdhérent].adhCp === null) {
+            if (this._dataAdherent[indiceAdhérent].adhCp === null || this._dataAdherent[indiceAdhérent].adhVille === null) {
+                if (this._dataAdherent[indiceAdhérent].adhCp === null) {
                     divInfoAbonnement += "" + " "
                 }
-                if (dataAdherent[indiceAdhérent].adhVille === null) {
+                if (this._dataAdherent[indiceAdhérent].adhVille === null) {
                     divInfoAbonnement += ""
                 }
             }
             else {
-                divInfoAbonnement += dataAdherent[indiceAdhérent].adhCp + " " + dataAdherent[indiceAdhérent].adhVille
+                divInfoAbonnement += this._dataAdherent[indiceAdhérent].adhCp + " " + this._dataAdherent[indiceAdhérent].adhVille
             }
             this.form.divInformationAdherent.innerHTML = divInfoAbonnement
             //
             const lesCsp = new LesCsps
-            const idCsp = lesCsp.byCspNum(dataAdherent[indiceAdhérent].cspNum)
+            const idCsp = lesCsp.byCspNum(this._dataAdherent[indiceAdhérent].cspNum)
             let divInfoCSP = ""
             divInfoCSP += "Catégories SocioProfessionelle <br>"
             divInfoCSP += idCsp.cspLib
@@ -393,12 +397,8 @@ class VueTpSae {
     }
 
     verifieurExistenceNumAdh(): boolean {
-        let dataAdherent: TdataSet
-        let tousAdherent = new LesAdherents
-        let stockagObjet = tousAdherent.all()
-        dataAdherent = tousAdherent.toArray(stockagObjet)
-        for (let i = 0; i < dataAdherent.length; i++) {
-            if (this.form.edtNumAdh.value === dataAdherent[i].adh_num) {
+        for (let i = 0; i < this._dataAdherent.length; i++) {
+            if (this.form.edtNumAdh.value === this._dataAdherent[i].adh_num) {
                 return true
             }
         }
