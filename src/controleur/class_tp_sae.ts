@@ -248,6 +248,10 @@ class VueTpSae {
             divInfoCSP += idCsp.cspLib
             this.form.divInformationAbonnement.innerHTML = divInfoCSP
         }
+        else if (this.verifieurExistenceNumAdh() === false) {
+            this.form.divInformationAdherent.innerHTML = "Adherent"
+            this.form.divInformationAbonnement.innerHTML = "Catégories SocioProfessionelle"
+        }
     }
 
     ajouterClick(): void {
