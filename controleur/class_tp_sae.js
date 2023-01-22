@@ -200,10 +200,13 @@ class VueTpSae {
     }
     suppressionTheme() {
         let data = {};
-        //const lesThemesAbo = new LesThemesByAbonnement
         delete data[this.grilleAbonnement.getIdSelect()];
         this.grilleAbonnement.delSelectLine();
         //
+        const lesThemes = new LesThemesByAbonnement();
+        const lesThemesPourAbonnement = lesThemes.byAbonNum(this.form.edtIdentificationAdh.value);
+        let totalAbonnement = lesThemes.getTotal(lesThemesPourAbonnement);
+        this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €";
     }
     annulerAjoutTheme() {
         if (this.form.btnThemeAnnuler.click) {
