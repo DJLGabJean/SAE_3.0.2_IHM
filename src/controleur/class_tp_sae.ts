@@ -188,7 +188,10 @@ class VueTpSae {
         //
         const lesAbonnements = new LesAbonnements()
         let numéroAbonnement = lesAbonnements.getNouveauNumero()
+        let unAbonnement = new UnAbonnement
         this.form.edtIdentificationAdh.value = numéroAbonnement
+        unAbonnement.abonNum = numéroAbonnement
+        lesAbonnements.insert(unAbonnement)
     }
 
     afficherModifier(): void {
@@ -254,6 +257,26 @@ class VueTpSae {
         }
     }
 
+    ajouterDepuisTheme(): void {
+        let abonnement = new UnAbonnement
+        let desAbonnements = new LesAbonnements
+        abonnement.abonNum = this.form.edtIdentificationAdh.value
+        abonnement.abonDate = this.form.dateNumDate.value
+        abonnement.abonComment = this.form.textareaCommentaireAdh.value
+        abonnement.adhNum = this.form.edtNumAdh.value
+        desAbonnements.update(abonnement)
+        //
+        this.form.edtIdentificationAdh.disabled = true
+        this.form.edtNumAdh.disabled = true
+        this.form.dateNumDate.disabled = true
+        //
+        this.form.divSelectionThemes.hidden = false;
+        this.form.btnThemeAjouter.disabled = true;
+        this.form.btnThemeModifier.disabled = true;
+        this.form.btnThemeSupprimer.disabled = true;
+        this.afficherSelectionTheme()
+    }
+
     ajouterClick(): void {
         let abonnement = new UnAbonnement
         let desAbonnements = new LesAbonnements
@@ -274,11 +297,7 @@ class VueTpSae {
     }
 
     afficherTheme(): void {
-        this.form.divSelectionThemes.hidden = false;
-        this.form.btnThemeAjouter.disabled = true;
-        this.form.btnThemeModifier.disabled = true;
-        this.form.btnThemeSupprimer.disabled = true;
-        this.afficherSelectionTheme()
+        this.verifierAjoutAbonnementDepuisTheme()
     }
 
     modifierTheme(): void {
@@ -359,7 +378,8 @@ class VueTpSae {
 
     validerAjoutTheme(): void {
         if (this.form.selectThemes.selectedIndex >= 0) {
-            let themNum = this.form.selectThemes.selectedIndex + 1
+            let themLib = this.form.selectThemes.selectedIndex
+            console.log(themLib)
         }
     }
 
@@ -369,6 +389,15 @@ class VueTpSae {
         }
         else {
             this.ajouterClick()
+        }
+    }
+
+    verifierAjoutAbonnementDepuisTheme(): void {
+        if (this.verifieurAjout() === false) {
+            this.messageErreur()       
+        }
+        else {
+            this.ajouterDepuisTheme()
         }
     }
 
@@ -465,6 +494,13 @@ class VueTpSae {
         this.form.edtNumAdh.disabled = false
         this.form.textareaCommentaireAdh.disabled = false
         this.form.divAbonnementTitre.innerHTML = ""
+        //
+        this.form.edtIdentificationAdh.disabled = false
+        this.form.edtNumAdh.disabled = false
+        this.form.dateNumDate.disabled = false
+        //Suprime aussi la table ducoup
+        const tableAbonnement = new LesAbonnements
+        tableAbonnement.delete(this.form.edtIdentificationAdh.value)
     }
 
     annulerAjoutAbonnement(): void {

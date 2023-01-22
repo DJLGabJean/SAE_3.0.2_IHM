@@ -128,7 +128,10 @@ class VueTpSae {
         //
         const lesAbonnements = new LesAbonnements();
         let numéroAbonnement = lesAbonnements.getNouveauNumero();
+        let unAbonnement = new UnAbonnement;
         this.form.edtIdentificationAdh.value = numéroAbonnement;
+        unAbonnement.abonNum = numéroAbonnement;
+        lesAbonnements.insert(unAbonnement);
     }
     afficherModifier() {
         if (this._grille.getIdSelect() !== "") {
@@ -191,6 +194,25 @@ class VueTpSae {
             this.form.divInformationAbonnement.innerHTML = "Catégories SocioProfessionelle";
         }
     }
+    ajouterDepuisTheme() {
+        let abonnement = new UnAbonnement;
+        let desAbonnements = new LesAbonnements;
+        abonnement.abonNum = this.form.edtIdentificationAdh.value;
+        abonnement.abonDate = this.form.dateNumDate.value;
+        abonnement.abonComment = this.form.textareaCommentaireAdh.value;
+        abonnement.adhNum = this.form.edtNumAdh.value;
+        desAbonnements.update(abonnement);
+        //
+        this.form.edtIdentificationAdh.disabled = true;
+        this.form.edtNumAdh.disabled = true;
+        this.form.dateNumDate.disabled = true;
+        //
+        this.form.divSelectionThemes.hidden = false;
+        this.form.btnThemeAjouter.disabled = true;
+        this.form.btnThemeModifier.disabled = true;
+        this.form.btnThemeSupprimer.disabled = true;
+        this.afficherSelectionTheme();
+    }
     ajouterClick() {
         let abonnement = new UnAbonnement;
         let desAbonnements = new LesAbonnements;
@@ -210,11 +232,7 @@ class VueTpSae {
         //this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
     }
     afficherTheme() {
-        this.form.divSelectionThemes.hidden = false;
-        this.form.btnThemeAjouter.disabled = true;
-        this.form.btnThemeModifier.disabled = true;
-        this.form.btnThemeSupprimer.disabled = true;
-        this.afficherSelectionTheme();
+        this.verifierAjoutAbonnementDepuisTheme();
     }
     modifierTheme() {
         if (this.grilleAbonnement.getIdSelect() !== "") {
@@ -288,7 +306,8 @@ class VueTpSae {
     }
     validerAjoutTheme() {
         if (this.form.selectThemes.selectedIndex >= 0) {
-            let themNum = this.form.selectThemes.selectedIndex + 1;
+            let themLib = this.form.selectThemes.selectedIndex;
+            console.log(themLib);
         }
     }
     verifierAjoutAbonnement() {
@@ -297,6 +316,14 @@ class VueTpSae {
         }
         else {
             this.ajouterClick();
+        }
+    }
+    verifierAjoutAbonnementDepuisTheme() {
+        if (this.verifieurAjout() === false) {
+            this.messageErreur();
+        }
+        else {
+            this.ajouterDepuisTheme();
         }
     }
     verifieurAjout() {
@@ -387,6 +414,13 @@ class VueTpSae {
         this.form.edtNumAdh.disabled = false;
         this.form.textareaCommentaireAdh.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
+        //
+        this.form.edtIdentificationAdh.disabled = false;
+        this.form.edtNumAdh.disabled = false;
+        this.form.dateNumDate.disabled = false;
+        //Suprime aussi la table ducoup
+        const tableAbonnement = new LesAbonnements;
+        tableAbonnement.delete(this.form.edtIdentificationAdh.value);
     }
     annulerAjoutAbonnement() {
         this.form.divPageAbonnement.hidden = true;
