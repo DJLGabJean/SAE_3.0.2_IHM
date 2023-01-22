@@ -57,8 +57,11 @@ class VueTpSae {
     private _data: TdataSet
     private _dataTheme: TThemesByAbonnement
     private _dataAdherent: TdataSet
+    private _dataTousThemes: TThemes
+    private _dataTousThemesGrille: TdataSet
     private _stockageTousLesAdherents: TAdherents
     private _dataThemeGrille: TdataSet
+    private _cléTheme: string
     init(form : TpSAEForm) : void {
         this._form = form
         this._grille = new GrilleTabulaire
@@ -66,6 +69,9 @@ class VueTpSae {
         this._data = []
         this._dataTheme = {}
         this._dataThemeGrille = []
+        const lesThemes = new LesThemes()
+        this._dataTousThemes = lesThemes.all()
+        this._dataTousThemesGrille = lesThemes.toArray(this._dataTousThemes)
         const lesAbonnements = new LesAbonnements
         this._data = lesAbonnements.listAll()
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
@@ -84,9 +90,12 @@ class VueTpSae {
     get dataTheme() :TThemesByAbonnement { return this._dataTheme }
     get dataThemeGrille() :TdataSet { return this._dataThemeGrille }
     get dataAdherent() :TdataSet { return this._dataAdherent }
+    get dataTousThemes() :TThemes { return this._dataTousThemes }
+    get dataTousThemesGrille() :TdataSet { return this._dataTousThemesGrille }
     get stockageTousLesAdherents() :TAdherents { return this._stockageTousLesAdherents }
     get grille() :GrilleTabulaire { return this._grille }
     get grilleAbonnement() :GrilleTabulaire { return this._grilleTotalAbonnement }
+    get cléTheme() :string { return this._cléTheme }
 
     supprimerClick():void {
         if ( this._grille.getIdSelect() !== "") {
@@ -188,10 +197,7 @@ class VueTpSae {
         //
         const lesAbonnements = new LesAbonnements()
         let numéroAbonnement = lesAbonnements.getNouveauNumero()
-        let unAbonnement = new UnAbonnement
         this.form.edtIdentificationAdh.value = numéroAbonnement
-        unAbonnement.abonNum = numéroAbonnement
-        lesAbonnements.insert(unAbonnement)
     }
 
     afficherModifier(): void {
@@ -264,7 +270,7 @@ class VueTpSae {
         abonnement.abonDate = this.form.dateNumDate.value
         abonnement.abonComment = this.form.textareaCommentaireAdh.value
         abonnement.adhNum = this.form.edtNumAdh.value
-        desAbonnements.update(abonnement)
+        desAbonnements.insert(abonnement)
         //
         this.form.edtIdentificationAdh.disabled = true
         this.form.edtNumAdh.disabled = true
@@ -379,7 +385,23 @@ class VueTpSae {
     validerAjoutTheme(): void {
         if (this.form.selectThemes.selectedIndex >= 0) {
             let themLib = this.form.selectThemes.selectedIndex
+            let themLib2 = this.form.selectThemes.value
             console.log(themLib)
+            console.log(themLib2)
+            for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
+                if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeLib) {
+                    this._cléTheme = this._dataTousThemesGrille[i].themeNum
+                }
+            }
+            console.log(this.cléTheme)
+            const lesThemes = new LesThemes
+            let unTheme = lesThemes.byThemeNum(this.cléTheme)
+            console.log(unTheme)
+            const leTheme = new UnThemeByAbonnement(unTheme, this.form.chkVersionPapier.value)
+            console.log(leTheme)
+            const lesThemesByAbon = new LesThemesByAbonnement
+            //lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, leTheme)
+            //TODO Check plus tard pour mettre les parametres
         }
     }
 

@@ -47,4 +47,5 @@ vueTpSaeClass.form.btnThemeAjouter.addEventListener("click", function() {vueTpSa
 vueTpSaeClass.form.btnThemeModifier.addEventListener("click", function() {vueTpSaeClass.modifierTheme()})
 vueTpSaeClass.form.btnThemeSupprimer.addEventListener("click", function() {vueTpSaeClass.supprimerTheme()})
 vueTpSaeClass.form.btnThemeAnnuler.addEventListener("click", function() {vueTpSaeClass.annulerAjoutTheme()})
+vueTpSaeClass.form.btnThemeValider.addEventListener("click", function() {vueTpSaeClass.validerAjoutTheme()})
 vueTpSaeClass.form.edtNumAdh.addEventListener("change", function() {vueTpSaeClass.refreshNuméroAdhérent()})
