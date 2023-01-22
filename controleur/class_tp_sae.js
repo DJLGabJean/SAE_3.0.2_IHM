@@ -224,7 +224,7 @@ class VueTpSae {
         abonnement.abonDate = this.form.dateNumDate.value;
         abonnement.abonComment = this.form.textareaCommentaireAdh.value;
         abonnement.adhNum = this.form.edtNumAdh.value;
-        desAbonnements.insert(abonnement);
+        desAbonnements.update(abonnement);
         //
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
@@ -326,15 +326,16 @@ class VueTpSae {
             const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool);
             console.log(leTheme, "Letheme");
             let TTthemesPourAbo = {};
-            TTthemesPourAbo[leTheme.unTheme.themeNum] = leTheme;
+            TTthemesPourAbo[0] = leTheme;
             console.log(TTthemesPourAbo);
             const lesThemesByAbon = new LesThemesByAbonnement;
             lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, TTthemesPourAbo);
+            this.annulerAjoutTheme();
         }
     }
     verifierAjoutAbonnement() {
-        if (this.verifieurAjout() === false) {
-            this.messageErreur();
+        if (this.verifieurAjoutValiderAjout() === false) {
+            this.messageErreurValiderAjout();
         }
         else {
             this.ajouterClick();
@@ -346,6 +347,14 @@ class VueTpSae {
         }
         else {
             this.ajouterDepuisTheme();
+        }
+    }
+    verifieurAjoutValiderAjout() {
+        if (this.verifieurAjout() === false) {
+            return false;
+        }
+        else {
+            return true;
         }
     }
     verifieurAjout() {
@@ -381,6 +390,26 @@ class VueTpSae {
             }
         }
         return false;
+    }
+    messageErreurValiderAjout() {
+        let erreurMsg = "Erreur : élément manquant \n";
+        if (this.form.edtIdentificationAdh.value === "") {
+            erreurMsg += "Le numéro d'abonnement n'a pas été renseigné. \n";
+        }
+        else if (this.verifieurDuplicationNumAbon() === true) {
+            erreurMsg += "Le numéro d'abonnement existe déja. \n";
+        }
+        if (this.form.dateNumDate.value === "") {
+            erreurMsg += "La date d'ajout de l'abonnement n'a pas été renseignée.\n";
+        }
+        if (this.form.edtNumAdh.value === "") {
+            erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné. \n";
+        }
+        else if (this.verifieurExistenceNumAdh() === false) {
+            erreurMsg += "Le numéro d'adhésion n'existe pas. \n";
+        }
+        //ajouter thème
+        alert(erreurMsg);
     }
     messageErreur() {
         let erreurMsg = "Erreur : élément manquant \n";
