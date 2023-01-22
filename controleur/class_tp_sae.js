@@ -315,8 +315,8 @@ class VueTpSae {
             console.log(themLib, "testLib");
             console.log(themLib2, "testLib 2");
             for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
-                if (this.form.selectThemes.value === this._dataTousThemesGrille[i]._themeLib) {
-                    this._cléTheme = this._dataTousThemesGrille[i]._themeNum;
+                if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeNum) {
+                    this._cléTheme = this._dataTousThemesGrille[i].themeNum;
                 }
             }
             console.log(this.cléTheme);
@@ -421,6 +421,9 @@ class VueTpSae {
         }
     }
     retourAfficherDetail() {
+        const tableAbonnement = new LesAbonnements;
+        tableAbonnement.delete(this.form.edtIdentificationAdh.value);
+        //
         this.form.divPageAbonnement.hidden = true;
         this.form.divSelectionThemes.hidden = false;
         this.form.divListeAbonnement.hidden = false;
@@ -438,9 +441,6 @@ class VueTpSae {
         this.form.edtIdentificationAdh.disabled = false;
         this.form.edtNumAdh.disabled = false;
         this.form.dateNumDate.disabled = false;
-        //Suprime aussi la table ducoup
-        const tableAbonnement = new LesAbonnements;
-        tableAbonnement.delete(this.form.edtIdentificationAdh.value);
     }
     annulerAjoutAbonnement() {
         this.form.divPageAbonnement.hidden = true;
