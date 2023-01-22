@@ -221,18 +221,22 @@ class VueTpSae {
         this.form.btnThemeAjouter.disabled = true;
         this.form.btnThemeModifier.disabled = true;
         this.form.btnThemeSupprimer.disabled = true;
-        //this.afficherSelectionTheme()
+        this.afficherSelectionTheme()
     }
 
-    //afficherSelectionTheme(): void {
-    //    const lesThemes = new LesThemes;
-    //    this._theme = lesThemes.all();
-    //    const themeslist : string[] = this._params.elts;
-    //    for (let i in this._theme) {
-    //        const item : UnTheme = this._theme[i];
-    //        const id = item.themeNum;
-    //   }
-    //}
+    afficherSelectionTheme(): void {
+        const lesThemes = new LesThemes;
+        let data = {}
+        data = lesThemes.all()
+        console.log(data)
+        let dataArray = lesThemes.toArray(data)
+        console.log(dataArray)
+        for (let i in dataArray) {
+            const item = dataArray[i]
+            const id = item.themeNum
+            this.form.selectThemes.options.add(new Option(item.themeLib, id));
+        }
+    }
 
     annulerAjoutTheme(): void {
         if (this.form.btnThemeAnnuler.click) {
@@ -308,7 +312,7 @@ class VueTpSae {
          erreurMsg += "Le numéro d'adhésion de l'abonné n'est pas renseigné. \n";
         }
         else if (this.verifieurExistenceNumAdh() === false){
-            erreurMsg += "L numéro d'adhésion n'existe pas. \n"
+            erreurMsg += "Le numéro d'adhésion n'existe pas. \n"
         }
         //ajouter thème
         alert(erreurMsg)
