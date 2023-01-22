@@ -51,6 +51,7 @@ type TpSAEForm = {
 }
 
 class VueTpSae {
+    private _indexIncrementation: number //Je veux ce nombre pour incrementer mon tableau qui stocke les abonnements et personne n'y touche !
     private _form: TpSAEForm
     private _grille: GrilleTabulaire
     private _grilleTotalAbonnement: GrilleTabulaire
@@ -64,6 +65,7 @@ class VueTpSae {
     private _dataThemeGrille: TdataSet
     private _cléTheme: string
     init(form : TpSAEForm) : void {
+        this._indexIncrementation = 0
         this._form = form
         this._grille = new GrilleTabulaire
         this._grilleTotalAbonnement = new GrilleTabulaire
@@ -123,10 +125,10 @@ class VueTpSae {
     affiGrilleAjout():void {
         this.form.tableTotalAbonnement.hidden = false
         const lesThemesParAbo = new LesThemesByAbonnement
+        let totalAbonnement = lesThemesParAbo.getTotal(this._dataStockageAjoutTheme)
+        this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €"
         this._dataThemeGrille = lesThemesParAbo.toArray(this._dataStockageAjoutTheme)
         this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._dataThemeGrille, 'themeNum', false);
-        let totalAbonnement = lesThemesParAbo.getTotal(this._dataTheme)
-        this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €"
     }
 
     recupererInfoAbonn(idGrille: string): void {
@@ -401,10 +403,11 @@ class VueTpSae {
                 versioPapierBool = "1"
             }
             const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool)
-            let lengthStockage = [this._dataStockageAjoutTheme].length
-            console.log(lengthStockage)
+            console.log(this._indexIncrementation, "incrémentation")
             let TTthemesPourAbo: TThemesByAbonnement = {}
-            this._dataStockageAjoutTheme[lengthStockage] = leTheme
+            this._dataStockageAjoutTheme[this._indexIncrementation] = leTheme
+            this._indexIncrementation ++
+            console.log(this._indexIncrementation, "incrémentation2")
             console.log(TTthemesPourAbo)
             this.affiGrilleAjout()
             this.annulerAjoutTheme()
