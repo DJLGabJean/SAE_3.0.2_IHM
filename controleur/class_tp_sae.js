@@ -1,5 +1,6 @@
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
+import { UnTheme } from "../modele/data_theme";
 import { LesThemes } from "../modele/data_theme";
 import { LesThemesByAbonnement } from "../modele/data_theme";
 import { LesAdherents } from "../modele/data_adherent";
@@ -167,14 +168,22 @@ class VueTpSae {
         const lesThemes = new LesThemes;
         let data = {};
         data = lesThemes.all();
-        console.log(data);
         let dataArray = lesThemes.toArray(data);
-        console.log(dataArray);
         for (let i in dataArray) {
             const item = dataArray[i];
             const id = item.themeNum;
             this.form.selectThemes.options.add(new Option(item.themeLib, id));
         }
+    }
+    afficherModificationTheme() {
+        let grilleId = this.grilleAbonnement.getIdSelect();
+        const lesThemes = new LesThemes;
+        let dataUnTheme = new UnTheme;
+        dataUnTheme = lesThemes.byThemeNum(grilleId);
+        console.log(dataUnTheme);
+        let dataArray = dataUnTheme.toArray();
+        console.log(dataArray);
+        this.form.selectThemes.options.add(new Option(dataArray[1], dataArray[0]));
     }
     annulerAjoutTheme() {
         if (this.form.btnThemeAnnuler.click) {

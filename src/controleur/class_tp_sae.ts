@@ -228,14 +228,23 @@ class VueTpSae {
         const lesThemes = new LesThemes;
         let data = {}
         data = lesThemes.all()
-        console.log(data)
         let dataArray = lesThemes.toArray(data)
-        console.log(dataArray)
         for (let i in dataArray) {
             const item = dataArray[i]
             const id = item.themeNum
             this.form.selectThemes.options.add(new Option(item.themeLib, id));
         }
+    }
+
+    afficherModificationTheme(): void {
+        let grilleId = this.grilleAbonnement.getIdSelect()
+        const lesThemes = new LesThemes;
+        let dataUnTheme = new UnTheme
+        dataUnTheme = lesThemes.byThemeNum(grilleId)
+        console.log(dataUnTheme)
+        let dataArray = dataUnTheme.toArray()
+        console.log(dataArray)
+        this.form.selectThemes.options.add(new Option(dataArray[1], dataArray[0]));
     }
 
     annulerAjoutTheme(): void {

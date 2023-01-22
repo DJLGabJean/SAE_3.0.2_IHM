@@ -44,5 +44,5 @@ vueTpSaeClass.form.btnAbonnementRetour.addEventListener("click", function() {vue
 vueTpSaeClass.form.btnAbonnementAnnuler.addEventListener("click", function() {vueTpSaeClass.retourOuAnnulerAbonnement()})
 vueTpSaeClass.form.btnAbonnementValider.addEventListener("click", function() {vueTpSaeClass.verifierAjoutAbonnement()})
 vueTpSaeClass.form.btnThemeAjouter.addEventListener("click", function() {vueTpSaeClass.afficherTheme()})
-vueTpSaeClass.form.btnThemeModifier.addEventListener("click", function() {vueTpSaeClass.afficherTheme()}) //TODO Peut-être à changer 
+vueTpSaeClass.form.btnThemeModifier.addEventListener("click", function() {vueTpSaeClass.afficherModificationTheme()})
 vueTpSaeClass.form.btnThemeAnnuler.addEventListener("click", function() {vueTpSaeClass.annulerAjoutTheme()})
