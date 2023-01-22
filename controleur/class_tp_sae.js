@@ -165,11 +165,18 @@ class VueTpSae {
         this.afficherSelectionTheme();
     }
     modifierTheme() {
-        this.form.divSelectionThemes.hidden = false;
-        this.form.btnThemeAjouter.disabled = true;
-        this.form.btnThemeModifier.disabled = true;
-        this.form.btnThemeSupprimer.disabled = true;
-        this.afficherModificationTheme();
+        if (this.grilleAbonnement.getIdSelect() !== "") {
+            this.form.divSelectionThemes.hidden = false;
+            this.form.btnThemeAjouter.disabled = true;
+            this.form.btnThemeModifier.disabled = true;
+            this.form.btnThemeSupprimer.disabled = true;
+            this.afficherModificationTheme();
+        }
+    }
+    supprimerTheme() {
+        if (this.grilleAbonnement.getIdSelect() !== "") {
+            APIpageWeb.confirmation("Suppression Theme", "Confirmez-vous la suppression de ce théme ? ", vueTpSaeClass, "suppressionTheme()");
+        }
     }
     afficherSelectionTheme() {
         const lesThemes = new LesThemes;
@@ -187,10 +194,18 @@ class VueTpSae {
         const lesThemes = new LesThemes;
         let dataUnTheme = new UnTheme;
         dataUnTheme = lesThemes.byThemeNum(grilleId);
-        console.log(dataUnTheme);
         let dataArray = dataUnTheme.toArray();
-        console.log(dataArray);
-        this.form.selectThemes.options.add(new Option(dataArray[1], dataArray[0]));
+        this.form.selectThemes.options.add(new Option(dataArray.themeLib, dataArray.themeNum));
+    }
+    suppressionTheme() {
+        const lesThemesAbo = new LesThemesByAbonnement;
+        lesThemesAbo.delete(this.grilleAbonnement.getIdSelect());
+        this.grilleAbonnement.delSelectLine();
+        //
+        let dataTheme;
+        const idAbonNum = lesThemesAbo.byAbonNum(this.form.edtIdentificationAdh.value);
+        dataTheme = lesThemesAbo.toArray(idAbonNum);
+        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme, 'themeNum', false);
     }
     annulerAjoutTheme() {
         if (this.form.btnThemeAnnuler.click) {
@@ -267,6 +282,9 @@ class VueTpSae {
         alert(erreurMsg);
     }
     retourOuAnnulerAbonnement() {
+        this.form.btnThemeAjouter.disabled = false;
+        this.form.btnThemeModifier.disabled = false;
+        this.form.btnThemeSupprimer.disabled = false;
         if (this.form.edtTexteInvisible.value === "1") { //Si l'utilisateur à cliquer sur détail
             this.form.edtTexteInvisible.value = "0";
             this.viderChamps();
