@@ -224,6 +224,14 @@ class VueTpSae {
         this.afficherSelectionTheme()
     }
 
+    modifierTheme(): void {
+        this.form.divSelectionThemes.hidden = false;
+        this.form.btnThemeAjouter.disabled = true;
+        this.form.btnThemeModifier.disabled = true;
+        this.form.btnThemeSupprimer.disabled = true;
+        this.afficherModificationTheme()
+    }
+
     afficherSelectionTheme(): void {
         const lesThemes = new LesThemes;
         let data = {}
