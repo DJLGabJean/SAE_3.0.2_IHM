@@ -83,7 +83,7 @@ class VueTpSae {
     supprimerAbonnement():void {
         // instance pour la gestion des données de la table comprenant la liste des équipements par salle
         const lesAbonnements = new LesAbonnements;
-        lesAbonnements.delete(this.grille.getIdSelect()); // suppression dans la base de la salle
+        lesAbonnements.delete(this.grille.getIdSelect())
         this._grille.delSelectLine();
     }
 
@@ -267,10 +267,6 @@ class VueTpSae {
         lesThemesAbo.delete(this.grilleAbonnement.getIdSelect())
         this.grilleAbonnement.delSelectLine();
         //
-        let dataTheme: TdataSet
-        const idAbonNum = lesThemesAbo.byAbonNum(this.form.edtIdentificationAdh.value)
-        dataTheme = lesThemesAbo.toArray(idAbonNum)
-        this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, dataTheme , 'themeNum', false);
     }
 
     annulerAjoutTheme(): void {

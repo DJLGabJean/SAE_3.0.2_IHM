@@ -139,10 +139,10 @@ class LesThemesByAbonnement {
         }
         return T;
     }
-    delete(abon_num) {
+    delete(theme_num) {
         let sql;
-        sql = "DELETE	FROM	adhesion	WHERE	abon_num = ?";
-        return APIpageWeb.SQLexec(sql, [abon_num]); // requête de manipulation : utiliser SQLexec
+        sql = "DELETE	FROM	adhesion	WHERE	theme_num = ?"; //TODO J'ai modifier pour tester
+        return APIpageWeb.SQLexec(sql, [theme_num]); // requête de manipulation : utiliser SQLexec
     }
     insert(abon_num, themesByAbonnement) {
         // requête d’ajout dans « adhesion » pour abonnement abon_num
