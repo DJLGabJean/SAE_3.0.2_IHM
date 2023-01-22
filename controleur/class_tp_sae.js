@@ -312,19 +312,19 @@ class VueTpSae {
         if (this.form.selectThemes.selectedIndex >= 0) {
             let themLib = this.form.selectThemes.selectedIndex;
             let themLib2 = this.form.selectThemes.value;
-            console.log(themLib);
-            console.log(themLib2);
+            console.log(themLib, "testLib");
+            console.log(themLib2, "testLib 2");
             for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
-                if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeLib) {
-                    this._cléTheme = this._dataTousThemesGrille[i].themeNum;
+                if (this.form.selectThemes.value === this._dataTousThemesGrille[i]._themeLib) {
+                    this._cléTheme = this._dataTousThemesGrille[i]._themeNum;
                 }
             }
             console.log(this.cléTheme);
             const lesThemes = new LesThemes;
             let unTheme = lesThemes.byThemeNum(this.cléTheme);
-            console.log(unTheme);
+            console.log(unTheme, "unTheme");
             const leTheme = new UnThemeByAbonnement(unTheme, this.form.chkVersionPapier.value);
-            console.log(leTheme);
+            console.log(leTheme, "Letheme");
             const lesThemesByAbon = new LesThemesByAbonnement;
             //lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, leTheme)
             //TODO Check plus tard pour mettre les parametres
