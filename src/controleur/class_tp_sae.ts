@@ -275,6 +275,12 @@ class VueTpSae {
             this.form.btnThemeAjouter.disabled = false;
             this.form.btnThemeModifier.disabled = false;
             this.form.btnThemeSupprimer.disabled = false;
+            //
+            const liste = this.form.selectThemes;
+            let noLigne : number = liste.options.length;
+            while (noLigne > 0) {
+                liste.remove(--noLigne);
+            }
         }
     }
 
