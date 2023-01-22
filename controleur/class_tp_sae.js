@@ -152,7 +152,7 @@ class VueTpSae {
         if (this.verifieurExistenceNumAdh() === true) {
             let indiceAdhérent = 0;
             for (let i = 0; i < this._dataAdherent.length; i++) {
-                if (this.form.edtNumAdh.value === this._dataAdherent[i].adh_num) {
+                if (this.form.edtNumAdh.value === this._dataAdherent[i].adhNum) {
                     indiceAdhérent = i;
                 }
             }
@@ -323,7 +323,7 @@ class VueTpSae {
     }
     verifieurExistenceNumAdh() {
         for (let i = 0; i < this._dataAdherent.length; i++) {
-            if (this.form.edtNumAdh.value === this._dataAdherent[i].adh_num) {
+            if (this.form.edtNumAdh.value === this._dataAdherent[i].adhNum) {
                 return true;
             }
         }
