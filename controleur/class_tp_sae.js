@@ -199,8 +199,9 @@ class VueTpSae {
         this.form.selectThemes.options.add(new Option(dataArray.themeLib, dataArray.themeNum));
     }
     suppressionTheme() {
-        const lesThemesAbo = new LesThemesByAbonnement;
-        lesThemesAbo.delete(this.grilleAbonnement.getIdSelect());
+        let data = {};
+        //const lesThemesAbo = new LesThemesByAbonnement
+        delete data[this.grilleAbonnement.getIdSelect()];
         this.grilleAbonnement.delSelectLine();
         //
     }
@@ -216,6 +217,11 @@ class VueTpSae {
             while (noLigne > 0) {
                 liste.remove(--noLigne);
             }
+        }
+    }
+    validerAjoutTheme() {
+        if (this.form.selectThemes.selectedIndex >= 0) {
+            let themNum = this.form.selectThemes.selectedIndex + 1;
         }
     }
     verifierAjoutAbonnement() {

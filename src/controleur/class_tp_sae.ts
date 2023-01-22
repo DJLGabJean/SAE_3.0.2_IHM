@@ -263,8 +263,9 @@ class VueTpSae {
     }
 
     suppressionTheme(): void {
-        const lesThemesAbo = new LesThemesByAbonnement
-        lesThemesAbo.delete(this.grilleAbonnement.getIdSelect())
+        let data: TThemesByAbonnement = {}
+        //const lesThemesAbo = new LesThemesByAbonnement
+        delete data[this.grilleAbonnement.getIdSelect()];
         this.grilleAbonnement.delSelectLine();
         //
     }
@@ -281,6 +282,12 @@ class VueTpSae {
             while (noLigne > 0) {
                 liste.remove(--noLigne);
             }
+        }
+    }
+
+    validerAjoutTheme(): void {
+        if (this.form.selectThemes.selectedIndex >= 0) {
+            let themNum = this.form.selectThemes.selectedIndex + 1
         }
     }
 
