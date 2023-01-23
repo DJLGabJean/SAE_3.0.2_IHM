@@ -19,7 +19,6 @@ vueTpSaeClass.init({
     edtNumAdh: document.querySelector("[id=edt_num_adh]"),
     edtTexteInvisible: document.querySelector("[id=edt_texte_invisible]"),
     textareaCommentaireAdh: document.querySelector("[id=textarea_commentaire_adh]"),
-    chkMiniAlbum: document.querySelector("[id=chk_miniAlbum]"),
     divListeAbonnement: document.querySelector("[id=div_liste_abonnement]"),
     divPageAbonnement: document.querySelector("[id=div_page_abonnement]"),
     divAbonnementTitre: document.querySelector("[id=div_abonnement_titre]"),

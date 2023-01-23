@@ -1,9 +1,6 @@
-//TODO sale schlag: trigger pour verifier si le mec à pris un thémes, ajoute le truc pour modifier et supprimer les abonnements
-//TODO et uncheck la checkbox sale connard
-//TODO ET n'oublie pas d'enlever ces commentaires car on sera dans la merde :)
-//TODO ne laisse pas les utilisateurs toucher au numéro d'abonement
-//TODO et trouve un moyen de refresh le tableau d'affichage
+//TODO sale schlag: ajoute le truc pour modifier et supprimer les abonnements
 //TODO Partie de Nico à faire s'il veut bien
+//TODO supprimer théme Doublon
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
 import { UnTheme } from "../modele/data_theme";
@@ -57,7 +54,9 @@ class VueTpSae {
     supprimerAbonnement() {
         // instance pour la gestion des données de la table comprenant la liste des équipements par salle
         const lesAbonnements = new LesAbonnements;
+        const lesThemesByAbo = new LesThemesByAbonnement;
         lesAbonnements.delete(this.grille.getIdSelect());
+        lesThemesByAbo.delete(this.grille.getIdSelect());
         this._grille.delSelectLine();
     }
     affiGrille(idGrille) {
@@ -156,9 +155,11 @@ class VueTpSae {
     }
     afficherModifier() {
         if (this._grille.getIdSelect() !== "") {
+            const lesThemesByAbo = new LesThemesByAbonnement;
             let grilleId = this.grille.getIdSelect();
             this.recupererInfoAbonn(grilleId);
             this.affiGrille(grilleId);
+            this._dataStockageAjoutTheme = lesThemesByAbo.byAbonNum(this._grille.getIdSelect());
             //
             this.form.edtTexteInvisible.value = "3";
             this.form.divPageAbonnement.hidden = false;
@@ -229,11 +230,14 @@ class VueTpSae {
         abonnement.abonDate = this.form.dateNumDate.value;
         abonnement.abonComment = this.form.textareaCommentaireAdh.value;
         abonnement.adhNum = this.form.edtNumAdh.value;
+        console.log(abonnement, "aprés Insertion");
         desAbonnements.insert(abonnement);
-        // TODO faire les trucs pour themes
+        //
         const lesThemesByAbon = new LesThemesByAbonnement;
         lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, this._dataStockageAjoutTheme);
+        console.log(this._dataStockageAjoutTheme, "avant vidage");
         this._dataStockageAjoutTheme = {};
+        this.form.divNombreTotal.innerHTML = "0.00 €";
         //
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
@@ -242,8 +246,8 @@ class VueTpSae {
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
-        //this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
-        //
+        this._data = desAbonnements.listAll();
+        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
     }
     modifierTheme() {
         if (this.grilleAbonnement.getIdSelect() !== "") {
@@ -259,15 +263,50 @@ class VueTpSae {
             APIpageWeb.confirmation("Suppression Theme", "Confirmez-vous la suppression de ce théme ? ", vueTpSaeClass, "suppressionTheme()");
         }
     }
+    labelErreur() {
+        if (this.form.edtIdentificationAdh.value === "0") {
+        }
+        if (this.form.edtNumAdh.value === "") {
+        }
+        this.form.lblErreurAdh.innerHTML = "Veuillez saisir le numéro d'adhérent !";
+    }
     afficherSelectionTheme() {
         const lesThemes = new LesThemes;
+        const lesThemesByAbo = new LesThemesByAbonnement;
+        let stockageAbonnementActuel = lesThemesByAbo.toArray(this._dataStockageAjoutTheme);
         let data = {};
         data = lesThemes.all();
         let dataArray = lesThemes.toArray(data);
-        for (let i in dataArray) {
-            const item = dataArray[i];
-            const id = item.themeNum;
-            this.form.selectThemes.options.add(new Option(item.themeLib, id));
+        console.log(dataArray);
+        console.log(stockageAbonnementActuel);
+        if (stockageAbonnementActuel.length === 0) {
+            for (let i in dataArray) {
+                const item = dataArray[i];
+                const id = item.themeNum;
+                console.log(id);
+                this.form.selectThemes.options.add(new Option(item.themeLib, id));
+            }
+        }
+        else {
+            for (let i = 0, j = 0; i < dataArray.length; i++) {
+                const item = dataArray[i];
+                console.log(item, "item");
+                const id = item.themeNum;
+                console.log(stockageAbonnementActuel[j].themeNum, "themeNum");
+                console.log(id, "id");
+                if (stockageAbonnementActuel[j].themeNum != id) {
+                    console.log("ajout");
+                    this.form.selectThemes.options.add(new Option(item.themeLib, id));
+                }
+                if (j === stockageAbonnementActuel.length - 1) {
+                    console.log("rien putain");
+                    //rien
+                }
+                else if (stockageAbonnementActuel[j].themeNum === id) {
+                    console.log("incrémentation");
+                    j++;
+                }
+            }
         }
     }
     afficherModificationTheme() {
@@ -329,12 +368,9 @@ class VueTpSae {
                 versioPapierBool = "1";
             }
             const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool);
-            console.log(this._indexIncrementation, "incrémentation");
-            let TTthemesPourAbo = {};
             this._dataStockageAjoutTheme[this._indexIncrementation] = leTheme;
             this._indexIncrementation++;
-            console.log(this._indexIncrementation, "incrémentation2");
-            console.log(TTthemesPourAbo);
+            this.form.chkVersionPapier.checked = false;
             this.affiGrilleAjout();
             this.annulerAjoutTheme();
         }
@@ -350,6 +386,7 @@ class VueTpSae {
     verifieurAjout() {
         const nombreIdentification = parseInt(this.form.edtIdentificationAdh.value);
         const nombreAdherent = parseInt(this.form.edtNumAdh.value);
+        const lesThemesByAbo = new LesThemesByAbonnement;
         if (this.form.edtIdentificationAdh.value === "" || isNaN(nombreIdentification) || this.verifieurDuplicationNumAbon() === true) {
             return false;
         }
@@ -357,6 +394,9 @@ class VueTpSae {
             return false;
         }
         if (this.form.dateNumDate.value === "") {
+            return false;
+        }
+        if (lesThemesByAbo.getTotal(this._dataStockageAjoutTheme) === 0) {
             return false;
         }
         return true;
@@ -382,6 +422,7 @@ class VueTpSae {
         return false;
     }
     messageErreur() {
+        const lesThemesByAbo = new LesThemesByAbonnement;
         let erreurMsg = "Erreur : élément manquant \n";
         if (this.form.edtIdentificationAdh.value === "") {
             erreurMsg += "Le numéro d'abonnement n'a pas été renseigné. \n";
@@ -398,10 +439,14 @@ class VueTpSae {
         else if (this.verifieurExistenceNumAdh() === false) {
             erreurMsg += "Le numéro d'adhésion n'existe pas. \n";
         }
+        if (lesThemesByAbo.getTotal(this._dataStockageAjoutTheme) === 0) {
+            erreurMsg += "Veuillez choisir un théme. \n";
+        }
         //ajouter thème
         alert(erreurMsg);
     }
     retourOuAnnulerAbonnement() {
+        this._dataStockageAjoutTheme = {};
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
