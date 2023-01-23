@@ -1,2 +1,3 @@
-https://devweb.iutmetz.univ-lorraine.fr/~nae1u/SAE_3.0.2_IHM/vue/
-appli_sae
+Chemin: https://devweb.iutmetz.univ-lorraine.fr/~nae1u/SAE_3.0.2_IHM/vue/
+Nom HTML: appli_sae
+Mot de passe pour la BDD: 31904250

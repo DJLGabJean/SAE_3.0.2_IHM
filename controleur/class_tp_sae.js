@@ -12,7 +12,6 @@ import { LesCsps } from "../modele/data_csp";
 class VueTpSae {
     init(form) {
         this._indexIncrementation = 0;
-        this._numberIndexModifier = 0;
         this._form = form;
         this._grille = new GrilleTabulaire;
         this._grilleTotalAbonnement = new GrilleTabulaire;
@@ -258,7 +257,6 @@ class VueTpSae {
             this.form.btnThemeAjouter.disabled = true;
             this.form.btnThemeModifier.disabled = true;
             this.form.btnThemeSupprimer.disabled = true;
-            this._numberIndexModifier = Number(this.grilleAbonnement.getIdSelect());
             this.afficherModificationTheme();
         }
     }
@@ -340,17 +338,10 @@ class VueTpSae {
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
     }
     suppressionTheme() {
-        //let data: TThemesByAbonnement = {}
         delete this._dataStockageAjoutTheme[Number(this.grilleAbonnement.getIdSelect())];
         this.grilleAbonnement.delSelectLine();
         console.log(this._dataStockageAjoutTheme);
         //
-        //const lesThemes = new LesThemesByAbonnement()
-        //this._dataTheme = lesThemes.byAbonNum(this.form.edtIdentificationAdh.value)
-        //let totalAbonnement = lesThemes.getTotal(this._dataTheme)
-        //console.log(this.dataTheme)
-        //console.log(this.dataThemeGrille)
-        //this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €"
         let totalAbonnement = "";
         let nombreString = 0;
         for (let i = 0; i < this._dataThemeGrille.length; i++) {
@@ -377,48 +368,38 @@ class VueTpSae {
         }
     }
     validerAjoutTheme() {
-        if (this.form.chkModifierTheme.checked === true) {
-            if (this.form.selectThemes.selectedIndex >= 0) {
-                for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
-                    if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeNum) {
-                        this._cléTheme = this._dataTousThemesGrille[i].themeNum;
-                    }
+        if (this.form.selectThemes.selectedIndex >= 0) {
+            for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
+                if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeNum) {
+                    this._cléTheme = this._dataTousThemesGrille[i].themeNum;
                 }
-                const lesThemes = new LesThemes;
-                let unTheme = lesThemes.byThemeNum(this.cléTheme);
-                let versioPapierBool = "";
-                if (this.form.chkVersionPapier.checked === true) {
-                    versioPapierBool = "1";
-                }
-                const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool);
-                this._dataStockageAjoutTheme[this._numberIndexModifier] = leTheme;
-                this.form.chkVersionPapier.checked = false;
-                this.affiGrilleAjout();
-                this.annulerAjoutTheme();
-                //
-                this.form.chkModifierTheme.checked = false;
             }
-        }
-        else {
-            if (this.form.selectThemes.selectedIndex >= 0) {
-                for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
-                    if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeNum) {
-                        this._cléTheme = this._dataTousThemesGrille[i].themeNum;
+            const lesThemes = new LesThemes;
+            let unTheme = lesThemes.byThemeNum(this.cléTheme);
+            let versioPapierBool = "";
+            if (this.form.chkVersionPapier.checked === true) {
+                versioPapierBool = "1";
+            }
+            const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool);
+            if (this.form.chkModifierTheme.checked === true) {
+                const lesThemsParAbonNum = new LesThemesByAbonnement;
+                let tableauStockage = lesThemsParAbonNum.toArray(this._dataStockageAjoutTheme);
+                let conserveurIndex = 0;
+                for (let i = 0; i < tableauStockage.length; i++) {
+                    if (leTheme.unTheme.themeNum === tableauStockage[i].themeNum) {
+                        conserveurIndex = 0;
                     }
                 }
-                const lesThemes = new LesThemes;
-                let unTheme = lesThemes.byThemeNum(this.cléTheme);
-                let versioPapierBool = "";
-                if (this.form.chkVersionPapier.checked === true) {
-                    versioPapierBool = "1";
-                }
-                const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool);
+                this._dataStockageAjoutTheme[conserveurIndex] = leTheme;
+                this.form.chkVersionPapier.checked = false;
+            }
+            else {
                 this._dataStockageAjoutTheme[this._indexIncrementation] = leTheme;
                 this._indexIncrementation++;
-                this.form.chkVersionPapier.checked = false;
-                this.affiGrilleAjout();
-                this.annulerAjoutTheme();
             }
+            this.form.chkVersionPapier.checked = false;
+            this.affiGrilleAjout();
+            this.annulerAjoutTheme();
         }
     }
     verifierAjoutAbonnement() {
@@ -426,11 +407,13 @@ class VueTpSae {
             this.form.edtTexteInvisible.value = "0";
             this.modificationAbonnement();
         }
-        if (this.verifieurAjout() === false) {
-            this.messageErreur();
-        }
         else {
-            this.ajouterClick();
+            if (this.verifieurAjout() === false) {
+                this.messageErreur();
+            }
+            else {
+                this.ajouterClick();
+            }
         }
     }
     verifieurAjout() {
