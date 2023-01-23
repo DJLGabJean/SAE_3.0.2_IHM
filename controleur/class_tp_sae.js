@@ -1,4 +1,4 @@
-//TODO sale schlag: ajoute le truc pour modifier et supprimer les abonnements
+//TODO fix modification d'abonnement, il se duplique bizarrement et se fix avec un ajout
 //TODO Partie de Nico à faire s'il veut bien
 //TODO supprimer théme Doublon et fix bug d'array peut-être un for dans un for
 import { LesAbonnements } from "../modele/data_abonnement";
