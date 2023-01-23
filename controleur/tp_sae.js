@@ -32,6 +32,7 @@ vueTpSaeClass.init({
     lblErreurSelectThemes: document.querySelector("[id=lbl_erreur_select_themes]"),
     selectThemes: document.querySelector("[id=select_themes]"),
     chkVersionPapier: document.querySelector("[id=chk_versionPapier]"),
+    chkModifierTheme: document.querySelector("[id=chk_modifierTheme]")
 });
 vueTpSaeClass.form.btnAbonnementDetail.addEventListener("click", function () { vueTpSaeClass.afficherDetail(); });
 vueTpSaeClass.form.btnAbonnementModifier.addEventListener("click", function () { vueTpSaeClass.afficherModifier(); });

@@ -1,6 +1,6 @@
 //TODO sale schlag: ajoute le truc pour modifier et supprimer les abonnements
 //TODO Partie de Nico à faire s'il veut bien
-//TODO supprimer théme Doublon
+//TODO supprimer théme Doublon et fix bug d'array peut-être un for dans un for
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
 import { UnTheme } from "../modele/data_theme";
@@ -12,6 +12,7 @@ import { LesCsps } from "../modele/data_csp";
 class VueTpSae {
     init(form) {
         this._indexIncrementation = 0;
+        this._numberIndexModifier = 0;
         this._form = form;
         this._grille = new GrilleTabulaire;
         this._grilleTotalAbonnement = new GrilleTabulaire;
@@ -32,6 +33,7 @@ class VueTpSae {
         this.form.divPageAbonnement.hidden = true;
         this.form.edtTexteInvisible.value = "0";
         this.form.edtTexteInvisible.hidden = true;
+        this.form.chkModifierTheme.hidden = true;
         this.form.divNombreTotal.innerHTML = "0.00 €";
     }
     get form() { return this._form; }
@@ -52,7 +54,6 @@ class VueTpSae {
         }
     }
     supprimerAbonnement() {
-        // instance pour la gestion des données de la table comprenant la liste des équipements par salle
         const lesAbonnements = new LesAbonnements;
         const lesThemesByAbo = new LesThemesByAbonnement;
         lesAbonnements.delete(this.grille.getIdSelect());
@@ -224,6 +225,7 @@ class VueTpSae {
         this.afficherSelectionTheme();
     }
     ajouterClick() {
+        this.form.edtTexteInvisible.value = "0";
         let abonnement = new UnAbonnement;
         let desAbonnements = new LesAbonnements;
         abonnement.abonNum = this.form.edtIdentificationAdh.value;
@@ -251,10 +253,12 @@ class VueTpSae {
     }
     modifierTheme() {
         if (this.grilleAbonnement.getIdSelect() !== "") {
+            this.form.chkModifierTheme.checked = true;
             this.form.divSelectionThemes.hidden = false;
             this.form.btnThemeAjouter.disabled = true;
             this.form.btnThemeModifier.disabled = true;
             this.form.btnThemeSupprimer.disabled = true;
+            this._numberIndexModifier = Number(this.grilleAbonnement.getIdSelect());
             this.afficherModificationTheme();
         }
     }
@@ -264,10 +268,10 @@ class VueTpSae {
         }
     }
     labelErreur() {
-        if (this.form.edtIdentificationAdh.value === "0") {
-        }
-        if (this.form.edtNumAdh.value === "") {
-        }
+        //if (this.form.edtIdentificationAdh.value === "0") {
+        //}
+        //if (this.form.edtNumAdh.value === "") {
+        //}
         this.form.lblErreurAdh.innerHTML = "Veuillez saisir le numéro d'adhérent !";
     }
     afficherSelectionTheme() {
@@ -318,10 +322,28 @@ class VueTpSae {
         dataArray = dataUnTheme.toArray();
         this.form.selectThemes.options.add(new Option(dataArray.themeLib, dataArray.themeNum));
     }
+    modificationAbonnement() {
+        const lesThemesAbo = new LesThemesByAbonnement;
+        lesThemesAbo.delete(this.form.edtIdentificationAdh.value);
+        lesThemesAbo.insert(this.form.edtIdentificationAdh.value, this._dataStockageAjoutTheme);
+        this.form.divPageAbonnement.hidden = true;
+        this.form.divSelectionThemes.hidden = false;
+        this.form.divListeAbonnement.hidden = false;
+        this.form.btnAbonnementRetour.hidden = false;
+        this.form.edtIdentificationAdh.disabled = false;
+        this.form.dateNumDate.disabled = false;
+        this.form.edtNumAdh.disabled = false;
+        this.form.textareaCommentaireAdh.disabled = false;
+        this.form.divAbonnementTitre.innerHTML = "";
+        const lesAbonnements = new LesAbonnements();
+        this._data = lesAbonnements.listAll();
+        this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
+    }
     suppressionTheme() {
         //let data: TThemesByAbonnement = {}
-        delete this._dataTheme[Number(this.grilleAbonnement.getIdSelect())];
+        delete this._dataStockageAjoutTheme[Number(this.grilleAbonnement.getIdSelect())];
         this.grilleAbonnement.delSelectLine();
+        console.log(this._dataStockageAjoutTheme);
         //
         //const lesThemes = new LesThemesByAbonnement()
         //this._dataTheme = lesThemes.byAbonNum(this.form.edtIdentificationAdh.value)
@@ -355,27 +377,55 @@ class VueTpSae {
         }
     }
     validerAjoutTheme() {
-        if (this.form.selectThemes.selectedIndex >= 0) {
-            for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
-                if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeNum) {
-                    this._cléTheme = this._dataTousThemesGrille[i].themeNum;
+        if (this.form.chkModifierTheme.checked === true) {
+            if (this.form.selectThemes.selectedIndex >= 0) {
+                for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
+                    if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeNum) {
+                        this._cléTheme = this._dataTousThemesGrille[i].themeNum;
+                    }
                 }
+                const lesThemes = new LesThemes;
+                let unTheme = lesThemes.byThemeNum(this.cléTheme);
+                let versioPapierBool = "";
+                if (this.form.chkVersionPapier.checked === true) {
+                    versioPapierBool = "1";
+                }
+                const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool);
+                this._dataStockageAjoutTheme[this._numberIndexModifier] = leTheme;
+                this.form.chkVersionPapier.checked = false;
+                this.affiGrilleAjout();
+                this.annulerAjoutTheme();
+                //
+                this.form.chkModifierTheme.checked = false;
             }
-            const lesThemes = new LesThemes;
-            let unTheme = lesThemes.byThemeNum(this.cléTheme);
-            let versioPapierBool = "";
-            if (this.form.chkVersionPapier.checked === true) {
-                versioPapierBool = "1";
+        }
+        else {
+            if (this.form.selectThemes.selectedIndex >= 0) {
+                for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
+                    if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeNum) {
+                        this._cléTheme = this._dataTousThemesGrille[i].themeNum;
+                    }
+                }
+                const lesThemes = new LesThemes;
+                let unTheme = lesThemes.byThemeNum(this.cléTheme);
+                let versioPapierBool = "";
+                if (this.form.chkVersionPapier.checked === true) {
+                    versioPapierBool = "1";
+                }
+                const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool);
+                this._dataStockageAjoutTheme[this._indexIncrementation] = leTheme;
+                this._indexIncrementation++;
+                this.form.chkVersionPapier.checked = false;
+                this.affiGrilleAjout();
+                this.annulerAjoutTheme();
             }
-            const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool);
-            this._dataStockageAjoutTheme[this._indexIncrementation] = leTheme;
-            this._indexIncrementation++;
-            this.form.chkVersionPapier.checked = false;
-            this.affiGrilleAjout();
-            this.annulerAjoutTheme();
         }
     }
     verifierAjoutAbonnement() {
+        if (this.form.edtTexteInvisible.value === "3") {
+            this.form.edtTexteInvisible.value = "0";
+            this.modificationAbonnement();
+        }
         if (this.verifieurAjout() === false) {
             this.messageErreur();
         }
