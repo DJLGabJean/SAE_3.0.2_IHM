@@ -202,14 +202,16 @@ class VueTpSae {
     }
 
     ajouterAbonnement(): void {
+        let date = new Date()
+        this.form.dateNumDate.valueAsDate = date
         this.form.edtTexteInvisible.value = "2";
         this.form.divListeAbonnement.hidden = true;
         this.form.divPageAbonnement.hidden = false;
         this.form.divSelectionThemes.hidden = true;
         this.form.btnAbonnementRetour.hidden = true;
         this.form.tableTotalAbonnement.hidden = true
-        this.form.divAbonnementTitre.innerHTML = "Ajout d'un abonnement";
-        this.form.lblErreurIdendification.innerHTML = "Veuillez saisir une date"
+        this.form.edtIdentificationAdh.disabled = true
+        this.form.divAbonnementTitre.innerHTML = "Ajout d'un nouvel abonnement";
         this.form.lblErreurAdh.innerHTML = "Veuillez saisir le numéro d'adhérent"
         //
         const lesAbonnements = new LesAbonnements()
@@ -232,8 +234,7 @@ class VueTpSae {
             this.form.btnAbonnementRetour.hidden = true
             this.form.edtIdentificationAdh.disabled = true
             this.form.dateNumDate.disabled = true
-            this.form.edtNumAdh.disabled = true
-            this.form.textareaCommentaireAdh.disabled = true //Check si les boutons désactiver sont nécessaires
+            this.form.edtNumAdh.disabled = true //Check si les boutons désactiver sont nécessaires
             this.form.divAbonnementTitre.innerHTML = "Modification d'un abonnement" //Pour afficher le bon Titre
         }
     }
@@ -308,12 +309,12 @@ class VueTpSae {
         this._dataStockageAjoutTheme = {}
         this.form.divNombreTotal.innerHTML = "0.00 €"
         //
-        this.form.lblErreurIdendification.innerHTML =  ""
         this.form.lblErreurAdh.innerHTML = ""
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
         this.form.divListeAbonnement.hidden = false;
+        this.form.edtIdentificationAdh.disabled = false
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
@@ -340,7 +341,7 @@ class VueTpSae {
     }
 
     labelErreurIdentifiant(): void {
-        let message = "46465"
+        let message = ""
         if (this.form.edtIdentificationAdh.value === "") {
             console.log("ça marche")
             message += "Veuillez saisir un numéro d'abonnement <br>"
@@ -412,6 +413,10 @@ class VueTpSae {
 
     modificationAbonnement(): void {
         const lesThemesAbo = new LesThemesByAbonnement
+        const lesAbonnements = new LesAbonnements()
+        let unAbonnement = lesAbonnements.byAbonNum(this.form.edtIdentificationAdh.value)
+        unAbonnement.abonComment = this.form.textareaCommentaireAdh.value
+        lesAbonnements.update(unAbonnement)
         lesThemesAbo.delete(this.form.edtIdentificationAdh.value)
         lesThemesAbo.insert(this.form.edtIdentificationAdh.value, this._dataStockageAjoutTheme)
         this.form.divPageAbonnement.hidden = true
@@ -421,9 +426,7 @@ class VueTpSae {
         this.form.edtIdentificationAdh.disabled = false
         this.form.dateNumDate.disabled = false
         this.form.edtNumAdh.disabled = false
-        this.form.textareaCommentaireAdh.disabled = false
         this.form.divAbonnementTitre.innerHTML = ""
-        const lesAbonnements = new LesAbonnements()
         this._data = lesAbonnements.listAll()
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
     }
@@ -628,7 +631,6 @@ class VueTpSae {
     }
 
     annulerAjoutAbonnement(): void {
-        this.form.lblErreurIdendification.innerHTML =  ""
         this.form.lblErreurAdh.innerHTML = ""
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
@@ -637,6 +639,7 @@ class VueTpSae {
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
         this.form.btnThemeSupprimer.disabled = false;
+        this.form.edtIdentificationAdh.disabled = false
         this.form.divAbonnementTitre.innerHTML = ""
         this.form.tableTotalAbonnement.hidden = false
     }
