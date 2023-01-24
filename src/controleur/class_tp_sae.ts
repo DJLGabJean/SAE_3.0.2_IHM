@@ -1,6 +1,4 @@
-//TODO fix modification d'abonnement, il se duplique bizarrement et se fix avec un ajout
-//TODO Partie de Nico à faire s'il veut bien
-//TODO supprimer théme Doublon et fix bug d'array peut-être un for dans un for
+//TODO les labels d'erreurs: numéro d'adhésion et verifier si un théme est choisis
 import {LesAbonnements} from "../modele/data_abonnement"
 import { UnAbonnement } from "../modele/data_abonnement"
 import { TAbonnements } from "../modele/data_abonnement"
@@ -54,7 +52,6 @@ type TpSAEForm = {
 }
 
 class VueTpSae {
-    private _indexIncrementation: number //Je veux ce nombre pour incrementer mon tableau qui stocke les abonnements et personne n'y touche !
     private _form: TpSAEForm
     private _grille: GrilleTabulaire
     private _grilleTotalAbonnement: GrilleTabulaire
@@ -68,7 +65,6 @@ class VueTpSae {
     private _dataThemeGrille: TdataSet
     private _cléTheme: string
     init(form : TpSAEForm) : void {
-        this._indexIncrementation = 0
         this._form = form
         this._grille = new GrilleTabulaire
         this._grilleTotalAbonnement = new GrilleTabulaire
@@ -213,6 +209,7 @@ class VueTpSae {
         this.form.btnAbonnementRetour.hidden = true;
         this.form.tableTotalAbonnement.hidden = true
         this.form.divAbonnementTitre.innerHTML = "Ajout d'un abonnement";
+        this.form.lblErreurIdendification.innerHTML = "Veuillez saisir une date"
         //
         const lesAbonnements = new LesAbonnements()
         let numéroAbonnement = lesAbonnements.getNouveauNumero()
@@ -304,11 +301,13 @@ class VueTpSae {
         desAbonnements.insert(abonnement)
         //
         const lesThemesByAbon = new LesThemesByAbonnement
+        console.log(lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, this._dataStockageAjoutTheme))
         lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, this._dataStockageAjoutTheme)
         console.log(this._dataStockageAjoutTheme, "avant vidage")
-        this._dataStockageAjoutTheme= {}
+        this._dataStockageAjoutTheme = {}
         this.form.divNombreTotal.innerHTML = "0.00 €"
         //
+        this.form.lblErreurIdendification.innerHTML =  ""
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
@@ -318,6 +317,7 @@ class VueTpSae {
         this.form.btnThemeSupprimer.disabled = false;
         this._data = desAbonnements.listAll()
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true)
+        this.viderChamps()
     }
 
     modifierTheme(): void {
@@ -337,15 +337,16 @@ class VueTpSae {
         }
     }
 
-    labelErreur(): void {
-        //if (this.form.edtIdentificationAdh.value === "0") {
-            
-        //}
-        
-        //if (this.form.edtNumAdh.value === "") {
-            
-        //}
-        this.form.lblErreurAdh.innerHTML = "Veuillez saisir le numéro d'adhérent !"
+    labelErreurIdentifiant(): void {
+        let message = ""
+        if (this.form.edtIdentificationAdh.value === "") {
+            console.log("ça marche")
+            message += "Veuillez saisir un numéro d'abonnement <br>"
+        }
+        if (this.form.dateNumDate.value === "") {
+            message += "Veuillez saisir une date"
+        }
+        this.form.lblErreurIdendification.innerHTML = message
     }
 
     afficherSelectionTheme(): void { //TODO problème de classification dans l'ordre des arrays dans stockage data
@@ -458,26 +459,38 @@ class VueTpSae {
             const lesThemes = new LesThemes
             let unTheme = lesThemes.byThemeNum(this.cléTheme)
             let versioPapierBool = ""
+            const leTheme = new UnThemeByAbonnement(unTheme) 
+            console.log(leTheme)
             if (this.form.chkVersionPapier.checked === true) {
                 versioPapierBool = "1"
+                leTheme.envoiPapier = versioPapierBool
+                leTheme.montant = (Number(leTheme.montant) *2).toFixed(2)
             }
-            const leTheme = new UnThemeByAbonnement(unTheme, versioPapierBool)
+            else {
+                versioPapierBool = "0"
+                leTheme.envoiPapier = versioPapierBool
+            }
             if (this.form.chkModifierTheme.checked === true) {
+                console.log("modification abonnement")
                 const lesThemsParAbonNum = new LesThemesByAbonnement
                 let tableauStockage = lesThemsParAbonNum.toArray(this._dataStockageAjoutTheme)
+                console.log(tableauStockage)
                 let conserveurIndex = 0
                 for (let i = 0; i < tableauStockage.length; i++ ) {
                     if (leTheme.unTheme.themeNum === tableauStockage[i].themeNum) {
-                        conserveurIndex = 0
+                        conserveurIndex = i
+                        console.log(i, leTheme.unTheme.themeNum, tableauStockage[i].themeNum)
                     }
                 }
-                this._dataStockageAjoutTheme[conserveurIndex] = leTheme
+                this._dataStockageAjoutTheme[tableauStockage[conserveurIndex].themeNum] = leTheme
+                console.log(this._dataStockageAjoutTheme)
                 this.form.chkVersionPapier.checked = false
             }
             else {
-                this._dataStockageAjoutTheme[this._indexIncrementation] = leTheme
-                this._indexIncrementation ++
+                console.log("Valisation d'un abonnement")
+                this._dataStockageAjoutTheme[this._cléTheme] = leTheme
             }
+            this.form.chkModifierTheme.checked = false
             this.form.chkVersionPapier.checked = false
             this.affiGrilleAjout()
             this.annulerAjoutTheme()
@@ -604,6 +617,7 @@ class VueTpSae {
     }
 
     annulerAjoutAbonnement(): void {
+        this.form.lblErreurIdendification.innerHTML =  ""
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
