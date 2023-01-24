@@ -1,5 +1,4 @@
 //TODO les labels d'erreurs: numéro d'adhésion et verifier si un théme est choisis
-//TODO supprimer théme Doublon et fix bug d'array peut-être un for dans un for, update: apparement ça marche ?
 import { LesAbonnements } from "../modele/data_abonnement";
 import { UnAbonnement } from "../modele/data_abonnement";
 import { UnTheme } from "../modele/data_theme";
@@ -147,6 +146,7 @@ class VueTpSae {
         this.form.tableTotalAbonnement.hidden = true;
         this.form.divAbonnementTitre.innerHTML = "Ajout d'un abonnement";
         this.form.lblErreurIdendification.innerHTML = "Veuillez saisir une date";
+        this.form.lblErreurAdh.innerHTML = "Veuillez saisir le numéro d'adhérent";
         //
         const lesAbonnements = new LesAbonnements();
         let numéroAbonnement = lesAbonnements.getNouveauNumero();
@@ -241,6 +241,7 @@ class VueTpSae {
         this.form.divNombreTotal.innerHTML = "0.00 €";
         //
         this.form.lblErreurIdendification.innerHTML = "";
+        this.form.lblErreurAdh.innerHTML = "";
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
@@ -268,7 +269,7 @@ class VueTpSae {
         }
     }
     labelErreurIdentifiant() {
-        let message = "";
+        let message = "46465";
         if (this.form.edtIdentificationAdh.value === "") {
             console.log("ça marche");
             message += "Veuillez saisir un numéro d'abonnement <br>";
@@ -277,6 +278,14 @@ class VueTpSae {
             message += "Veuillez saisir une date";
         }
         this.form.lblErreurIdendification.innerHTML = message;
+    }
+    labelErreurNumAdh() {
+        let message = "";
+        if (this.form.edtNumAdh.value === "") {
+            console.log("help");
+            message += "Veuillez saisir le numéro d'adhérent";
+        }
+        this.form.lblErreurAdh.innerHTML = message;
     }
     afficherSelectionTheme() {
         const lesThemes = new LesThemes;
@@ -534,6 +543,7 @@ class VueTpSae {
     }
     annulerAjoutAbonnement() {
         this.form.lblErreurIdendification.innerHTML = "";
+        this.form.lblErreurAdh.innerHTML = "";
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;

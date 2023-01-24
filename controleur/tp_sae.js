@@ -46,7 +46,7 @@ vueTpSaeClass.form.btnThemeModifier.addEventListener("click", function () { vueT
 vueTpSaeClass.form.btnThemeSupprimer.addEventListener("click", function () { vueTpSaeClass.supprimerTheme(); });
 vueTpSaeClass.form.btnThemeAnnuler.addEventListener("click", function () { vueTpSaeClass.annulerAjoutTheme(); });
 vueTpSaeClass.form.btnThemeValider.addEventListener("click", function () { vueTpSaeClass.validerAjoutTheme(); });
-vueTpSaeClass.form.edtNumAdh.addEventListener("change", function () { vueTpSaeClass.refreshNuméroAdhérent(); });
+vueTpSaeClass.form.edtNumAdh.addEventListener("change", function () { vueTpSaeClass.refreshNuméroAdhérent(), vueTpSaeClass.labelErreurNumAdh(); });
 vueTpSaeClass.form.edtIdentificationAdh.addEventListener("change", function () { vueTpSaeClass.labelErreurIdentifiant(); });
 vueTpSaeClass.form.dateNumDate.addEventListener("change", function () { vueTpSaeClass.labelErreurIdentifiant(); });
 //# sourceMappingURL=tp_sae.js.map

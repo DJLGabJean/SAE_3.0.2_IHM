@@ -210,6 +210,7 @@ class VueTpSae {
         this.form.tableTotalAbonnement.hidden = true
         this.form.divAbonnementTitre.innerHTML = "Ajout d'un abonnement";
         this.form.lblErreurIdendification.innerHTML = "Veuillez saisir une date"
+        this.form.lblErreurAdh.innerHTML = "Veuillez saisir le numéro d'adhérent"
         //
         const lesAbonnements = new LesAbonnements()
         let numéroAbonnement = lesAbonnements.getNouveauNumero()
@@ -308,6 +309,7 @@ class VueTpSae {
         this.form.divNombreTotal.innerHTML = "0.00 €"
         //
         this.form.lblErreurIdendification.innerHTML =  ""
+        this.form.lblErreurAdh.innerHTML = ""
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
@@ -338,7 +340,7 @@ class VueTpSae {
     }
 
     labelErreurIdentifiant(): void {
-        let message = ""
+        let message = "46465"
         if (this.form.edtIdentificationAdh.value === "") {
             console.log("ça marche")
             message += "Veuillez saisir un numéro d'abonnement <br>"
@@ -350,14 +352,15 @@ class VueTpSae {
     }
 
     labelErreurNumAdh(): void {
-        let message = ""; 
+        let message = ""
         if (this.form.edtNumAdh.value === "") {
-            message += "Veuillez saisir le numéro d'adhérent <br>";
+            console.log("help")
+            message += "Veuillez saisir le numéro d'adhérent"
         }
-        this.form.edtNumAdh.innerHTML = message;
+        this.form.lblErreurAdh.innerHTML = message
     }
 
-    afficherSelectionTheme(): void { //TODO problème de classification dans l'ordre des arrays dans stockage data
+    afficherSelectionTheme(): void {
         const lesThemes = new LesThemes;
         const lesThemesByAbo = new LesThemesByAbonnement
         let stockageAbonnementActuel = lesThemesByAbo.toArray(this._dataStockageAjoutTheme)
@@ -626,6 +629,7 @@ class VueTpSae {
 
     annulerAjoutAbonnement(): void {
         this.form.lblErreurIdendification.innerHTML =  ""
+        this.form.lblErreurAdh.innerHTML = ""
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
