@@ -349,6 +349,14 @@ class VueTpSae {
         this.form.lblErreurIdendification.innerHTML = message
     }
 
+    labelErreurNumAdh(): void {
+        let message = ""; 
+        if (this.form.edtNumAdh.value === "") {
+            message += "Veuillez saisir le numéro d'adhérent <br>";
+        }
+        this.form.edtNumAdh.innerHTML = message;
+    }
+
     afficherSelectionTheme(): void { //TODO problème de classification dans l'ordre des arrays dans stockage data
         const lesThemes = new LesThemes;
         const lesThemesByAbo = new LesThemesByAbonnement
