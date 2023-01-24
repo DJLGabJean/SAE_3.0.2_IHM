@@ -361,6 +361,15 @@ class VueTpSae {
         this.form.lblErreurAdh.innerHTML = message
     }
 
+    labelErreurSelectTheme(): void {
+        let message = "";
+        const lesThemesByAbo = new LesThemesByAbonnement;
+        if (lesThemesByAbo.getTotal(this._dataStockageAjoutTheme) === 0) {
+            message += "Veuillez sélectioner au moins un thème dans la liste !";
+        }
+        this.form.lblErreurSelectThemes.innerHTML = message;
+    }
+
     afficherSelectionTheme(): void {
         const lesThemes = new LesThemes;
         const lesThemesByAbo = new LesThemesByAbonnement
