@@ -7,10 +7,8 @@ import { LesThemesByAbonnement } from "../modele/data_theme";
 import { UnThemeByAbonnement } from "../modele/data_theme";
 import { LesAdherents } from "../modele/data_adherent";
 import { LesCsps } from "../modele/data_csp";
-var VueTpSae = /** @class */ (function () {
-    function VueTpSae() {
-    }
-    VueTpSae.prototype.init = function (form) {
+class VueTpSae {
+    init(form) {
         this._form = form;
         this._grille = new GrilleTabulaire;
         this._grilleTotalAbonnement = new GrilleTabulaire;
@@ -18,14 +16,14 @@ var VueTpSae = /** @class */ (function () {
         this._dataTheme = {};
         this._dataStockageAjoutTheme = {};
         this._dataThemeGrille = [];
-        var lesThemes = new LesThemes();
+        const lesThemes = new LesThemes();
         this._dataTousThemes = lesThemes.all();
         this._dataTousThemesGrille = lesThemes.toArray(this._dataTousThemes);
-        var lesAbonnements = new LesAbonnements;
+        const lesAbonnements = new LesAbonnements;
         this._data = lesAbonnements.listAll();
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
         this._dataAdherent = [];
-        var tousAdherent = new LesAdherents;
+        const tousAdherent = new LesAdherents;
         this._stockageTousLesAdherents = tousAdherent.all();
         this._dataAdherent = tousAdherent.toArray(this._stockageTousLesAdherents);
         this.form.divPageAbonnement.hidden = true;
@@ -33,116 +31,68 @@ var VueTpSae = /** @class */ (function () {
         this.form.edtTexteInvisible.hidden = true;
         this.form.chkModifierTheme.hidden = true;
         this.form.divNombreTotal.innerHTML = "0.00 €";
-    };
-    Object.defineProperty(VueTpSae.prototype, "form", {
-        get: function () { return this._form; },
-        enumerable: false,
-        configurable: true
-    });
+    }
+    get form() { return this._form; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "data", {
-        get: function () { return this._data; },
-        enumerable: false,
-        configurable: true
-    });
+    get data() { return this._data; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "dataTheme", {
-        get: function () { return this._dataTheme; },
-        enumerable: false,
-        configurable: true
-    });
+    get dataTheme() { return this._dataTheme; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "dataStockageAjoutTheme", {
-        get: function () { return this._dataStockageAjoutTheme; },
-        enumerable: false,
-        configurable: true
-    });
+    get dataStockageAjoutTheme() { return this._dataStockageAjoutTheme; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "dataThemeGrille", {
-        get: function () { return this._dataThemeGrille; },
-        enumerable: false,
-        configurable: true
-    });
+    get dataThemeGrille() { return this._dataThemeGrille; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "dataAdherent", {
-        get: function () { return this._dataAdherent; },
-        enumerable: false,
-        configurable: true
-    });
+    get dataAdherent() { return this._dataAdherent; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "dataTousThemes", {
-        get: function () { return this._dataTousThemes; },
-        enumerable: false,
-        configurable: true
-    });
+    get dataTousThemes() { return this._dataTousThemes; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "dataTousThemesGrille", {
-        get: function () { return this._dataTousThemesGrille; },
-        enumerable: false,
-        configurable: true
-    });
+    get dataTousThemesGrille() { return this._dataTousThemesGrille; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "stockageTousLesAdherents", {
-        get: function () { return this._stockageTousLesAdherents; },
-        enumerable: false,
-        configurable: true
-    });
+    get stockageTousLesAdherents() { return this._stockageTousLesAdherents; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "grille", {
-        get: function () { return this._grille; },
-        enumerable: false,
-        configurable: true
-    });
+    get grille() { return this._grille; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "grilleAbonnement", {
-        get: function () { return this._grilleTotalAbonnement; },
-        enumerable: false,
-        configurable: true
-    });
+    get grilleAbonnement() { return this._grilleTotalAbonnement; }
     ;
-    Object.defineProperty(VueTpSae.prototype, "cl\u00E9Theme", {
-        get: function () { return this._cléTheme; },
-        enumerable: false,
-        configurable: true
-    });
+    get cléTheme() { return this._cléTheme; }
     ;
-    VueTpSae.prototype.supprimerClick = function () {
+    supprimerClick() {
         if (this._grille.getIdSelect() !== "") {
             APIpageWeb.confirmation("Suppression salle", "Confirmez-vous la suppression de cette abonnement ? ", vueTpSaeClass, "supprimerAbonnement()");
         }
-    };
-    VueTpSae.prototype.supprimerAbonnement = function () {
-        var lesAbonnements = new LesAbonnements;
-        var lesThemesByAbo = new LesThemesByAbonnement;
-        lesAbonnements["delete"](this.grille.getIdSelect());
-        lesThemesByAbo["delete"](this.grille.getIdSelect());
+    }
+    supprimerAbonnement() {
+        const lesAbonnements = new LesAbonnements;
+        const lesThemesByAbo = new LesThemesByAbonnement;
+        lesAbonnements.delete(this.grille.getIdSelect());
+        lesThemesByAbo.delete(this.grille.getIdSelect());
         this._grille.delSelectLine();
-    };
-    VueTpSae.prototype.affiGrille = function (idGrille) {
-        var lesThemesParAbo = new LesThemesByAbonnement;
-        var idAbonNum = lesThemesParAbo.byAbonNum(idGrille);
+    }
+    affiGrille(idGrille) {
+        const lesThemesParAbo = new LesThemesByAbonnement;
+        const idAbonNum = lesThemesParAbo.byAbonNum(idGrille);
         this._dataThemeGrille = lesThemesParAbo.toArray(idAbonNum);
         this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._dataThemeGrille, 'themeNum', false);
-    };
-    VueTpSae.prototype.affiGrilleAjout = function () {
+    }
+    affiGrilleAjout() {
         this.form.tableTotalAbonnement.hidden = false;
-        var lesThemesParAbo = new LesThemesByAbonnement;
-        var totalAbonnement = lesThemesParAbo.getTotal(this._dataStockageAjoutTheme);
+        const lesThemesParAbo = new LesThemesByAbonnement;
+        let totalAbonnement = lesThemesParAbo.getTotal(this._dataStockageAjoutTheme);
         this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €";
         this._dataThemeGrille = lesThemesParAbo.toArray(this._dataStockageAjoutTheme);
         this._grilleTotalAbonnement = APIpageWeb.showArray(this.form.tableTotalAbonnement.id, this._dataThemeGrille, 'themeNum', false);
-    };
-    VueTpSae.prototype.recupererInfoAbonn = function (idGrille) {
-        var lesAbonnements = new LesAbonnements();
-        var abonAffich = lesAbonnements.byAbonNum(idGrille);
+    }
+    recupererInfoAbonn(idGrille) {
+        const lesAbonnements = new LesAbonnements();
+        const abonAffich = lesAbonnements.byAbonNum(idGrille);
         this.form.edtIdentificationAdh.value = abonAffich.abonNum;
         this.form.edtNumAdh.value = abonAffich.adhNum;
         this.form.dateNumDate.value = abonAffich.abonDate;
         this.form.textareaCommentaireAdh.value = abonAffich.abonComment;
         //
-        var divInfoAbonnement = "";
-        var lesAdherents = new LesAdherents;
-        var unAdherents = lesAdherents.byAdhNum(abonAffich.adhNum);
+        let divInfoAbonnement = "";
+        const lesAdherents = new LesAdherents;
+        const unAdherents = lesAdherents.byAdhNum(abonAffich.adhNum);
         divInfoAbonnement += "Adhérent <br>";
         divInfoAbonnement += unAdherents.adhCiv + " " + unAdherents.adhNom + " " + unAdherents.adhPrenom + "<br>";
         divInfoAbonnement += unAdherents.adhMel + "<br>";
@@ -165,24 +115,26 @@ var VueTpSae = /** @class */ (function () {
         }
         this.form.divInformationAdherent.innerHTML = divInfoAbonnement;
         //
-        var lesCsp = new LesCsps;
-        var idCsp = lesCsp.byCspNum(unAdherents.cspNum);
-        var divInfoCSP = "";
+        const lesCsp = new LesCsps;
+        const idCsp = lesCsp.byCspNum(unAdherents.cspNum);
+        let divInfoCSP = "";
         divInfoCSP += "Catégories SocioProfessionelle <br>";
         divInfoCSP += idCsp.cspLib;
         this.form.divInformationAbonnement.innerHTML = divInfoCSP;
         //
-        var lesThemes = new LesThemesByAbonnement();
+        const lesThemes = new LesThemesByAbonnement();
         this._dataTheme = lesThemes.byAbonNum(idGrille);
-        var totalAbonnement = lesThemes.getTotal(this._dataTheme);
+        let totalAbonnement = lesThemes.getTotal(this._dataTheme);
         this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €";
-    };
-    VueTpSae.prototype.afficherDetail = function () {
+    }
+    afficherDetail() {
         if (this._grille.getIdSelect() !== "") {
-            var grilleId = this.grille.getIdSelect();
+            let grilleId = this.grille.getIdSelect();
             this.recupererInfoAbonn(grilleId);
             this.affiGrille(grilleId);
             //
+            const lesThemesByAbo = new LesThemesByAbonnement;
+            this._dataStockageAjoutTheme = lesThemesByAbo.byAbonNum(this._grille.getIdSelect());
             this.form.edtTexteInvisible.value = "1";
             this.form.divPageAbonnement.hidden = false;
             this.form.divSelectionThemes.hidden = true;
@@ -198,9 +150,9 @@ var VueTpSae = /** @class */ (function () {
             this.form.textareaCommentaireAdh.disabled = true; //Pour désactiver les boutons
             this.form.divAbonnementTitre.innerHTML = "Détail d'un abonnement"; //Pour afficher le bon Titre
         }
-    };
-    VueTpSae.prototype.ajouterAbonnement = function () {
-        var date = new Date();
+    }
+    ajouterAbonnement() {
+        let date = new Date();
         this.form.dateNumDate.valueAsDate = date;
         this.form.edtTexteInvisible.value = "2";
         this.form.divListeAbonnement.hidden = true;
@@ -213,14 +165,14 @@ var VueTpSae = /** @class */ (function () {
         this.form.lblErreurAdh.innerHTML = "Veuillez saisir le numéro d'adhérent";
         this.form.lblErreurSelectionTheme.innerHTML = "Veuillez selectionner un thème";
         //
-        var lesAbonnements = new LesAbonnements();
-        var numéroAbonnement = lesAbonnements.getNouveauNumero();
+        const lesAbonnements = new LesAbonnements();
+        let numéroAbonnement = lesAbonnements.getNouveauNumero();
         this.form.edtIdentificationAdh.value = numéroAbonnement;
-    };
-    VueTpSae.prototype.afficherModifier = function () {
+    }
+    afficherModifier() {
         if (this._grille.getIdSelect() !== "") {
-            var lesThemesByAbo = new LesThemesByAbonnement;
-            var grilleId = this.grille.getIdSelect();
+            const lesThemesByAbo = new LesThemesByAbonnement;
+            let grilleId = this.grille.getIdSelect();
             this.recupererInfoAbonn(grilleId);
             this.affiGrille(grilleId);
             this._dataStockageAjoutTheme = lesThemesByAbo.byAbonNum(this._grille.getIdSelect());
@@ -235,16 +187,16 @@ var VueTpSae = /** @class */ (function () {
             this.form.edtNumAdh.disabled = true; //Check si les boutons désactiver sont nécessaires
             this.form.divAbonnementTitre.innerHTML = "Modification d'un abonnement"; //Pour afficher le bon Titre
         }
-    };
-    VueTpSae.prototype.refreshNuméroAdhérent = function () {
+    }
+    refreshNuméroAdhérent() {
         if (this.verifieurExistenceNumAdh() === true) {
-            var indiceAdhérent = 0;
-            for (var i = 0; i < this._dataAdherent.length; i++) {
+            let indiceAdhérent = 0;
+            for (let i = 0; i < this._dataAdherent.length; i++) {
                 if (this.form.edtNumAdh.value === this._dataAdherent[i].adhNum) {
                     indiceAdhérent = i;
                 }
             }
-            var divInfoAbonnement = "";
+            let divInfoAbonnement = "";
             divInfoAbonnement += "Adhérent <br>";
             divInfoAbonnement += this._dataAdherent[indiceAdhérent].adhCiv + " " + this._dataAdherent[indiceAdhérent].adhNom + " " + this._dataAdherent[indiceAdhérent].adhPrenom + "<br>";
             divInfoAbonnement += this._dataAdherent[indiceAdhérent].adhMel + "<br>";
@@ -267,9 +219,9 @@ var VueTpSae = /** @class */ (function () {
             }
             this.form.divInformationAdherent.innerHTML = divInfoAbonnement;
             //
-            var lesCsp = new LesCsps;
-            var idCsp = lesCsp.byCspNum(this._dataAdherent[indiceAdhérent].cspNum);
-            var divInfoCSP = "";
+            const lesCsp = new LesCsps;
+            const idCsp = lesCsp.byCspNum(this._dataAdherent[indiceAdhérent].cspNum);
+            let divInfoCSP = "";
             divInfoCSP += "Catégories SocioProfessionelle <br>";
             divInfoCSP += idCsp.cspLib;
             this.form.divInformationAbonnement.innerHTML = divInfoCSP;
@@ -278,25 +230,25 @@ var VueTpSae = /** @class */ (function () {
             this.form.divInformationAdherent.innerHTML = "Adhérent";
             this.form.divInformationAbonnement.innerHTML = "Catégories SocioProfessionelle";
         }
-    };
-    VueTpSae.prototype.ajouterDepuisTheme = function () {
+    }
+    ajouterDepuisTheme() {
         this.form.divSelectionThemes.hidden = false;
         this.form.btnThemeAjouter.disabled = true;
         this.form.btnThemeModifier.disabled = true;
         this.form.btnThemeSupprimer.disabled = true;
         this.afficherSelectionTheme();
-    };
-    VueTpSae.prototype.ajouterClick = function () {
+    }
+    ajouterClick() {
         this.form.edtTexteInvisible.value = "0";
-        var abonnement = new UnAbonnement;
-        var desAbonnements = new LesAbonnements;
+        let abonnement = new UnAbonnement;
+        let desAbonnements = new LesAbonnements;
         abonnement.abonNum = this.form.edtIdentificationAdh.value;
         abonnement.abonDate = this.form.dateNumDate.value;
         abonnement.abonComment = this.form.textareaCommentaireAdh.value;
         abonnement.adhNum = this.form.edtNumAdh.value;
         desAbonnements.insert(abonnement);
         //
-        var lesThemesByAbon = new LesThemesByAbonnement;
+        const lesThemesByAbon = new LesThemesByAbonnement;
         console.log(lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, this._dataStockageAjoutTheme));
         lesThemesByAbon.insert(this.form.edtIdentificationAdh.value, this._dataStockageAjoutTheme);
         this._dataStockageAjoutTheme = {};
@@ -314,8 +266,8 @@ var VueTpSae = /** @class */ (function () {
         this._data = desAbonnements.listAll();
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
         this.viderChamps();
-    };
-    VueTpSae.prototype.modifierTheme = function () {
+    }
+    modifierTheme() {
         if (this.grilleAbonnement.getIdSelect() !== "") {
             this.form.chkModifierTheme.checked = true;
             this.form.divSelectionThemes.hidden = false;
@@ -324,14 +276,14 @@ var VueTpSae = /** @class */ (function () {
             this.form.btnThemeSupprimer.disabled = true;
             this.afficherModificationTheme();
         }
-    };
-    VueTpSae.prototype.supprimerTheme = function () {
+    }
+    supprimerTheme() {
         if (this.grilleAbonnement.getIdSelect() !== "") {
             APIpageWeb.confirmation("Suppression Theme", "Confirmez-vous la suppression de ce thème ? ", vueTpSaeClass, "suppressionTheme()");
         }
-    };
-    VueTpSae.prototype.labelErreurIdentifiant = function () {
-        var message = "";
+    }
+    labelErreurIdentifiant() {
+        let message = "";
         if (this.form.edtIdentificationAdh.value === "") {
             message += "Veuillez saisir un numéro d'abonnement <br>";
         }
@@ -339,49 +291,49 @@ var VueTpSae = /** @class */ (function () {
             message += "Veuillez saisir une date";
         }
         this.form.lblErreurIdendification.innerHTML = message;
-    };
-    VueTpSae.prototype.labelErreurNumAdh = function () {
-        var message = "";
+    }
+    labelErreurNumAdh() {
+        let message = "";
         if (this.form.edtNumAdh.value === "") {
             message += "Veuillez saisir le numéro d'adhérent";
         }
         this.form.lblErreurAdh.innerHTML = message;
-    };
-    VueTpSae.prototype.labelErreurThemeTotal = function () {
-        var message = "";
-        var lesThemesByAbo = new LesThemesByAbonnement();
+    }
+    labelErreurThemeTotal() {
+        let message = "";
+        const lesThemesByAbo = new LesThemesByAbonnement();
         if (lesThemesByAbo.getTotal(this._dataStockageAjoutTheme) === 0) {
             message += "Veuillez sélectioner au moins un thème dans la liste !";
         }
         this.form.lblErreurSelectionTheme.innerHTML = message;
-    };
-    VueTpSae.prototype.labelErreurSelectTheme = function () {
-        var message = "";
+    }
+    labelErreurSelectTheme() {
+        let message = "";
         if (this.form.selectThemes.selectedIndex >= 0) {
             this.form.lblErreurSelectThemes.innerHTML = message;
         }
         else
             this.form.lblErreurSelectThemes.innerHTML = "Veuillez choisir au moins un thème de la liste !";
-    };
-    VueTpSae.prototype.afficherSelectionTheme = function () {
-        var lesThemes = new LesThemes;
-        var lesThemesByAbo = new LesThemesByAbonnement;
+    }
+    afficherSelectionTheme() {
+        const lesThemes = new LesThemes;
+        const lesThemesByAbo = new LesThemesByAbonnement;
         this.form.lblErreurSelectThemes.innerHTML = "Veuillez choisir au moins un thème de la liste !";
-        var stockageAbonnementActuel = lesThemesByAbo.toArray(this._dataStockageAjoutTheme);
-        var data = {};
+        let stockageAbonnementActuel = lesThemesByAbo.toArray(this._dataStockageAjoutTheme);
+        let data = {};
         data = lesThemes.all();
-        var dataArray = lesThemes.toArray(data);
+        let dataArray = lesThemes.toArray(data);
         if (stockageAbonnementActuel.length === 0) {
-            for (var i in dataArray) {
-                var item = dataArray[i];
-                var id = item.themeNum;
+            for (let i in dataArray) {
+                const item = dataArray[i];
+                const id = item.themeNum;
                 this.form.selectThemes.options.add(new Option(item.themeLib, id));
             }
         }
         else {
-            for (var i = 0, j = 0; i < dataArray.length; i++) {
-                var item = dataArray[i];
-                var id = item.themeNum;
+            for (let i = 0, j = 0; i < dataArray.length; i++) {
+                const item = dataArray[i];
+                const id = item.themeNum;
                 if (stockageAbonnementActuel[j].themeNum != id) {
                     // Ajout
                     this.form.selectThemes.options.add(new Option(item.themeLib, id));
@@ -395,23 +347,23 @@ var VueTpSae = /** @class */ (function () {
                 }
             }
         }
-    };
-    VueTpSae.prototype.afficherModificationTheme = function () {
-        var grilleId = this.grilleAbonnement.getIdSelect();
-        var lesThemes = new LesThemes;
-        var dataUnTheme = new UnTheme;
+    }
+    afficherModificationTheme() {
+        let grilleId = this.grilleAbonnement.getIdSelect();
+        const lesThemes = new LesThemes;
+        let dataUnTheme = new UnTheme;
         dataUnTheme = lesThemes.byThemeNum(grilleId);
-        var dataArray;
+        let dataArray;
         dataArray = dataUnTheme.toArray();
         this.form.selectThemes.options.add(new Option(dataArray.themeLib, dataArray.themeNum));
-    };
-    VueTpSae.prototype.modificationAbonnement = function () {
-        var lesThemesAbo = new LesThemesByAbonnement;
-        var lesAbonnements = new LesAbonnements();
-        var unAbonnement = lesAbonnements.byAbonNum(this.form.edtIdentificationAdh.value);
+    }
+    modificationAbonnement() {
+        const lesThemesAbo = new LesThemesByAbonnement;
+        const lesAbonnements = new LesAbonnements();
+        let unAbonnement = lesAbonnements.byAbonNum(this.form.edtIdentificationAdh.value);
         unAbonnement.abonComment = this.form.textareaCommentaireAdh.value;
         lesAbonnements.update(unAbonnement);
-        lesThemesAbo["delete"](this.form.edtIdentificationAdh.value);
+        lesThemesAbo.delete(this.form.edtIdentificationAdh.value);
         lesThemesAbo.insert(this.form.edtIdentificationAdh.value, this._dataStockageAjoutTheme);
         this.form.divPageAbonnement.hidden = true;
         this.form.divSelectionThemes.hidden = false;
@@ -423,44 +375,44 @@ var VueTpSae = /** @class */ (function () {
         this.form.divAbonnementTitre.innerHTML = "";
         this._data = lesAbonnements.listAll();
         this._grille = APIpageWeb.showArray(this.form.tableInfoAbonnement.id, this.data, 'abon_num', true);
-    };
-    VueTpSae.prototype.suppressionTheme = function () {
+    }
+    suppressionTheme() {
         delete this._dataStockageAjoutTheme[Number(this.grilleAbonnement.getIdSelect())];
         this.grilleAbonnement.delSelectLine();
         //
-        var totalAbonnement = "";
-        var nombreString = 0;
-        for (var i = 0; i < this._dataThemeGrille.length; i++) {
+        let totalAbonnement = "";
+        let nombreString = 0;
+        for (let i = 0; i < this._dataThemeGrille.length; i++) {
             nombreString += parseInt(this._dataThemeGrille[i].montant);
         }
         totalAbonnement = String(nombreString);
         this.form.divNombreTotal.innerHTML = String(totalAbonnement) + ",00 €";
-    };
-    VueTpSae.prototype.annulerAjoutTheme = function () {
+    }
+    annulerAjoutTheme() {
         if (this.form.btnThemeAnnuler.click) {
             this.form.divSelectionThemes.hidden = true;
             this.form.btnThemeAjouter.disabled = false;
             this.form.btnThemeModifier.disabled = false;
             this.form.btnThemeSupprimer.disabled = false;
             //
-            var liste = this.form.selectThemes;
-            var noLigne = liste.options.length;
+            const liste = this.form.selectThemes;
+            let noLigne = liste.options.length;
             while (noLigne > 0) {
                 liste.remove(--noLigne);
             }
         }
-    };
-    VueTpSae.prototype.validerAjoutTheme = function () {
+    }
+    validerAjoutTheme() {
         if (this.form.selectThemes.selectedIndex >= 0) {
-            for (var i = 0; i < this._dataTousThemesGrille.length; i++) {
+            for (let i = 0; i < this._dataTousThemesGrille.length; i++) {
                 if (this.form.selectThemes.value === this._dataTousThemesGrille[i].themeNum) {
                     this._cléTheme = this._dataTousThemesGrille[i].themeNum;
                 }
             }
-            var lesThemes = new LesThemes;
-            var unTheme = lesThemes.byThemeNum(this.cléTheme);
-            var versioPapierBool = "";
-            var leTheme = new UnThemeByAbonnement(unTheme);
+            const lesThemes = new LesThemes;
+            let unTheme = lesThemes.byThemeNum(this.cléTheme);
+            let versioPapierBool = "";
+            const leTheme = new UnThemeByAbonnement(unTheme);
             if (this.form.chkVersionPapier.checked === true) {
                 versioPapierBool = "1";
                 leTheme.envoiPapier = versioPapierBool;
@@ -471,10 +423,10 @@ var VueTpSae = /** @class */ (function () {
                 leTheme.envoiPapier = versioPapierBool;
             }
             if (this.form.chkModifierTheme.checked === true) {
-                var lesThemsParAbonNum = new LesThemesByAbonnement;
-                var tableauStockage = lesThemsParAbonNum.toArray(this._dataStockageAjoutTheme);
-                var conserveurIndex = 0;
-                for (var i = 0; i < tableauStockage.length; i++) {
+                const lesThemsParAbonNum = new LesThemesByAbonnement;
+                let tableauStockage = lesThemsParAbonNum.toArray(this._dataStockageAjoutTheme);
+                let conserveurIndex = 0;
+                for (let i = 0; i < tableauStockage.length; i++) {
                     if (leTheme.unTheme.themeNum === tableauStockage[i].themeNum) {
                         conserveurIndex = i;
                     }
@@ -490,8 +442,8 @@ var VueTpSae = /** @class */ (function () {
             this.affiGrilleAjout();
             this.annulerAjoutTheme();
         }
-    };
-    VueTpSae.prototype.verifierAjoutAbonnement = function () {
+    }
+    verifierAjoutAbonnement() {
         if (this.form.edtTexteInvisible.value === "3") {
             this.form.edtTexteInvisible.value = "0";
             this.modificationAbonnement();
@@ -504,11 +456,11 @@ var VueTpSae = /** @class */ (function () {
                 this.ajouterClick();
             }
         }
-    };
-    VueTpSae.prototype.verifieurAjout = function () {
-        var nombreIdentification = parseInt(this.form.edtIdentificationAdh.value);
-        var nombreAdherent = parseInt(this.form.edtNumAdh.value);
-        var lesThemesByAbo = new LesThemesByAbonnement;
+    }
+    verifieurAjout() {
+        const nombreIdentification = parseInt(this.form.edtIdentificationAdh.value);
+        const nombreAdherent = parseInt(this.form.edtNumAdh.value);
+        const lesThemesByAbo = new LesThemesByAbonnement;
         if (this.form.edtIdentificationAdh.value === "" || isNaN(nombreIdentification) || this.verifieurDuplicationNumAbon() === true) {
             return false;
         }
@@ -522,30 +474,30 @@ var VueTpSae = /** @class */ (function () {
             return false;
         }
         return true;
-    };
-    VueTpSae.prototype.verifieurDuplicationNumAbon = function () {
-        var dataVerifieur;
-        var tousAbonnement = new LesAbonnements;
+    }
+    verifieurDuplicationNumAbon() {
+        let dataVerifieur;
+        let tousAbonnement = new LesAbonnements;
         dataVerifieur = [];
         dataVerifieur = tousAbonnement.listAll();
-        for (var i = 0; i < dataVerifieur.length; i++) {
+        for (let i = 0; i < dataVerifieur.length; i++) {
             if (this.form.edtIdentificationAdh.value === dataVerifieur[i].abon_num) {
                 return true;
             }
         }
         return false;
-    };
-    VueTpSae.prototype.verifieurExistenceNumAdh = function () {
-        for (var i = 0; i < this._dataAdherent.length; i++) {
+    }
+    verifieurExistenceNumAdh() {
+        for (let i = 0; i < this._dataAdherent.length; i++) {
             if (this.form.edtNumAdh.value === this._dataAdherent[i].adhNum) {
                 return true;
             }
         }
         return false;
-    };
-    VueTpSae.prototype.messageErreur = function () {
-        var lesThemesByAbo = new LesThemesByAbonnement;
-        var erreurMsg = "Erreur : élément manquant \n";
+    }
+    messageErreur() {
+        const lesThemesByAbo = new LesThemesByAbonnement;
+        let erreurMsg = "Erreur : élément manquant \n";
         if (this.form.edtIdentificationAdh.value === "") {
             erreurMsg += "Le numéro d'abonnement n'a pas été renseigné. \n";
         }
@@ -566,8 +518,8 @@ var VueTpSae = /** @class */ (function () {
         }
         //ajouter thème
         alert(erreurMsg);
-    };
-    VueTpSae.prototype.retourOuAnnulerAbonnement = function () {
+    }
+    retourOuAnnulerAbonnement() {
         this._dataStockageAjoutTheme = {};
         this.form.btnThemeAjouter.disabled = false;
         this.form.btnThemeModifier.disabled = false;
@@ -587,8 +539,8 @@ var VueTpSae = /** @class */ (function () {
             this.viderChamps();
             return this.annulerModifierAbonnement();
         }
-    };
-    VueTpSae.prototype.retourAfficherDetail = function () {
+    }
+    retourAfficherDetail() {
         this.form.divPageAbonnement.hidden = true;
         this.form.divSelectionThemes.hidden = false;
         this.form.divListeAbonnement.hidden = false;
@@ -602,8 +554,8 @@ var VueTpSae = /** @class */ (function () {
         this.form.edtNumAdh.disabled = false;
         this.form.textareaCommentaireAdh.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
-    };
-    VueTpSae.prototype.annulerAjoutAbonnement = function () {
+    }
+    annulerAjoutAbonnement() {
         this.form.lblErreurAdh.innerHTML = "";
         this.form.lblErreurSelectionTheme.innerHTML = "";
         this.form.divPageAbonnement.hidden = true;
@@ -616,8 +568,8 @@ var VueTpSae = /** @class */ (function () {
         this.form.edtIdentificationAdh.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
         this.form.tableTotalAbonnement.hidden = false;
-    };
-    VueTpSae.prototype.annulerModifierAbonnement = function () {
+    }
+    annulerModifierAbonnement() {
         this.form.divPageAbonnement.hidden = true;
         this.form.divSelectionThemes.hidden = false;
         this.form.divListeAbonnement.hidden = false;
@@ -627,8 +579,8 @@ var VueTpSae = /** @class */ (function () {
         this.form.edtNumAdh.disabled = false;
         this.form.textareaCommentaireAdh.disabled = false;
         this.form.divAbonnementTitre.innerHTML = "";
-    };
-    VueTpSae.prototype.viderChamps = function () {
+    }
+    viderChamps() {
         this.form.edtIdentificationAdh.value = "";
         this.form.edtNumAdh.value = "";
         this.form.dateNumDate.value = "";
@@ -636,9 +588,8 @@ var VueTpSae = /** @class */ (function () {
         this.form.divInformationAbonnement.innerHTML = "";
         this.form.divInformationAdherent.innerHTML = "";
         this.form.divNombreTotal.innerHTML = "0.00 €";
-    };
-    return VueTpSae;
-}());
-var vueTpSaeClass = new VueTpSae;
+    }
+}
+let vueTpSaeClass = new VueTpSae;
 export { vueTpSaeClass };
 //# sourceMappingURL=class_tp_sae.js.map

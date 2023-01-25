@@ -184,6 +184,8 @@ class VueTpSae {
             this.recupererInfoAbonn(grilleId);
             this.affiGrille(grilleId);
             //
+            const lesThemesByAbo = new LesThemesByAbonnement
+            this._dataStockageAjoutTheme = lesThemesByAbo.byAbonNum(this._grille.getIdSelect());
             this.form.edtTexteInvisible.value = "1";
             this.form.divPageAbonnement.hidden = false;
             this.form.divSelectionThemes.hidden = true;
@@ -226,7 +228,7 @@ class VueTpSae {
             let grilleId = this.grille.getIdSelect();
             this.recupererInfoAbonn(grilleId);
             this.affiGrille(grilleId);
-            this._dataStockageAjoutTheme = lesThemesByAbo.byAbonNum(this._grille.getIdSelect()) ;
+            this._dataStockageAjoutTheme = lesThemesByAbo.byAbonNum(this._grille.getIdSelect());
             //
             this.form.edtTexteInvisible.value = "3";
             this.form.divPageAbonnement.hidden = false;
