@@ -149,6 +149,7 @@ class VueTpSae {
         this.form.edtIdentificationAdh.disabled = true;
         this.form.divAbonnementTitre.innerHTML = "Ajout d'un nouvel abonnement";
         this.form.lblErreurAdh.innerHTML = "Veuillez saisir le numéro d'adhérent";
+        this.form.lblErreurSelectionTheme.innerHTML = "Veuillez selectionner un thème";
         //
         const lesAbonnements = new LesAbonnements();
         let numéroAbonnement = lesAbonnements.getNouveauNumero();
@@ -287,6 +288,14 @@ class VueTpSae {
             message += "Veuillez saisir le numéro d'adhérent";
         }
         this.form.lblErreurAdh.innerHTML = message;
+    }
+    labelErreurThemeTotal() {
+        let message = "";
+        const lesThemesByAbo = new LesThemesByAbonnement();
+        if (lesThemesByAbo.getTotal(this._dataStockageAjoutTheme) === 0) {
+            message += "Veulliez choisir un theme";
+        }
+        this.form.lblErreurSelectionTheme.innerHTML = message;
     }
     afficherSelectionTheme() {
         const lesThemes = new LesThemes;
@@ -546,6 +555,7 @@ class VueTpSae {
     }
     annulerAjoutAbonnement() {
         this.form.lblErreurAdh.innerHTML = "";
+        this.form.lblErreurSelectionTheme.innerHTML = "";
         this.form.divPageAbonnement.hidden = true;
         this.form.divListeAbonnement.hidden = false;
         this.form.btnAbonnementRetour.hidden = false;
