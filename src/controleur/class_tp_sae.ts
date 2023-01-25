@@ -366,7 +366,7 @@ class VueTpSae {
         let message = ""
         const lesThemesByAbo = new LesThemesByAbonnement()
         if (lesThemesByAbo.getTotal(this._dataStockageAjoutTheme) === 0) {
-            message += "Veulliez choisir un theme"
+            message += "Veuillez sélectioner au moins un thème dans la liste !"
         }
         this.form.lblErreurSelectionTheme.innerHTML = message
     }
