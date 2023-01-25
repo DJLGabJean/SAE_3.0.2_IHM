@@ -51,4 +51,6 @@ vueTpSaeClass.form.btnThemeValider.addEventListener("click", function() {vueTpSa
 vueTpSaeClass.form.edtNumAdh.addEventListener("change", function() {vueTpSaeClass.refreshNuméroAdhérent(), vueTpSaeClass.labelErreurNumAdh()})
 vueTpSaeClass.form.edtIdentificationAdh.addEventListener("change", function() {vueTpSaeClass.labelErreurIdentifiant()})
 vueTpSaeClass.form.dateNumDate.addEventListener("change", function() {vueTpSaeClass.labelErreurIdentifiant()})
+vueTpSaeClass.form.selectThemes.addEventListener("click", function() {vueTpSaeClass.labelErreurSelectTheme()})
 addEventListener("click", function() {vueTpSaeClass.labelErreurThemeTotal()})
+

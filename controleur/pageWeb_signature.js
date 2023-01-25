@@ -1,66 +1,78 @@
 "use strict";
 // type contenant les paramètres passés d'une page HTML à une autre :
 // statut (rien, ou TeditSatut), iddentifiant, tableau de valeurs sous forme de chaînes de caractères 
-class GrilleTabulaire {
-    show(tableId, dataSet, cleId, cleVisible) {
-        // afficher une liste sous la forme d'une table : balise <TABLE> en HTML
+var GrilleTabulaire = /** @class */ (function () {
+    function GrilleTabulaire() {
     }
-    getIdSelect() {
+    GrilleTabulaire.prototype.show = function (tableId, dataSet, cleId, cleVisible) {
+        // afficher une liste sous la forme d'une table : balise <TABLE> en HTML
+    };
+    GrilleTabulaire.prototype.getIdSelect = function () {
         // renvoie l'identifiant de la ligne sélectionnée dans le tableau
         return "";
-    }
-    getData() {
+    };
+    GrilleTabulaire.prototype.getData = function () {
         return this.dataSet['data'];
         // renvoie le tableau de données affichées
-    }
-    addLine(tab2) {
+    };
+    GrilleTabulaire.prototype.addLine = function (tab2) {
         // ajouter des lignes complètes dans la liste
-    }
-    delSelectLine() {
+    };
+    GrilleTabulaire.prototype.delSelectLine = function () {
         // supprimer la ligne sélectionnée de la liste
-    }
-    count() {
+    };
+    GrilleTabulaire.prototype.count = function () {
         return this.dataSet['data'].length;
         // renovie le nombre de lignes de la liste
+    };
+    return GrilleTabulaire;
+}());
+var PageWeb = /** @class */ (function () {
+    function PageWeb() {
     }
-}
-class PageWeb {
-    message(titre, texte) {
+    PageWeb.prototype.message = function (titre, texte) {
         // affichage boîte de dialogue avec un titre, un texte, et un bouton "Compris"
-    }
-    confirmation(titre, texte, vue, fctOui, fctNon = null) {
+    };
+    PageWeb.prototype.confirmation = function (titre, texte, vue, fctOui, fctNon) {
+        if (fctNon === void 0) { fctNon = null; }
         // affichage boite de dialogue avec un titre, un message (une question) et deux boutons "Oui" et "Non"	
         // vue est l'objet contenant les deux fonctions fctOui et fctNon respectivement appelées si réponse "Oui" ou réponse "Non"
-    }
-    showArray(tableId, dataSet, cleId, cleVisible = true) {
+    };
+    PageWeb.prototype.showArray = function (tableId, dataSet, cleId, cleVisible) {
+        if (cleVisible === void 0) { cleVisible = true; }
         // instanciation d'un nouvel objet de la table "grille", appel de la méthode show de "grille" et retour de l'objet grille créé
         return this.grille[tableId];
-    }
-    show(fichier, id, modal = false) {
+    };
+    PageWeb.prototype.show = function (fichier, id, modal) {
+        if (modal === void 0) { modal = false; }
         // affichage de la page HTML de nom "fichier" dans la balise identifie par "id" en mode "modal" ou pas
-    }
-    showModal(fichier, id) {
+    };
+    PageWeb.prototype.showModal = function (fichier, id) {
         // affichage de la page HTML de nom "fichier" dans la balise identifié par la valeur de "id" en mode "modal"
-    }
-    hide(id) {
+    };
+    PageWeb.prototype.hide = function (id) {
         // cache la fenêtre "id" 
-    }
-    close() {
+    };
+    PageWeb.prototype.close = function () {
         // ferme l'application
-    }
-    SQLexec(sp, params) {
+    };
+    PageWeb.prototype.SQLexec = function (sp, params) {
         // exécute une requête de manipulation (insert, update, delete)
         return true;
-    }
-    SQLloadData(sp, params, req = 'interrogation') {
+    };
+    PageWeb.prototype.SQLloadData = function (sp, params, req) {
+        if (req === void 0) { req = 'interrogation'; }
         // exécute une requête d'interrogation et retourne le résultat soit un tableau d'objets, soit un tableau de tableaux associatifs
-        let resultat = [];
+        var resultat = [];
         return resultat;
-    }
-    bdOpen(host, port, bdname, user, pwd, charset = 'utf8', driver = 'mysql') {
+    };
+    PageWeb.prototype.bdOpen = function (host, port, bdname, user, pwd, charset, driver) {
+        if (charset === void 0) { charset = 'utf8'; }
+        if (driver === void 0) { driver = 'mysql'; }
         // ouvrir une base de données
-    }
-}
+    };
+    return PageWeb;
+}());
 // eslint-disable-next-line no-var
 var APIpageWeb;
 //# sourceMappingURL=pageWeb_signature.js.map
